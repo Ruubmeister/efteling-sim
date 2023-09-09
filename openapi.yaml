@@ -1,0 +1,196 @@
+    openapi: 3.0.0
+    info:
+      title: Efteling simulator API
+      description: This document provides all API calls for the different services for the Efteling simulator
+      version: 0.0.1
+    servers:
+      - url: http://api.example.com/v1
+        description: Optional server description, e.g. Main (production) server
+      - url: http://staging-api.example.com
+        description: Optional server description, e.g. Internal staging server for testing
+    components:
+      schemas:
+        coordinatesDto:
+          type: object
+          required:
+            - lat
+            - lon
+          properties:
+            lat:
+              type: number
+              format: double
+            lon:
+              type: number
+              format: double
+        dinnerDto:
+          type: object
+          required:
+            - meals
+            - drinks
+          properties:
+            meals:
+              type: array
+              items:
+                type: string
+            drinks:
+              type: array
+              items:
+                type: string
+        employeeDto:
+          type: object
+          required:
+            - id
+            - firstName
+            - lastName
+            - skills
+          properties:
+            id:
+              type: string
+              format: uuid
+            firstName:
+              type: string
+            lastName:
+              type: string
+            skills:
+              type: array
+              items:
+                type: string
+        fairyTaleDto:
+          type: object
+          required:
+            - id
+            - name
+            - coordinates
+            - locationType
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            coordinates:
+              $ref: '#/components/schemas/coordinatesDto'
+            locationType:
+              type: string
+        rideDto:
+          type: object
+          required:
+            - id
+            - status
+            - name
+            - minimumAge
+            - minimumLength
+            - durationInSec
+            - maxPersons
+            - visitorsInLine
+            - visitorsInRide
+            - endTime
+            - employeesToSkill
+            - coordinates
+            - locationType
+            - status
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            minimumAge:
+              type: number
+            minimumLength:
+              type: number
+              format: float
+            durationInSec:
+              type: number
+            maxPersons:
+              type: number
+            visitorsInLine:
+              type: number
+            visitorsInRide:
+              type: number
+            endTime:
+              type: string
+            employeesToSkill:
+              type: object
+              additionalProperties:
+                type: string
+            coordinates:
+              $ref: '#/components/schemas/coordinatesDto'
+            locationType:
+              type: string
+            status:
+              type: string
+              enum:
+                - OPEN
+                - CLOSED
+                - MAINTENANCE
+        standDto:
+          type: object
+          required:
+            - id
+            - name
+            - coordinates
+            - locationType
+            - meals
+            - drinks
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            coordinates:
+              $ref: '#/components/schemas/coordinatesDto'
+            locationType:
+              type: string
+            meals:
+              type: array
+              items:
+                type: string
+            drinks:
+              type: array
+              items:
+                type: string
+        visitorDto:
+          type: object
+          required:
+            - id
+            - dateOfBirth
+            - length
+            - currentLocation
+          properties:
+            id:
+              type: string
+              format: uuid
+            dateOfBirth:
+              type: string
+            currentLocation:
+              $ref: '#/components/schemas/coordinatesDto'
+            length:
+              type: number
+              format: float
+        workplaceDto:
+          type: object
+          required:
+            - id
+            - locationType
+          properties:
+            id:
+              type: string
+              format: uuid
+            locationType:
+              type: string
+    paths:
+      /users:
+        get:
+          summary: Returns a list of users.
+          description: Optional extended description in CommonMark or HTML.
+          responses:
+            '200':    # status code
+              description: A JSON array of user names
+              content:
+                application/json:
+                  schema: 
+                    type: array
+                    items: 
+                      type: string

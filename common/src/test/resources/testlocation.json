@@ -1,0 +1,18 @@
+[
+  {
+    "type": "test",
+    "name": "Location 1",
+    "coordinate":{
+      "x": 51.649187,
+      "y": 5.048825
+    }
+  },
+  {
+    "type": "test",
+    "name": "Location 2",
+    "coordinate":{
+      "x": 51.649237,
+      "y": 5.049157
+    }
+  }
+]
