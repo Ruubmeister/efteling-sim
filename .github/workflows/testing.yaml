@@ -12,6 +12,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
+      - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f park/pom.xml clean compile test package
   Fairy-Tales:
     runs-on: ubuntu-latest
@@ -23,6 +24,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
+      - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f fairy-tales/pom.xml clean compile test package
   Rides:
     runs-on: ubuntu-latest
@@ -34,6 +36,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
+      - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f rides/pom.xml clean compile test package
   Stands:
     runs-on: ubuntu-latest
@@ -45,6 +48,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
+      - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f stands/pom.xml clean compile test package
   Visitors:
     runs-on: ubuntu-latest
@@ -56,4 +60,5 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
+      - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f visitors/pom.xml clean compile test package
