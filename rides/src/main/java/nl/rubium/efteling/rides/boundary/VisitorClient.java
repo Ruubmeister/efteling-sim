@@ -3,6 +3,7 @@ package nl.rubium.efteling.rides.boundary;
 import com.google.common.net.HttpHeaders;
 import java.util.UUID;
 import org.openapitools.client.model.VisitorDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class VisitorClient {
 
     private final WebClient webClient;
 
+    @Autowired
     public VisitorClient(@Value(value = "${visitor.base-url}") String baseUrl) {
         webClient =
                 WebClient.builder()

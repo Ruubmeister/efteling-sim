@@ -20,6 +20,7 @@ import nl.rubium.efteling.stands.boundary.KafkaProducer;
 import nl.rubium.efteling.stands.entity.Dinner;
 import nl.rubium.efteling.stands.entity.Stand;
 import nl.rubium.efteling.stands.entity.StandsMixIn;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,6 +31,7 @@ public class StandControl {
     private LocationRepository<Stand> standRepository;
     private final KafkaProducer kafkaProducer;
 
+    @Autowired
     public StandControl(KafkaProducer kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
 
@@ -37,7 +39,7 @@ public class StandControl {
         mapper.addMixIn(Location.class, StandsMixIn.class);
         try {
             standRepository = new LocationService<Stand>(mapper).loadLocations("stands.json");
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load stands: ", e);
             standRepository = new LocationRepository<Stand>(new CopyOnWriteArrayList<>());
         }

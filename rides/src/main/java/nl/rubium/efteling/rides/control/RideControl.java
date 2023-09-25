@@ -22,6 +22,7 @@ import nl.rubium.efteling.rides.entity.Ride;
 import nl.rubium.efteling.rides.entity.RideMixIn;
 import nl.rubium.efteling.rides.entity.RideStatus;
 import org.openapitools.client.model.WorkplaceDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,6 +32,7 @@ public class RideControl {
     KafkaProducer kafkaProducer;
     VisitorClient visitorClient;
 
+    @Autowired
     public RideControl(KafkaProducer kafkaProducer, VisitorClient visitorClient) {
         this.kafkaProducer = kafkaProducer;
         this.visitorClient = visitorClient;
@@ -39,7 +41,7 @@ public class RideControl {
         mapper.addMixIn(Location.class, RideMixIn.class);
         try {
             rideRepository = new LocationService<Ride>(mapper).loadLocations("rides.json");
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load rides: ", e);
             rideRepository = new LocationRepository<Ride>(new CopyOnWriteArrayList<>());
         }

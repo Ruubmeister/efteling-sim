@@ -7,6 +7,7 @@ import nl.rubium.efteling.stands.control.StandControl;
 import nl.rubium.efteling.stands.entity.Stand;
 import org.openapitools.client.model.DinnerDto;
 import org.openapitools.client.model.StandDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class StandBoundary {
     private final StandControl standControl;
 
+    @Autowired
     public StandBoundary(StandControl standControl) {
         this.standControl = standControl;
     }
