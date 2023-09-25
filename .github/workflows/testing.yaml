@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Efteling simulator pipeline
+run-name: Testing and building pipeline after code changes by ${{ github.actor }}.
 on: [push]
 jobs:
   Park:

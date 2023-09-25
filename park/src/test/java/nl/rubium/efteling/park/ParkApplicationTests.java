@@ -10,7 +10,7 @@ class ParkApplicationTests {
 
 	@MockBean
 	KafkaProducer kafkaProducer;
-	
+
 	@Test
 	void contextLoads() {
 	}
