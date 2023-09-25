@@ -38,7 +38,8 @@ public class FairyTaleBoundary {
             @PathVariable(name = "id") UUID id,
             @RequestParam(name = "exclude", required = false) String exclude) {
 
-        var excludedLocations = Arrays.stream(exclude.split(",")).map(UUID::fromString).toList();
+        List<UUID> excludedLocations = exclude == null ? List.of() :
+                Arrays.stream(exclude.split(",")).map(UUID::fromString).toList();
 
         return fairyTaleControl.getNextFairyTale(id, excludedLocations).toDto();
     }

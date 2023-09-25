@@ -77,11 +77,6 @@ public class FairyTaleControl {
         return fairyTaleRepository.getLocation(fairyTale.getNextLocationId(exclusionList));
     }
 
-    public FairyTale getNearestFairyTale(UUID fairyTaleId, List<UUID> exclusionList) {
-        var fairyTale = fairyTaleRepository.getLocation(fairyTaleId);
-        return fairyTaleRepository.getLocation(fairyTale.getNearestLocationId(exclusionList));
-    }
-
     private LocalDateTime getEndDateTimeForVisitorWatchingFairyTale() {
         var r = new Random();
         var watchInSeconds = r.nextInt(300 - 120) + 120;
