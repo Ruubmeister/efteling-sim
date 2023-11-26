@@ -8,8 +8,8 @@ import nl.rubium.efteling.rides.entity.Ride;
 import org.openapitools.client.model.RideDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +28,7 @@ public class RideBoundary {
 
     @GetMapping
     public List<RideDto> getRides() {
-        return rideControl.getAll().stream().map(Ride::toDto).toList();
+        return rideControl.getRides().stream().map(Ride::toDto).toList();
     }
 
     @GetMapping("random")
@@ -38,15 +38,15 @@ public class RideBoundary {
 
     @GetMapping("{id}/new-location")
     public RideDto getNewRideLocation(
-            @RequestParam("id") UUID id,
-            @RequestAttribute(required = false, name = "exclude") String excludedIds) {
-        var excludedLocations =
-                Arrays.stream(excludedIds.split(",")).map(UUID::fromString).toList();
+            @PathVariable("id") UUID id,
+            @RequestParam(required = false, name = "exclude") String exclude) {
+        List<UUID> excludedLocations = exclude == null ? List.of() :
+                Arrays.stream(exclude.split(",")).map(UUID::fromString).toList();
         return rideControl.getNextRide(id, excludedLocations).toDto();
     }
 
     @PutMapping("{id}/status")
-    public RideDto putStatus(@RequestParam("id") UUID id, @RequestBody RideDto rideDto) {
+    public RideDto putStatus(@PathVariable("id") UUID id, @RequestBody RideDto rideDto) {
         switch (rideDto.getStatus()) {
             case OPEN -> rideControl.rideToOpen(id);
             case CLOSED -> rideControl.rideToClosed(id);

@@ -29,8 +29,8 @@ public class Ride extends Location {
     private final int maxPersons;
     private Queue<VisitorDto> visitorsInLine = new LinkedList<>();
     private Queue<VisitorDto> visitorsInRide = new LinkedList<>();
-    private LocalDateTime endTime;
-    private HashMap<UUID, WorkplaceSkill> employeesToSkill;
+    private LocalDateTime endTime = LocalDateTime.now();
+    private final HashMap<UUID, WorkplaceSkill> employeesToSkill = new HashMap<>();
 
     public Ride(
             RideStatus status,

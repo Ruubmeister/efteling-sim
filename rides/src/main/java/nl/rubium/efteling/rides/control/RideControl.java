@@ -47,16 +47,15 @@ public class RideControl {
         }
     }
 
-    public List<Ride> getAll() {
+    public RideControl(
+            KafkaProducer kafkaProducer, VisitorClient visitorClient, LocationRepository<Ride> rideRepository) {
+        this.kafkaProducer = kafkaProducer;
+        this.visitorClient = visitorClient;
+        this.rideRepository = rideRepository;
+    }
+
+    public List<Ride> getRides() {
         return rideRepository.getLocations();
-    }
-
-    public Ride findRideByName(String name) {
-        return rideRepository.findByName(name);
-    }
-
-    public void toMaintenance(Ride ride) {
-        ride.toMaintenance();
     }
 
     public void openRides() {
@@ -123,11 +122,6 @@ public class RideControl {
         return rideRepository.getLocation(ride.getNextLocationId(exclusionList));
     }
 
-    public Ride getNearestRide(UUID rideId, List<UUID> exclusionList) {
-        var ride = rideRepository.getLocation(rideId);
-        return rideRepository.getLocation(ride.getNearestLocationId(exclusionList));
-    }
-
     public Ride getRandomRide() {
         var r = new Random();
         return rideRepository.getLocations().get(r.nextInt(rideRepository.getLocations().size()));
@@ -146,22 +140,27 @@ public class RideControl {
     }
 
     public void handleVisitorSteppingInRideLine(UUID visitorId, UUID rideId) {
-        var ride = rideRepository.getLocation(rideId);
-        if (ride != null && ride.getStatus().equals(RideStatus.OPEN)) {
-            var visitor = visitorClient.getVisitor(visitorId);
+        try {
+            var ride = rideRepository.getLocation(rideId);
 
-            if (visitor == null) {
-                log.error("Could not fetch visitor with ID {}", visitorId);
+            if (ride != null && ride.getStatus().equals(RideStatus.OPEN)) {
+                var visitor = visitorClient.getVisitor(visitorId);
+
+                if (visitor == null) {
+                    log.error("Could not fetch visitor with ID {}", visitorId);
+                }
+
+                ride.addVisitorToLine(visitor);
+                return;
             }
-
-            ride.addVisitorToLine(visitor);
-        } else {
-            Map<String, String> payload =
-                    Map.of(
-                            "visitors", visitorId.toString(),
-                            "dateTime", LocalDateTime.now().toString());
-
-            kafkaProducer.sendEvent(EventSource.RIDE, EventType.VISITORSUNBOARDED, payload);
+        } catch (IllegalArgumentException e){
+            log.error("Could not fetch ride", e);
         }
+        Map<String, String> payload =
+                Map.of(
+                        "visitors", visitorId.toString(),
+                        "dateTime", LocalDateTime.now().toString());
+
+        kafkaProducer.sendEvent(EventSource.RIDE, EventType.VISITORSUNBOARDED, payload);
     }
 }
