@@ -14,7 +14,7 @@ import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.fairytales.boundary.KafkaProducer;
-import nl.rubium.efteling.fairytales.entities.SFFairyTale;
+import nl.rubium.efteling.fairytales.entity.SFFairyTale;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;

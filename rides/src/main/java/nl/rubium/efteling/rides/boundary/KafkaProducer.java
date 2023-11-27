@@ -12,10 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaProducer {
 
-    @Value(value = "${events.topic-name}")
     private String topicName;
 
-    @Autowired private KafkaTemplate<String, Event> kafkaTemplate;
+    private KafkaTemplate<String, Event> kafkaTemplate;
+
+    @Autowired
+    public KafkaProducer(KafkaTemplate<String, Event> kafkaTemplate, @Value(value = "${events.topic-name}") String topicName){
+        this.kafkaTemplate = kafkaTemplate;
+        this.topicName = topicName;
+    }
 
     public void sendEvent(
             EventSource eventSource, EventType eventType, Map<String, String> payload) {

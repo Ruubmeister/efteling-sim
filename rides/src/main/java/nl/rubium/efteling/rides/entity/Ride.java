@@ -30,7 +30,7 @@ public class Ride extends Location {
     private Queue<VisitorDto> visitorsInLine = new LinkedList<>();
     private Queue<VisitorDto> visitorsInRide = new LinkedList<>();
     private LocalDateTime endTime;
-    private HashMap<UUID, WorkplaceSkill> employeesToSkill;
+    private final HashMap<UUID, WorkplaceSkill> employeesToSkill = new HashMap<>();
 
     public Ride(
             RideStatus status,
@@ -46,6 +46,7 @@ public class Ride extends Location {
         this.minimumLength = minimumLength;
         this.duration = duration;
         this.maxPersons = maxPersons;
+        this.endTime = LocalDateTime.now();
     }
 
     public void toMaintenance() {

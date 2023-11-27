@@ -1,9 +1,8 @@
-package nl.rubium.efteling.fairytales.entities;
+package nl.rubium.efteling.fairytales.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import nl.rubium.efteling.fairytales.entity.FairyTale;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.Coordinate;

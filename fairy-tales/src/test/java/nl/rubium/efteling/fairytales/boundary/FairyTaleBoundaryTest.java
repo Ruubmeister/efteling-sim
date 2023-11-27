@@ -1,7 +1,7 @@
 package nl.rubium.efteling.fairytales.boundary;
 
 import nl.rubium.efteling.fairytales.control.FairyTaleControl;
-import nl.rubium.efteling.fairytales.entities.SFFairyTale;
+import nl.rubium.efteling.fairytales.entity.SFFairyTale;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

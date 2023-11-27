@@ -1,4 +1,4 @@
-package nl.rubium.efteling.fairytales.boundary;
+package nl.rubium.efteling.rides.boundary;
 
 import nl.rubium.efteling.common.event.entity.Event;
 import nl.rubium.efteling.common.event.entity.EventSource;
@@ -12,8 +12,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

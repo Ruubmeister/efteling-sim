@@ -1,6 +1,5 @@
-package nl.rubium.efteling.fairytales.entities;
+package nl.rubium.efteling.fairytales.entity;
 
-import nl.rubium.efteling.fairytales.entity.FairyTale;
 import org.locationtech.jts.geom.Coordinate;
 
 public class SFFairyTale {
