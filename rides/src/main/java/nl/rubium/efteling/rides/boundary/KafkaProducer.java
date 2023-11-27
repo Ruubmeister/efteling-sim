@@ -14,7 +14,7 @@ public class KafkaProducer {
 
     private String topicName;
 
-    private KafkaTemplate<String, Event> kafkaTemplate;
+    private final KafkaTemplate<String, Event> kafkaTemplate;
 
     @Autowired
     public KafkaProducer(KafkaTemplate<String, Event> kafkaTemplate, @Value(value = "${events.topic-name}") String topicName){
