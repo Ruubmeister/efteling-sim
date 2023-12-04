@@ -3,6 +3,9 @@ package nl.rubium.efteling.park.control;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
@@ -20,8 +23,11 @@ public class EmployeeControl {
 
     private KafkaProducer kafkaProducer;
 
+    private final ObjectMapper objectMapper;
+
     @Autowired
     public EmployeeControl(KafkaProducer kafkaProducer) {
+        this.objectMapper = new ObjectMapper();
         this.kafkaProducer = kafkaProducer;
     }
 
@@ -46,8 +52,12 @@ public class EmployeeControl {
         return employee;
     }
 
+    public CopyOnWriteArrayList<Employee> getEmployees(){
+        return employees;
+    }
+
     public void assignEmployeeToWorkplace(
-            WorkplaceDto workplaceDto, WorkplaceSkill workplaceSkill) {
+            WorkplaceDto workplaceDto, WorkplaceSkill workplaceSkill) throws JsonProcessingException {
 
         // Todo: Set up name service
 
@@ -55,13 +65,13 @@ public class EmployeeControl {
                 employees.stream()
                         .filter(existingEmployee -> !existingEmployee.isWorking())
                         .findFirst()
-                        .orElse(hireEmployee("firstName", "lastName", workplaceSkill));
+                        .orElseGet(() -> hireEmployee("firstName", "lastName", workplaceSkill));
 
         employee.goToWork(workplaceDto, workplaceSkill);
 
         var payload = new HashMap<String, String>();
         payload.put("employee", employee.getId().toString());
-        payload.put("workplace", workplaceDto.toJson());
+        payload.put("workplace", objectMapper.writeValueAsString(workplaceDto));
         payload.put("skill", workplaceSkill.name());
 
         kafkaProducer.sendEvent(EventSource.EMPLOYEE, EventType.EMPLOYEECHANGEDWORKPLACE, payload);

@@ -31,8 +31,8 @@ public class EntranceControl {
     public void openPark() {
         currentStatus = EntranceStatus.OPEN;
         kafkaProducer.sendEvent(
-                EventSource.EMPLOYEE,
-                EventType.EMPLOYEECHANGEDWORKPLACE,
+                EventSource.PARK,
+                EventType.STATUSCHANGED,
                 Map.of("status", currentStatus.name()));
         log.info("Park is open");
     }
@@ -40,8 +40,8 @@ public class EntranceControl {
     public void closePark() {
         currentStatus = EntranceStatus.CLOSED;
         kafkaProducer.sendEvent(
-                EventSource.EMPLOYEE,
-                EventType.EMPLOYEECHANGEDWORKPLACE,
+                EventSource.PARK,
+                EventType.STATUSCHANGED,
                 Map.of("status", currentStatus.name()));
         log.info("Park is closed");
     }

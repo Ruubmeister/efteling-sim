@@ -52,9 +52,9 @@ public class RideControlTest {
         rideList.add(
                 SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772)));
 
-        var fairyTaleRepository = new LocationRepository<>(rideList);
+        var rideRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl = new RideControl(kafkaProducer, visitorClient, rideRepository);
     }
 
     @Test
