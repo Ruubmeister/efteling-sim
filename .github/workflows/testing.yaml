@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          java-version: '21'
       - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f park/pom.xml clean compile test package
   Fairy-Tales:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          java-version: '21'
       - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f fairy-tales/pom.xml clean compile test package
   Rides:
@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          java-version: '21'
       - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f rides/pom.xml clean compile test package
   Stands:
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          java-version: '21'
       - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f stands/pom.xml clean compile test package
   Visitors:
@@ -59,6 +59,6 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          java-version: '21'
       - run: mvn -f common/pom.xml clean compile test package install
       - run: mvn -f visitors/pom.xml clean compile test package
