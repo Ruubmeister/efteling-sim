@@ -17,7 +17,7 @@
     <properties>
         <java.version>21</java.version>
         <geotools.version>29.2</geotools.version>
-        <spotless.version>2.41.0</spotless.version>
+        <spotless.version>2.41.1</spotless.version>
         <openapi-generator.version>7.0.1</openapi-generator.version>
         <okhttp3.version>4.11.0</okhttp3.version>
     </properties>
