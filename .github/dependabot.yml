@@ -10,26 +10,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/fair-tale" 
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "maven"
-    directory: "/park"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "maven"
-    directory: "/rides"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "maven"
-    directory: "/stands"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "maven"
-    directory: "/visitors"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "maven"
     directory: "/common"
     schedule:
       interval: "weekly"
