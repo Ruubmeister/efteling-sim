@@ -25,5 +25,4 @@ public class LocationServiceTest {
                 Math.floor(
                         locationRepository.getLocations().get(0).getDistanceToOthers().firstKey()));
     }
-
 }

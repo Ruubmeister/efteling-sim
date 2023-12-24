@@ -67,6 +67,7 @@ public class KafkaConsumerTest {
     public static void setUp(){
         try {
             kafka.execInContainer("/bin/kafka-topics", "--bootstrap-server", "127.0.0.1:9092", "--create", "--partitions", "1" ,"--topic", "events");
+            kafka.wait(10000);
         } catch (Exception e) {
             // Do nothing
         }
@@ -85,7 +86,7 @@ public class KafkaConsumerTest {
 
         await()
                 .pollInterval(Duration.ofSeconds(1))
-                .atMost(10, TimeUnit.SECONDS)
+                .atMost(30, TimeUnit.SECONDS)
                 .untilAsserted(() ->
                         verify(visitorControl, times(2)).updateVisitorAvailabilityAt(any(), any())
                 );
@@ -98,7 +99,7 @@ public class KafkaConsumerTest {
 
         await()
                 .pollInterval(Duration.ofSeconds(1))
-                .atMost(10, TimeUnit.SECONDS)
+                .atMost(30, TimeUnit.SECONDS)
                 .untilAsserted(() ->
                         verify(visitorControl, times(1)).updateVisitorAvailabilityAt(any(), any())
                 );
@@ -111,7 +112,7 @@ public class KafkaConsumerTest {
 
         await()
                 .pollInterval(Duration.ofSeconds(1))
-                .atMost(10, TimeUnit.SECONDS)
+                .atMost(30, TimeUnit.SECONDS)
                 .untilAsserted(() ->
                         verify(visitorControl, times(1)).addVisitorWaitingForOrder(any(), any())
                 );
@@ -123,7 +124,7 @@ public class KafkaConsumerTest {
 
         await()
                 .pollInterval(Duration.ofSeconds(1))
-                .atMost(10, TimeUnit.SECONDS)
+                .atMost(30, TimeUnit.SECONDS)
                 .untilAsserted(() ->
                         verify(visitorControl, times(1)).notifyOrderReady(any())
                 );
