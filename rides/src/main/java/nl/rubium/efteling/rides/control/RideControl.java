@@ -23,6 +23,7 @@ import nl.rubium.efteling.rides.entity.RideMixIn;
 import nl.rubium.efteling.rides.entity.RideStatus;
 import org.openapitools.client.model.WorkplaceDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -84,6 +85,7 @@ public class RideControl {
         rideRepository.getLocation(uuid).toClosed();
     }
 
+    @Scheduled(fixedDelay = 1000)
     public void handleOpenRides() {
         rideRepository.getLocations().stream()
                 .filter(ride -> ride.getStatus().equals(RideStatus.OPEN))

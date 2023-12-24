@@ -58,15 +58,4 @@ public class LocationService<T extends Location> {
 
         return new LocationRepository<>(locations);
     }
-
-    public Coordinate getStepCoordinate(Coordinate from, Coordinate to, double distance) {
-        GeodeticCalculator calculator = new GeodeticCalculator(crs);
-        calculator.setStartingGeographicPoint(from.y, from.x);
-        calculator.setDestinationGeographicPoint(to.y, to.x);
-
-        calculator.setDirection(calculator.getAzimuth(), distance);
-
-        var destination = calculator.getDestinationGeographicPoint();
-        return new Coordinate(destination.getY(), destination.getX());
-    }
 }

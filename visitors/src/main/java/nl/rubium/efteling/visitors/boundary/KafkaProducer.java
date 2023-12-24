@@ -1,4 +1,4 @@
-package nl.rubium.efteling.stands.boundary;
+package nl.rubium.efteling.visitors.boundary;
 
 import java.util.Map;
 import nl.rubium.efteling.common.event.entity.Event;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaProducer {
 
-    private final String topicName;
+    private String topicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;
 

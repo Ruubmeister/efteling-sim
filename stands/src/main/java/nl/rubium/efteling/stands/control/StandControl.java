@@ -21,6 +21,7 @@ import nl.rubium.efteling.stands.entity.Dinner;
 import nl.rubium.efteling.stands.entity.Stand;
 import nl.rubium.efteling.stands.entity.StandsMixIn;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -98,6 +99,7 @@ public class StandControl {
         return ticket.toString();
     }
 
+    @Scheduled(fixedDelay = 1000)
     public void handleProducedOrders() {
         var now = LocalDateTime.now();
         ordersDoneAtTime.forEach(
