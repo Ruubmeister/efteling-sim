@@ -1,0 +1,95 @@
+version: '3.4'
+
+services:
+
+  park:
+    image: park
+    depends_on:
+      - kafka
+    build:
+      context: .
+      dockerfile: park/Dockerfile
+    environment:
+      - spring_kafka_bootstrap-server=kafka:9092
+    ports:
+      - "49983:49983"
+
+  rides:
+    image: rides
+    depends_on: 
+      - park
+      - kafka
+    build:
+      context: .
+      dockerfile: rides/Dockerfile
+    environment:
+      - spring_kafka_bootstrap-server=kafka:9092
+    ports:
+      - "49981:49981"
+    
+  
+  fairytales:
+    image: fairytales
+    depends_on: 
+      - park
+      - kafka
+    build:
+      context: .
+      dockerfile: fairy-tales/Dockerfile
+    environment:
+      - spring_kafka_bootstrap-server=kafka:9092
+    ports:
+      - "49980:49980"
+
+  stands:
+    image: stands
+    depends_on: 
+      - park
+      - kafka
+    build:
+      context: .
+      dockerfile: stands/Dockerfile
+    environment:
+      - spring_kafka_bootstrap-server=kafka:9092
+    ports:
+      - "49982:49982"
+
+  visitors:
+    image: visitors
+    depends_on: 
+      - park
+      - rides
+      - fairytales
+      - stands
+      - kafka
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: visitors/Dockerfile
+    environment:
+      - spring_kafka_bootstrap-server=kafka:9092
+    ports:
+      - "49984:49984"
+      
+  kafka:
+    image: wurstmeister/kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: domainEvents:10:1
+    ports:
+      - 9092:9092
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
