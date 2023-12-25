@@ -3,6 +3,7 @@ package nl.rubium.efteling.visitors.control;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import nl.rubium.efteling.visitors.entity.Visitor;
 import nl.rubium.efteling.visitors.entity.VisitorRepository;
 import org.openapitools.client.api.StandApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,8 @@ public class VisitorControl {
     private final VisitorRepository visitorRepository;
     private final KafkaProducer kafkaProducer;
     private final org.openapitools.client.api.StandApi standClient;
+
+    private Random random = new Random();
 
     LocationTypeStrategy locationTypeStrategy;
 
@@ -146,6 +150,14 @@ public class VisitorControl {
 
     public void addVisitorWaitingForOrder(String ticket, UUID id) {
         visitorsWaitingForOrder.putIfAbsent(ticket, id);
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void doVisitorAdditions(){
+        if(visitorRepository.all().size() <= 2000){
+            var newVisitors = random.nextInt(10) + 5;
+            addVisitors(newVisitors);
+        }
     }
 
     private void setLocation(Visitor visitor) {

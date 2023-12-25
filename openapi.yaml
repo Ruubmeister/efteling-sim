@@ -179,7 +179,7 @@ paths:
 #Fairy tales
   /api/v1/fairy-tales:
     servers:
-      - url: http://localhost:49980
+      - url: http://fairytales:49980
     get:
       operationId: getAllFairyTales
       tags:
@@ -195,7 +195,7 @@ paths:
                   $ref: '#/components/schemas/fairyTaleDto'
   /api/v1/fairy-tales/random:
     servers:
-      - url: http://localhost:49980
+      - url: http://fairytales:49980
     get:
       operationId: getRandomFairyTale
       tags:
@@ -209,7 +209,7 @@ paths:
                 $ref: '#/components/schemas/fairyTaleDto'
   /api/v1/fairy-tales/{id}/new-location:
     servers:
-      - url: http://localhost:49980
+      - url: http://fairytales:49980
     get:
       operationId: getNewFairyTale
       parameters:
@@ -237,7 +237,7 @@ paths:
 #Rides
   /api/v1/rides:
     servers:
-      - url: http://localhost:49981
+      - url: http://rides:49981
     get:
       operationId: getAllRides
       tags:
@@ -253,7 +253,7 @@ paths:
                   $ref: '#/components/schemas/rideDto'
   /api/v1/rides/random:
     servers:
-      - url: http://localhost:49981
+      - url: http://rides:49981
     get:
       operationId: getRandomRide
       tags:
@@ -267,7 +267,7 @@ paths:
                 $ref: '#/components/schemas/rideDto'
   /api/v1/rides/{id}/new-location:
     servers:
-      - url: http://localhost:49981
+      - url: http://rides:49981
     get:
       operationId: getNewRide
       parameters:
@@ -293,7 +293,7 @@ paths:
                 $ref: '#/components/schemas/rideDto'
   /api/v1/rides/{id}/status:
     servers:
-      - url: http://localhost:49981
+      - url: http://rides:49981
     put:
       operationId: putRideStatus
       parameters:
@@ -322,7 +322,7 @@ paths:
 #Stands
   /api/v1/stands:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     get:
       operationId: getAllStands
       tags:
@@ -338,7 +338,7 @@ paths:
                   $ref: '#/components/schemas/standDto'
   /api/v1/stands/random:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     get:
       operationId: getRandomStand
       tags:
@@ -352,7 +352,7 @@ paths:
                 $ref: '#/components/schemas/standDto'
   /api/v1/stands/{id}/new-location:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     get:
       operationId: getNewStand
       parameters:
@@ -378,7 +378,7 @@ paths:
                 $ref: '#/components/schemas/standDto'
   /api/v1/stands/{id}:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     get:
       operationId: getStand
       parameters:
@@ -399,7 +399,7 @@ paths:
                 $ref: '#/components/schemas/standDto'
   /api/v1/stands/order/{ticket}:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     get:
       operationId: getOrder
       parameters:
@@ -420,7 +420,7 @@ paths:
                 $ref: '#/components/schemas/dinnerDto'
   /api/v1/stands/{id}/order:
     servers:
-      - url: http://localhost:49982
+      - url: http://stands:49982
     post:
       operationId: postOrder
       parameters:

@@ -13,4 +13,7 @@ updates:
     directory: "/common"
     schedule:
       interval: "weekly"
-
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
