@@ -12,4 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>fairy-tales</name>
     <description>Efteling park</description>
+    <build>
+        <finalName>fairy-tales</finalName>
+    </build>
 </project>

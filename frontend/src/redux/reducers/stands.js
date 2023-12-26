@@ -12,8 +12,8 @@ export default function(state = initialState, action) {
         const { content } = action.payload;
         return {
           ...state,
-          allIds: content.map(stand => stand.guid),
-          byIds: content.reduce((a, stand) => ({...a, [stand.guid]: stand}), {})
+          allIds: content.map(stand => stand.id),
+          byIds: content.reduce((a, stand) => ({...a, [stand.id]: stand}), {})
         };
     default:
       return state;

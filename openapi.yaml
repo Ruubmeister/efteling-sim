@@ -150,8 +150,6 @@ components:
       type: object
       required:
         - id
-        - dateOfBirth
-        - length
         - currentLocation
       properties:
         id:
@@ -164,6 +162,10 @@ components:
         length:
           type: number
           format: float
+        targetLocation:
+          $ref: '#/components/schemas/coordinatesDto'
+        step:
+          type: number
     workplaceDto:
       type: object
       required:
@@ -446,4 +448,42 @@ paths:
           content:
             application/json:
               schema:
-                type: string 
+                type: string
+# Visitors
+  /api/v1/visitors:
+    servers:
+      - url: http://visitors:49984
+    get:
+      operationId: getAllVisitors
+      tags:
+        - visitor
+      responses:
+        '200':
+          description: A JSON array of visitors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/visitorDto'
+  /api/v1/visitors/{id}:
+    servers:
+      - url: http://visitors:49984
+    get:
+      operationId: getVisitor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid        
+      tags:
+        - visitor
+      responses:
+        '200':
+          description: The visitor that is requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/visitorDto'

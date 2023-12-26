@@ -112,14 +112,14 @@ class LiveMap extends React.Component {
       return vectorLayer;
     }
 
-  getFeature(guid, longitude, latitude){
+  getFeature(id, lon, lat){
       var iconFeature = new Feature({
         geometry: new Point(
-            fromLonLat([longitude, latitude])
+            fromLonLat([lon, lat])
         )
       });
   
-      iconFeature.setId(guid);
+      iconFeature.setId(id);
       return iconFeature;
   }
 
@@ -130,7 +130,7 @@ class LiveMap extends React.Component {
     });
 
     this.props.visitors.forEach(visitor => {
-      var iconFeature = this.getFeature(visitor.guid, visitor.currentLocation.longitude, visitor.currentLocation.latitude);
+      var iconFeature = this.getFeature(visitor.id, visitor.currentLocation.lon, visitor.currentLocation.lat);
       vectorSource.addFeature(iconFeature);
     });
 
@@ -140,13 +140,13 @@ class LiveMap extends React.Component {
     // var visitorsSource = this.visitorsLayer.getSource();
     // this.props.visitors.forEach(visitor => {
 
-    //   var mapVisitor = visitorsSource.getFeatureById(visitor.guid);
+    //   var mapVisitor = visitorsSource.getFeatureById(visitor.id);
     //   if(mapVisitor == null){
-    //     var iconFeature = this.getFeature(visitor.guid, visitor.currentLocation.longitude, visitor.currentLocation.latitude);
+    //     var iconFeature = this.getFeature(visitor.id, visitor.currentLocation.lon, visitor.currentLocation.lat);
     //     //iconFeature.setStyle(visitorIconStyle);
     //     visitorsSource.addFeature(iconFeature);
     //   } else {
-    //     mapVisitor.getGeometry().setCoordinates(fromLonLat([visitor.currentLocation.longitude, visitor.currentLocation.latitude]));
+    //     mapVisitor.getGeometry().setCoordinates(fromLonLat([visitor.currentLocation.lon, visitor.currentLocation.lat]));
     //   }
     // });
   }
@@ -155,14 +155,14 @@ class LiveMap extends React.Component {
     var ridesSource = this.ridesLayer.getSource();
     this.props.rides.forEach(ride => {
 
-      var mapRide = ridesSource.getFeatureById(ride.guid);
+      var mapRide = ridesSource.getFeatureById(ride.id);
 
       if(mapRide == null){
-        var iconFeature = this.getFeature(ride.guid, ride.coordinates.longitude, ride.coordinates.latitude);
+        var iconFeature = this.getFeature(ride.id, ride.coordinates.lon, ride.coordinates.lat);
         //iconFeature.setStyle(rideIconStyle);
         ridesSource.addFeature(iconFeature);
       } else {
-        mapRide.getGeometry().setCoordinates(fromLonLat([ride.coordinates.longitude, ride.coordinates.latitude]));
+        mapRide.getGeometry().setCoordinates(fromLonLat([ride.coordinates.lon, ride.coordinates.lat]));
       }
     });
   }
@@ -171,14 +171,14 @@ class LiveMap extends React.Component {
     var fairyTalesSource = this.fairyTalesLayer.getSource();
     this.props.fairyTales.forEach(tale => {
 
-      var mapTale = fairyTalesSource.getFeatureById(tale.guid);
+      var mapTale = fairyTalesSource.getFeatureById(tale.id);
 
       if(mapTale == null){
-        var iconFeature = this.getFeature(tale.guid, tale.coordinates.longitude, tale.coordinates.latitude);
+        var iconFeature = this.getFeature(tale.id, tale.coordinates.lon, tale.coordinates.lat);
         //iconFeature.setStyle(fairyTaleIconStyle);
         fairyTalesSource.addFeature(iconFeature);
       } else {
-        mapTale.getGeometry().setCoordinates(fromLonLat([tale.coordinates.longitude, tale.coordinates.latitude]));
+        mapTale.getGeometry().setCoordinates(fromLonLat([tale.coordinates.lon, tale.coordinates.lat]));
       }
     });
   }
@@ -187,15 +187,15 @@ class LiveMap extends React.Component {
     var standsSource = this.standsLayer.getSource();
     this.props.stands.forEach(stand => {
 
-      var mapStand = standsSource.getFeatureById(stand.guid);
+      var mapStand = standsSource.getFeatureById(stand.id);
 
       if(mapStand == null){
-        var iconFeature = this.getFeature(stand.guid, stand.coordinates.longitude, stand.coordinates.latitude);
+        var iconFeature = this.getFeature(stand.id, stand.coordinates.lon, stand.coordinates.lat);
         //iconFeature.setStyle(standIconStyle);
         standsSource.addFeature(iconFeature);
 
       } else {
-        mapStand.getGeometry().setCoordinates(fromLonLat([stand.coordinates.longitude, stand.coordinates.latitude]));
+        mapStand.getGeometry().setCoordinates(fromLonLat([stand.coordinates.lon, stand.coordinates.lat]));
       }
     });
   }

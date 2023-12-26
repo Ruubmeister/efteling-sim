@@ -15,7 +15,6 @@ import nl.rubium.efteling.visitors.entity.Visitor;
 import nl.rubium.efteling.visitors.entity.VisitorRepository;
 import org.openapitools.client.api.StandApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -83,11 +82,12 @@ public class VisitorControl {
                         log.info(
                                 "Visitor with guid {} has issue with assigning location",
                                 visitor.getId());
-                        notifyIdleVisitor(visitor.getId());
+                        setIdleVisitor(visitor);
                         return;
                     }
 
                     movementService.setNextStepDistance(visitor);
+                    visitor.clearAvailableAt();
 
                     if (movementService.isInLocationRange(visitor)) {
                         log.debug(
@@ -95,14 +95,13 @@ public class VisitorControl {
                                 visitor.getId(),
                                 visitor.getTargetLocation().id());
                         visitor.getStrategy().startLocationActivity(visitor);
-                        visitor.clearAvailableAt();
                     } else {
                         log.debug(
                                 "Visitor {} walking to location {}",
                                 visitor.getId(),
                                 visitor.getTargetLocation().id());
                         movementService.walkToDestination(visitor);
-                        this.notifyIdleVisitor(visitor.getId());
+                        this.setIdleVisitor(visitor);
                     }
                 });
     }
@@ -110,12 +109,9 @@ public class VisitorControl {
     public void notifyOrderReady(String guid) {
         try {
             var visitor = getVisitor(this.visitorsWaitingForOrder.get(guid));
-            var order = this.standClient.getOrder(UUID.fromString(guid));
+            this.standClient.getOrder(UUID.fromString(guid));
 
-            var timeConsumed = LocalDateTime.now().plusMinutes(2);
-            var payload = Map.of("dateTime", timeConsumed.toString());
-
-            this.kafkaProducer.sendEvent(EventSource.VISITOR, EventType.IDLE, payload);
+            setIdleVisitor(visitor, LocalDateTime.now().plusMinutes(2));
             visitor.removeTargetLocation();
         } catch (org.openapitools.client.ApiException e) {
             log.error("Could not fetch object from API: {}", e.getMessage());
@@ -153,8 +149,8 @@ public class VisitorControl {
     }
 
     @Scheduled(fixedDelay = 1000)
-    public void doVisitorAdditions(){
-        if(visitorRepository.all().size() <= 2000){
+    public void doVisitorAdditions() {
+        if (visitorRepository.all().size() <= 2000) {
             var newVisitors = random.nextInt(10) + 5;
             addVisitors(newVisitors);
         }
@@ -176,8 +172,11 @@ public class VisitorControl {
         strategy.setNewLocation(visitor);
     }
 
-    private void notifyIdleVisitor(UUID id) {
-        var payload = Map.of("dateTime", LocalDateTime.now().toString());
-        this.kafkaProducer.sendEvent(EventSource.VISITOR, EventType.IDLE, payload);
+    private void setIdleVisitor(Visitor visitor) {
+        visitor.setAvailableAt(LocalDateTime.now());
+    }
+    private void setIdleVisitor(Visitor visitor, LocalDateTime localDateTime)
+    {
+        visitor.setAvailableAt(localDateTime);
     }
 }

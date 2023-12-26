@@ -58,7 +58,7 @@ class StatisticsCard extends React.Component {
         ride.status = status;
         axios({
             method: 'put',
-            url: `http://localhost:3997/api/v1/rides/${this.props.ride.guid}/status`,
+            url: `http://localhost:3997/api/v1/rides/${this.props.ride.id}/status`,
             data: ride
         });
     }

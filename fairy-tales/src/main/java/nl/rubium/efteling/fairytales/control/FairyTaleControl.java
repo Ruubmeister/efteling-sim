@@ -13,11 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
 import nl.rubium.efteling.common.location.control.LocationService;
-import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.fairytales.boundary.KafkaProducer;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
-import nl.rubium.efteling.fairytales.entity.FairyTaleMixIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,14 +27,11 @@ public class FairyTaleControl {
     private LocationRepository<FairyTale> fairyTaleRepository;
 
     @Autowired
-    public FairyTaleControl(KafkaProducer kafkaProducer) {
+    public FairyTaleControl(KafkaProducer kafkaProducer, ObjectMapper objectMapper) {
         this.kafkaProducer = kafkaProducer;
-
-        var mapper = new ObjectMapper();
-        mapper.addMixIn(Location.class, FairyTaleMixIn.class);
         try {
             fairyTaleRepository =
-                    new LocationService<FairyTale>(mapper).loadLocations("fairy-tales.json");
+                    new LocationService<FairyTale>(objectMapper).loadLocations("fairy-tales.json");
         } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load fairy tales: ", e);
             fairyTaleRepository = new LocationRepository<FairyTale>(new CopyOnWriteArrayList<>());
@@ -65,9 +60,8 @@ public class FairyTaleControl {
                 Map.of(
                         "visitor", visitorId.toString(),
                         "endDateTime",
-                                String.valueOf(
                                         getEndDateTimeForVisitorWatchingFairyTale()
-                                                .toEpochSecond(ZoneOffset.UTC)));
+                                                .toString());
 
         kafkaProducer.sendEvent(EventSource.FAIRYTALE, EventType.WATCHINGFAIRYTALE, payload);
     }

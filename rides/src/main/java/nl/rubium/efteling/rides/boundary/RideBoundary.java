@@ -7,6 +7,7 @@ import nl.rubium.efteling.rides.control.RideControl;
 import nl.rubium.efteling.rides.entity.Ride;
 import org.openapitools.client.model.RideDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/v1/rides")
 public class RideBoundary {
 
@@ -40,8 +42,10 @@ public class RideBoundary {
     public RideDto getNewRideLocation(
             @PathVariable("id") UUID id,
             @RequestParam(required = false, name = "exclude") String exclude) {
-        List<UUID> excludedLocations = exclude == null ? List.of() :
-                Arrays.stream(exclude.split(",")).map(UUID::fromString).toList();
+        List<UUID> excludedLocations =
+                exclude == null
+                        ? List.of()
+                        : Arrays.stream(exclude.split(",")).map(UUID::fromString).toList();
         return rideControl.getNextRide(id, excludedLocations).toDto();
     }
 

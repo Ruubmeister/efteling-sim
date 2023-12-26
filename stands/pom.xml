@@ -12,4 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>stands</name>
     <description>Efteling park</description>
+    <build>
+        <finalName>stands</finalName>
+    </build>
 </project>

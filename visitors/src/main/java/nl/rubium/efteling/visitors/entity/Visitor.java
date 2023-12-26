@@ -1,5 +1,6 @@
 package nl.rubium.efteling.visitors.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.control.VisitorLocationStrategy;
 import org.locationtech.jts.geom.Coordinate;
+import org.openapitools.client.model.CoordinatesDto;
 
 @AllArgsConstructor
 @Getter
@@ -95,6 +97,13 @@ public class Visitor {
     public org.openapitools.client.model.VisitorDto toDto() {
         return org.openapitools.client.model.VisitorDto.builder()
                 .id(id)
+                .step(BigDecimal.valueOf(nextStepDistance))
+                .targetLocation(
+                        targetLocation != null
+                                ? new CoordinatesDto(
+                                        targetLocation.coordinate().x,
+                                        targetLocation.coordinate().y)
+                                : null)
                 .currentLocation(
                         org.openapitools.client.model.CoordinatesDto.builder()
                                 .lat(this.getCurrentCoordinates().x)

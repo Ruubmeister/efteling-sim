@@ -1,6 +1,21 @@
 package nl.rubium.efteling.rides.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import nl.rubium.efteling.common.event.entity.EventSource;
+import nl.rubium.efteling.common.event.entity.EventType;
+import nl.rubium.efteling.common.location.control.LocationService;
+import nl.rubium.efteling.common.location.entity.LocationRepository;
+import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
+import nl.rubium.efteling.rides.boundary.KafkaProducer;
+import nl.rubium.efteling.rides.entity.Ride;
+import nl.rubium.efteling.rides.entity.RideStatus;
+import org.openapitools.client.api.VisitorApi;
+import org.openapitools.client.model.WorkplaceDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,39 +24,22 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import nl.rubium.efteling.common.event.entity.EventSource;
-import nl.rubium.efteling.common.event.entity.EventType;
-import nl.rubium.efteling.common.location.control.LocationService;
-import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationRepository;
-import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
-import nl.rubium.efteling.rides.boundary.KafkaProducer;
-import nl.rubium.efteling.rides.boundary.VisitorClient;
-import nl.rubium.efteling.rides.entity.Ride;
-import nl.rubium.efteling.rides.entity.RideMixIn;
-import nl.rubium.efteling.rides.entity.RideStatus;
-import org.openapitools.client.model.WorkplaceDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class RideControl {
     LocationRepository<Ride> rideRepository;
     KafkaProducer kafkaProducer;
-    VisitorClient visitorClient;
+    org.openapitools.client.api.VisitorApi visitorClient;
 
     @Autowired
-    public RideControl(KafkaProducer kafkaProducer, VisitorClient visitorClient) {
+    public RideControl(
+            KafkaProducer kafkaProducer, ObjectMapper objectMapper) {
         this.kafkaProducer = kafkaProducer;
-        this.visitorClient = visitorClient;
+        this.visitorClient = new VisitorApi();
 
-        var mapper = new ObjectMapper();
-        mapper.addMixIn(Location.class, RideMixIn.class);
         try {
-            rideRepository = new LocationService<Ride>(mapper).loadLocations("rides.json");
+            rideRepository = new LocationService<Ride>(objectMapper).loadLocations("rides.json");
         } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load rides: ", e);
             rideRepository = new LocationRepository<Ride>(new CopyOnWriteArrayList<>());
@@ -49,7 +47,9 @@ public class RideControl {
     }
 
     public RideControl(
-            KafkaProducer kafkaProducer, VisitorClient visitorClient, LocationRepository<Ride> rideRepository) {
+            KafkaProducer kafkaProducer,
+            VisitorApi visitorClient,
+            LocationRepository<Ride> rideRepository) {
         this.kafkaProducer = kafkaProducer;
         this.visitorClient = visitorClient;
         this.rideRepository = rideRepository;
@@ -155,7 +155,7 @@ public class RideControl {
                 ride.addVisitorToLine(visitor);
                 return;
             }
-        } catch (IllegalArgumentException e){
+        } catch (org.openapitools.client.ApiException | IllegalArgumentException e) {
             log.error("Could not fetch ride", e);
         }
         Map<String, String> payload =

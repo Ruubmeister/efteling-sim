@@ -52,7 +52,7 @@ public class VisitorStandStrategy implements VisitorLocationStrategy {
         visitor.removeTargetLocation();
 
         try {
-            if (previousLocation.type().equals(LocationType.STAND)) {
+            if (previousLocation != null && previousLocation.type().equals(LocationType.STAND)) {
                 var standDto =
                         standClient.getNewStand(
                                 previousLocation.id(),

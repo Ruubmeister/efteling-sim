@@ -1,0 +1,366 @@
+[
+  {
+    "name": "Baron 1898",
+    "minimumAge": "0",
+    "minimumLength": 1.32,
+    "duration": {
+      "minutes": 2,
+      "seconds": 10
+    },
+    "maxPersons": 54,
+    "coordinates": {
+      "lat": 51.64829,
+      "long": 5.05073
+    }
+  },
+  {
+    "name": "Carnaval Festival",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 8,
+      "seconds": 0
+    },
+    "maxPersons": 200,
+    "coordinates": {
+      "lat": 51.65224,
+      "long": 5.05222
+    }
+  },
+  {
+    "name": "Droomvlucht",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 6,
+      "seconds": "0"
+    },
+    "maxPersons": 150,
+    "coordinates": {
+      "lat": 51.65233,
+      "long": 5.04612
+    }
+  },
+  {
+    "name": "Fabula",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 8,
+      "seconds": "0"
+    },
+    "maxPersons": 70,
+    "coordinates": {
+      "lat": 51.64900,
+      "long": 5.04673
+    }
+  },
+  {
+    "name": "Fata Morgana",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 8,
+      "seconds": 0
+    },
+    "maxPersons": 210,
+    "coordinates": {
+      "lat": 51.64719,
+      "long": 5.04529
+    }
+  },
+  {
+    "name": "Gondoletta",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 20,
+      "seconds": 0
+    },
+    "maxPersons": 200,
+    "coordinates": {
+      "lat": 51.65049,
+      "long": 5.05124
+    }
+  },
+  {
+    "name": "Halve Maen",
+    "minimumAge": 8,
+    "minimumLength": 1.20,
+    "duration": {
+      "minutes": 3,
+      "seconds": 0
+    },
+    "maxPersons": 50,
+    "coordinates": {
+      "lat": 51.64877,
+      "long": 5.05341
+    }
+  },
+  {
+    "name": "Joris en de Draak",
+    "minimumAge": "0",
+    "minimumLength": 1.10,
+    "duration": {
+      "minutes": 2,
+      "seconds": 0
+    },
+    "maxPersons": 52,
+    "coordinates": {
+      "lat": 51.64686,
+      "long": 5.05244
+    }
+  },
+  {
+    "name": "Monsieur Cannibale",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 6,
+      "seconds": 0
+    },
+    "maxPersons": 40,
+    "coordinates": {
+      "lat": 51.64820,
+      "long": 5.05352
+    }
+  },
+  {
+    "name": "Pagode",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 5,
+      "seconds": 10
+    },
+    "maxPersons": 60,
+    "coordinates": {
+      "lat": 51.65043,
+      "long": 5.05072
+    }
+  },
+  {
+    "name": "Piraña",
+    "minimumAge": 6,
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 5,
+      "seconds": 0
+    },
+    "maxPersons": 250,
+    "coordinates": {
+      "lat": 51.64723,
+      "long": 5.04894
+    }
+  },
+  {
+    "name": "Spookslot",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 15,
+      "seconds": 0
+    },
+    "maxPersons": 80,
+    "coordinates": {
+      "lat": 51.64876,
+      "long": 5.04853
+    }
+  },
+  {
+    "name": "Python",
+    "minimumAge": "0",
+    "minimumLength": 1.20,
+    "duration": {
+      "minutes": 2,
+      "seconds": 8
+    },
+    "maxPersons": 30,
+    "coordinates": {
+      "lat": 51.64763,
+      "long": 5.05361
+    }
+  },
+  {
+    "name": "Symbolica",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 7,
+      "seconds": 0
+    },
+    "maxPersons": 200,
+    "coordinates": {
+      "lat": 51.65003,
+      "long": 5.04974
+    }
+  },
+  {
+    "name": "Villa Volta",
+    "minimumAge": "0",
+    "minimumLength": 1.0,
+    "duration": {
+      "minutes": 10,
+      "seconds": 0
+    },
+    "maxPersons": 80,
+    "coordinates": {
+      "lat": 51.65302,
+      "long": 5.04727
+    }
+  },
+  {
+    "name": "De Vliegende Hollander",
+    "minimumAge": "0",
+    "minimumLength": 1.20,
+    "duration": {
+      "minutes": 3,
+      "seconds": 43
+    },
+    "maxPersons": 50,
+    "coordinates": {
+      "lat": 51.64756,
+      "long": 5.05224
+    }
+  },
+  {
+    "name": "Vogel Rok",
+    "minimumAge": "0",
+    "minimumLength": 1.20,
+    "duration": {
+      "minutes": 1,
+      "seconds": 31
+    },
+    "maxPersons": 40,
+    "coordinates": {
+      "lat": 51.65210,
+      "long": 5.05268
+    }
+  },
+  {
+    "name": "Monorail",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 2,
+      "seconds": 30
+    },
+    "maxPersons": 45,
+    "coordinates": {
+      "lat": 51.65281,
+      "long": 5.04902
+    }
+  },
+  {
+    "name": "Land van Laaf",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 3,
+      "seconds": 0
+    },
+    "maxPersons": 40,
+    "coordinates": {
+      "lat": 51.65328,
+      "long": 5.04854
+    }
+  },
+  {
+    "name": "Raveleijn",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 15,
+      "seconds": 0
+    },
+    "maxPersons": 40,
+    "coordinates": {
+      "lat": 51.65304,
+      "long": 5.04627
+    }
+  },
+  {
+    "name": "Carrousel",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 5,
+      "seconds": 0
+    },
+    "maxPersons": 20,
+    "coordinates": {
+      "lat": 51.65221,
+      "long": 5.04916
+    }
+  },
+  {
+    "name": "Vlindermolen",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 5,
+      "seconds": 0
+    },
+    "maxPersons": 20,
+    "coordinates": {
+      "lat": 51.65256,
+      "long": 5.05010
+    }
+  },
+  {
+    "name": "Kleine Zweefmolen",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 5,
+      "seconds": 0
+    },
+    "maxPersons": 20,
+    "coordinates": {
+      "lat": 51.65283,
+      "long": 5.04991
+    }
+  },
+  {
+    "name": "Monsieur Canibale",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 4,
+      "seconds": 30
+    },
+    "maxPersons": 20,
+    "coordinates": {
+      "lat": 51.65169,
+      "long": 5.05205
+    }
+  },
+  {
+    "name": "Kinderspoor",
+    "minimumAge": "0",
+    "minimumLength": "0",
+    "duration": {
+      "minutes": 4,
+      "seconds": 15
+    },
+    "maxPersons": 30,
+    "coordinates": {
+      "lat": 51.64975,
+      "long": 5.05339
+    }
+  },
+  {
+    "name": "Max en Moritz",
+    "minimumAge": "0",
+    "minimumLength": 0.70,
+    "duration": {
+      "minutes": 1,
+      "seconds": 45
+    },
+    "maxPersons": 40,
+    "coordinates": {
+      "lat": 51.64808,
+      "long": 5.04741
+    }
+  }
+]

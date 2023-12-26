@@ -42,7 +42,8 @@ public class VisitorFairyTaleStrategy implements VisitorLocationStrategy {
 
         visitor.removeTargetLocation();
         try {
-            if (previousLocation.type().equals(LocationType.FAIRYTALE)) {
+            if (previousLocation != null
+                    && previousLocation.type().equals(LocationType.FAIRYTALE)) {
                 var fairyTaleDto =
                         fairyTaleClient.getNewFairyTale(
                                 previousLocation.id(),

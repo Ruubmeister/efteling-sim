@@ -47,7 +47,7 @@ public class VisitorRideStrategy implements VisitorLocationStrategy {
         visitor.removeTargetLocation();
 
         try {
-            if (previousLocation.type().equals(LocationType.RIDE)) {
+            if (previousLocation != null && previousLocation.type().equals(LocationType.RIDE)) {
                 var rideDto =
                         rideClient.getNewRide(
                                 previousLocation.id(),

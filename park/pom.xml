@@ -12,4 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>park</name>
     <description>Efteling park</description>
+    <build>
+        <finalName>park</finalName>
+    </build>
 </project>

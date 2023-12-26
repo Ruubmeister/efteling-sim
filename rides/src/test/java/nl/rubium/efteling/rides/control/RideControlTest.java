@@ -1,10 +1,8 @@
 package nl.rubium.efteling.rides.control;
 
-import nl.rubium.efteling.common.event.entity.Event;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.rides.boundary.KafkaProducer;
-import nl.rubium.efteling.rides.boundary.VisitorClient;
 import nl.rubium.efteling.rides.entity.Ride;
 import nl.rubium.efteling.rides.entity.RideStatus;
 import nl.rubium.efteling.rides.entity.SFRide;
@@ -40,7 +38,7 @@ public class RideControlTest {
     KafkaProducer kafkaProducer;
 
     @Mock
-    VisitorClient visitorClient;
+    org.openapitools.client.api.VisitorApi visitorClient;
 
     RideControl rideControl;
 
@@ -379,7 +377,7 @@ public class RideControlTest {
     }
 
     @Test
-    void handleVisitorSteppingInRideLine_rideIsOpen_visitorIsAddedToLine(){
+    void handleVisitorSteppingInRideLine_rideIsOpen_visitorIsAddedToLine() throws org.openapitools.client.ApiException {
         var ride = rideControl.getRides().get(0);
         ride.toOpen();
 

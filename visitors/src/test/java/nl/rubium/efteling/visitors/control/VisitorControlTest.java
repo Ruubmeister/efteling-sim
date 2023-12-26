@@ -1,11 +1,10 @@
 package nl.rubium.efteling.visitors.control;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -97,13 +96,14 @@ public class VisitorControlTest {
 
     @Test
     void handleIdleVisitors_visitorNotInRange_setStepToTarget() {
+        var idleTime = LocalDateTime.now().minusMinutes(1);
         var visitors =
                 List.of(
                         SFVisitor.getVisitor(
                                 new Location(
                                         UUID.randomUUID(), LocationType.STAND, new Coordinate()),
                                 strategy,
-                                LocalDateTime.now().minusMinutes(1)));
+                                idleTime));
 
         doNothing().when(movementService).setNextStepDistance(any());
         doReturn(visitors).when(visitorRepository).idleVisitors();
@@ -112,7 +112,7 @@ public class VisitorControlTest {
         visitorControl.handleIdleVisitors();
 
         verify(movementService).walkToDestination(any());
-        verify(kafkaProducer).sendEvent(any(), any(), anyMap());
+        assertNotEquals(idleTime, visitors.get(0).getAvailableAt());
     }
 
     @Test
@@ -142,10 +142,7 @@ public class VisitorControlTest {
     @Test
     void all_expectAllVisitors() {
 
-        var visitors = List.of(
-                SFVisitor.getVisitor(),
-                SFVisitor.getVisitor()
-        );
+        var visitors = List.of(SFVisitor.getVisitor(), SFVisitor.getVisitor());
 
         doReturn(visitors).when(visitorRepository).all();
 
@@ -176,13 +173,13 @@ public class VisitorControlTest {
 
     @Test
     void addVisitors_expectVisitorsAdded() {
-        var visitors = List.of(
-                SFVisitor.getVisitor(),
-                SFVisitor.getVisitor(),
-                SFVisitor.getVisitor(),
-                SFVisitor.getVisitor(),
-                SFVisitor.getVisitor()
-        );
+        var visitors =
+                List.of(
+                        SFVisitor.getVisitor(),
+                        SFVisitor.getVisitor(),
+                        SFVisitor.getVisitor(),
+                        SFVisitor.getVisitor(),
+                        SFVisitor.getVisitor());
         doReturn(visitors).when(visitorRepository).addVisitors(eq(5));
 
         visitorControl.addVisitors(5);

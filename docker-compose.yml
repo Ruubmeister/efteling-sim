@@ -3,6 +3,7 @@ version: '3.4'
 services:
 
   park:
+    container_name: park
     image: park
     depends_on:
       - kafka
@@ -10,11 +11,13 @@ services:
       context: .
       dockerfile: park/Dockerfile
     environment:
-      - spring_kafka_bootstrap-server=kafka:9092
+      - spring_kafka_bootstrap-servers=kafka:9092
+      - spring_kafka_consumer_bootstrap-servers=kafka:9092
     ports:
       - "49983:49983"
 
   rides:
+    container_name: rides
     image: rides
     depends_on: 
       - park
@@ -23,12 +26,14 @@ services:
       context: .
       dockerfile: rides/Dockerfile
     environment:
-      - spring_kafka_bootstrap-server=kafka:9092
+      - spring_kafka_bootstrap-servers=kafka:9092
+      - spring_kafka_consumer_bootstrap-servers=kafka:9092
     ports:
       - "49981:49981"
     
   
   fairytales:
+    container_name: fairytales
     image: fairytales
     depends_on: 
       - park
@@ -37,11 +42,13 @@ services:
       context: .
       dockerfile: fairy-tales/Dockerfile
     environment:
-      - spring_kafka_bootstrap-server=kafka:9092
+      - spring_kafka_bootstrap-servers=kafka:9092
+      - spring_kafka_consumer_bootstrap-servers=kafka:9092
     ports:
       - "49980:49980"
 
   stands:
+    container_name: stands
     image: stands
     depends_on: 
       - park
@@ -50,11 +57,13 @@ services:
       context: .
       dockerfile: stands/Dockerfile
     environment:
-      - spring_kafka_bootstrap-server=kafka:9092
+      - spring_kafka_bootstrap-servers=kafka:9092
+      - spring_kafka_consumer_bootstrap-servers=kafka:9092
     ports:
       - "49982:49982"
 
   visitors:
+    container_name: visitors
     image: visitors
     depends_on: 
       - park
@@ -67,12 +76,14 @@ services:
       context: .
       dockerfile: visitors/Dockerfile
     environment:
-      - spring_kafka_bootstrap-server=kafka:9092
+      - spring_kafka_bootstrap-servers=kafka:9092
+      - spring_kafka_consumer_bootstrap-servers=kafka:9092
     ports:
       - "49984:49984"
       
   kafka:
     image: wurstmeister/kafka
+    container_name: kafka
     depends_on:
       - zookeeper
     environment:
@@ -82,11 +93,12 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: domainEvents:10:1
+      KAFKA_CREATE_TOPICS: events:10:1
     ports:
       - 9092:9092
 
   zookeeper:
+    container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181

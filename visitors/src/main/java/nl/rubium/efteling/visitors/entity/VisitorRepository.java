@@ -42,6 +42,11 @@ public class VisitorRepository {
 
     public List<Visitor> idleVisitors() {
         var now = LocalDateTime.now();
-        return visitors.stream().filter(visitor -> !visitor.getAvailableAt().isAfter(now)).toList();
+        return visitors.stream()
+                .filter(
+                        visitor ->
+                                visitor.getAvailableAt() != null
+                                        && !visitor.getAvailableAt().isAfter(now))
+                .toList();
     }
 }

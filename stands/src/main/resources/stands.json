@@ -1,0 +1,800 @@
+[
+  {
+    "name": "De Gulden Gaarde",
+    "coordinates": {
+      "lat": 51.6522,
+      "long": 5.04609
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Polles pannenkoeken",
+    "coordinates": {
+      "lat": 51.65023,
+      "long": 5.04896
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Lekkernijen",
+    "coordinates": {
+      "lat": 51.65245,
+      "long": 5.04613
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Het Wapen van Raveleijn",
+    "coordinates": {
+      "lat": 51.65335,
+      "long": 5.0461
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Unoxkraam Marerijk",
+    "coordinates": {
+      "lat": 51.65267,
+      "long": 5.04741
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Eigenheymer Marerijk",
+    "coordinates": {
+      "lat": 51.65237,
+      "long": 5.04785
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Het Witte Paard",
+    "coordinates": {
+      "lat": 51.65213,
+      "long": 5.04858
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "'t Gebraad",
+    "coordinates": {
+      "lat": 51.65182,
+      "long": 5.04841
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "In De Gelaarsde Kat",
+    "coordinates": {
+      "lat": 51.65177,
+      "long": 5.04846
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "'t Poffertje",
+    "coordinates": {
+      "lat": 51.65183,
+      "long": 5.04889
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "In den Hoorn des Overvloeds",
+    "coordinates": {
+      "lat": 51.65243,
+      "long": 5.04929
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Den Suykerbuyk",
+    "coordinates": {
+      "lat": 51.65225,
+      "long": 5.05007
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Smulpaap",
+    "coordinates": {
+      "lat": 51.65236,
+      "long": 5.05041
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Den Olycke Tweelingh",
+    "coordinates": {
+      "lat": 51.65258,
+      "long": 5.05045
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Soete Inval",
+    "coordinates": {
+      "lat": 51.65182,
+      "long": 5.0494
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "'t Suyker Huys",
+    "coordinates": {
+      "lat": 51.65167,
+      "long": 5.04939
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Carrousel Paleis bar",
+    "coordinates": {
+      "lat": 51.65117,
+      "long": 5.04909
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Unoxkraam Reizenrijk",
+    "coordinates": {
+      "lat": 51.65196,
+      "long": 5.05153
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Panorama",
+    "coordinates": {
+      "lat": 51.65174,
+      "long": 5.05269
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Toko Pagode",
+    "coordinates": {
+      "lat": 51.65071,
+      "long": 5.05101
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Flierefluiter",
+    "coordinates": {
+      "lat": 51.64958,
+      "long": 5.05357
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Meermin",
+    "coordinates": {
+      "lat": 51.64861,
+      "long": 5.05242
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Verleiding",
+    "coordinates": {
+      "lat": 51.64833,
+      "long": 5.05301
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Hongerige Machinist",
+    "coordinates": {
+      "lat": 51.64816,
+      "long": 5.05401
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Rustende Reiziger",
+    "coordinates": {
+      "lat": 51.64773,
+      "long": 5.05404
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Eigenheymer Ruigrijk",
+    "coordinates": {
+      "lat": 51.64798,
+      "long": 5.05304
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Burgerhuys de Likkebaerd",
+    "coordinates": {
+      "lat": 51.64769,
+      "long": 5.05325
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Unoxkraam Ruigrijk",
+    "coordinates": {
+      "lat": 51.64766,
+      "long": 5.05266
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Kombuys",
+    "coordinates": {
+      "lat": 51.64715,
+      "long": 5.05258
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Kabinet der Strijdlustigen",
+    "coordinates": {
+      "lat": 51.64661,
+      "long": 5.0519
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Casa Caracol",
+    "coordinates": {
+      "lat": 51.64758,
+      "long": 5.04909
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Unoxkraam Anderrijk",
+    "coordinates": {
+      "lat": 51.6478,
+      "long": 5.04863
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Het Seylend Fregat",
+    "coordinates": {
+      "lat": 51.64804,
+      "long": 5.04873
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Eigenheymer Anderrijk",
+    "coordinates": {
+      "lat": 51.64799,
+      "long": 5.04711
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Frau Boltes Kuche",
+    "coordinates": {
+      "lat": 51.6481,
+      "long": 5.04657
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Oase",
+    "coordinates": {
+      "lat": 51.64748,
+      "long": 5.04603
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Witte Walvis",
+    "coordinates": {
+      "lat": 51.6486,
+      "long": 5.04876
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "'t Melkhuysje",
+    "coordinates": {
+      "lat": 51.64792,
+      "long": 5.05044
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Fabula Restaurant",
+    "coordinates": {
+      "lat": 51.64894,
+      "long": 5.04656
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "Rondje van de Molen",
+    "coordinates": {
+      "lat": 51.65029,
+      "long": 5.04854
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Smaeckmaker",
+    "coordinates": {
+      "lat": 51.65052,
+      "long": 5.04953
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "De Kleyne Klaroen",
+    "coordinates": {
+      "lat": 51.65082,
+      "long": 5.04574
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.70,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.60,
+        "type": "drink"
+      }
+    ]
+  }
+]

@@ -22,22 +22,22 @@ class App extends React.Component{
   }
 
   getFairyTales = async () => {
-    let response = await axios.get('http://localhost:3999/api/v1/fairy-tales');
+    let response = await axios.get('http://localhost:49980/api/v1/fairy-tales');
     this.props.setFairyTales(response.data);
   }
 
   getRides = async () => {
-    let response = await axios.get('http://localhost:3997/api/v1/rides');
+    let response = await axios.get('http://localhost:49981/api/v1/rides');
     this.props.setRides(response.data);
   }
 
   getStands = async () => {
-    let response = await axios.get('http://localhost:3996/api/v1/stands');
+    let response = await axios.get('http://localhost:49982/api/v1/stands');
     this.props.setStands(response.data);
   }
 
   getVisitors = async () => {
-    let response = await axios.get('http://localhost:3995/api/v1/visitors');
+    let response = await axios.get('http://localhost:49984/api/v1/visitors');
     this.props.setVisitors(response.data);
   }
 

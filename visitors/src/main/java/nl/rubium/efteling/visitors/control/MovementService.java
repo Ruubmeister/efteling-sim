@@ -37,13 +37,16 @@ public class MovementService {
     }
 
     public void setNextStepDistance(Visitor visitor) {
-        var normalizedStep = rand.nextDouble(100.0, 300.0) / 100;
+        var normalizedStep = rand.nextDouble(100.0, 200.0) / 100;
         var timeIdle =
                 visitor.getAvailableAt() != null
-                        ? ChronoUnit.SECONDS.between(LocalDateTime.now(), visitor.getAvailableAt())
+                        ? (double)
+                                        ChronoUnit.MILLIS.between(
+                                                visitor.getAvailableAt(), LocalDateTime.now())
+                                / 1000
                         : 1;
 
-        visitor.setNextStepDistance((double) timeIdle * normalizedStep);
+        visitor.setNextStepDistance(timeIdle * normalizedStep);
     }
 
     private Coordinate getStepCoordinate(Coordinate from, Coordinate to, double distance) {
