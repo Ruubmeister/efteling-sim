@@ -117,14 +117,14 @@ public class VisitorControlTest {
 
     @Test
     void notifyOrderReady_expectEventSend() throws org.openapitools.client.ApiException {
-
+        var visitor = SFVisitor.getVisitor();
         var dinner = new org.openapitools.client.model.DinnerDto();
-        doReturn(SFVisitor.getVisitor()).when(visitorRepository).getVisitor(any());
+        doReturn(visitor).when(visitorRepository).getVisitor(any());
         doReturn(dinner).when(standApi).getOrder(any());
 
         visitorControl.notifyOrderReady(UUID.randomUUID().toString());
 
-        verify(kafkaProducer).sendEvent(any(), any(), any());
+        assertNotNull(visitor.getAvailableAt());
     }
 
     @Test
