@@ -14,12 +14,6 @@ import Table from "react-bootstrap/Table";
 import StatisticsCard from "./StatisticsCard"
 
 class Statistics extends React.Component {
-
-
-  constructor(props) {
-    super(props);
-  }
-  
     render() {
         const rideStatistics = this.props.rides.map(ride => 
             <Col xs={6} md={4} lg={3} key={ride.id}>

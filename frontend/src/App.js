@@ -45,7 +45,7 @@ class App extends React.Component{
     return <div className="App">
         <LiveMap/>
         <div className="footer">
-          Ruben Lelieveld © - Domain Driven Efteling - <Music url="/private/achtergrondmuziek.mp3" />
+          Ruben Lelieveld © - Efteling simulator - <Music url="/private/achtergrondmuziek.mp3" />
           </div> 
         <Statistics />
         </div>;
