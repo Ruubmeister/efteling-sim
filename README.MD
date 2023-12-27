@@ -7,7 +7,7 @@ The project consists of two parts: The front-end and the back-end. So those need
 
 ## Start and stop back-end
 
-Requirements: Docker and Java SDK (17)
+Requirements: Docker
 
 - In a console, go to the root directory of the project (where `docker-compose.yml` is included)
 - Run `docker compose build`
@@ -19,7 +19,7 @@ To stop, run `docker compose down`
 
 Requirements: NodeJS
 
-- In a console, go to the folder called `efteling-frontend`
+- In a console, go to the folder called `frontend`
 - Run `npm install`
 - Run `npm start`
 
