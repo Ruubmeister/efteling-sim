@@ -12,11 +12,11 @@ type Props = {
     ride: rideDto
 }
 
-class StatisticsCard extends React.Component<Props> {
+export function StatisticsCard(props: Props) {
 
-    rideStatusVariant(){
+    const rideStatusVariant = () => {
 
-        switch(this.props.ride.status.toLowerCase()) {
+        switch(props.ride.status.toLowerCase()) {
             case "open":
                 return "success";
             case "maintenance":
@@ -28,9 +28,9 @@ class StatisticsCard extends React.Component<Props> {
         }
     }
 
-    rideStatusIcon(){
+    const rideStatusIcon = () => {
 
-        switch(this.props.ride.status.toLowerCase()) {
+        switch(props.ride.status.toLowerCase()) {
             case "open":
                 return faCheck;
             case "maintenance":
@@ -42,84 +42,80 @@ class StatisticsCard extends React.Component<Props> {
         }
     }
 
-    isOpen(){
-        return this.props.ride.status.toLowerCase() === "open"
+    const isOpen  = () => {
+        return props.ride.status.toLowerCase() === "open"
     }
 
-    isClosed(){
-        return this.props.ride.status.toLowerCase() === "closed"
+    const isClosed = () => {
+        return props.ride.status.toLowerCase() === "closed"
     }
 
-    isMaintenance(){
-        return this.props.ride.status.toLowerCase() === "maintenance"
+    const isMaintenance = () => {
+        return props.ride.status.toLowerCase() === "maintenance"
     }
 
-    toOpen = () => {
-        this.putStatus("Open");
+    const toOpen = () => {
+        putStatus("Open");
     }
 
-    putStatus(status: string){
-        var ride = this.props.ride
+    const putStatus = (status: string) => {
+        var ride = props.ride
         console.info(status)
         //ride.status = status; Todo: Fix
         axios({
             method: 'put',
-            url: `http://localhost:3997/api/v1/rides/${this.props.ride.id}/status`,
+            url: `http://localhost:3997/api/v1/rides/${props.ride.id}/status`,
             data: ride
         });
     }
 
-    toClosed = () => {
-        this.putStatus("Closed");
+    const toClosed = () => {
+        putStatus("Closed");
     }
 
-    toMaintenance = () => {
-        this.putStatus("Maintenance");
+    const toMaintenance = () => {
+        putStatus("Maintenance");
     }
 
-    render() {
-        return <Card style={{ "margin": "10px 0"}}>
-                    <Card.Body>
-                        <Card.Title>
-                        <ButtonToolbar aria-label="Toolbar with button groups">
-                            {this.props.ride.name}
-                            <Dropdown className="ml-auto">
-                                <Dropdown.Toggle variant={this.rideStatusVariant()} id="dropdown-basic">
-                                    <FontAwesomeIcon icon={ this.rideStatusIcon()} />
-                                </Dropdown.Toggle>
+    return <Card style={{ "margin": "10px 0"}}>
+            <Card.Body>
+                <Card.Title>
+                <ButtonToolbar aria-label="Toolbar with button groups">
+                    {props.ride.name}
+                    <Dropdown className="ml-auto">
+                        <Dropdown.Toggle variant={rideStatusVariant()} id="dropdown-basic">
+                            <FontAwesomeIcon icon={ rideStatusIcon()} />
+                        </Dropdown.Toggle>
 
-                                <Dropdown.Menu>
-                                    {!this.isOpen() &&
-                                        <Dropdown.Item onClick={this.toOpen}>Openen</Dropdown.Item>
-                                    } {!this.isMaintenance() &&
-                                    <Dropdown.Item onClick={this.toMaintenance} >Naar onderhoud</Dropdown.Item>
-                                    } {!this.isClosed() &&
-                                    <Dropdown.Item onClick={this.toClosed}>Sluiten</Dropdown.Item>
-                                    }
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            </ButtonToolbar>
-                        </Card.Title>
-                        <Table striped bordered hover size="sm">
-                            <thead>
-                                <tr>
-                                    <th>In Wachtrij</th>
-                                    <th>In Attractie</th>
-                                    <th>Tijd klaar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{this.props.ride.visitorsInLine}</td>
-                                    <td>{this.props.ride.visitorsInRide}</td>
-                                    <td>{this.props.ride.endTime}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </Card.Body>
-                </Card>
-    }
+                        <Dropdown.Menu>
+                            {!isOpen() &&
+                                <Dropdown.Item onClick={toOpen}>Openen</Dropdown.Item>
+                            } {!isMaintenance() &&
+                            <Dropdown.Item onClick={toMaintenance} >Naar onderhoud</Dropdown.Item>
+                            } {!isClosed() &&
+                            <Dropdown.Item onClick={toClosed}>Sluiten</Dropdown.Item>
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    </ButtonToolbar>
+                </Card.Title>
+                <Table striped bordered hover size="sm">
+                    <thead>
+                        <tr>
+                            <th>In Wachtrij</th>
+                            <th>In Attractie</th>
+                            <th>Tijd klaar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{props.ride.visitorsInLine}</td>
+                            <td>{props.ride.visitorsInRide}</td>
+                            <td>{props.ride.endTime}</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Card.Body>
+        </Card>
+
 }
-
-
-export default StatisticsCard;

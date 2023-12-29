@@ -3,6 +3,7 @@ import rideReducer from "./reducers/rides"
 import fairyTaleReducer from './reducers/fairy-tales'
 import standReducer from './reducers/stands'
 import visitorReducer from './reducers/visitors'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
     reducer: {
@@ -17,3 +18,6 @@ export default store
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
