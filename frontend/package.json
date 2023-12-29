@@ -9,9 +9,13 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@reduxjs/toolkit": "^2.0.1",
     "@types/ol": "^6.4.2",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.0",
+    "npm-watch": "^0.11.0",
     "ol": "^6.4.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.2",
@@ -25,6 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "watch": "npm-watch",
     "types:openapi": "openapi -i ../openapi.yaml -o src/services/openapi"
   },
   "eslintConfig": {
@@ -48,5 +53,13 @@
   "devDependencies": {
     "openapi-typescript": "^6.7.3",
     "openapi-typescript-codegen": "^0.25.0"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js,jsx,ts,tsx"
+    }
   }
 }

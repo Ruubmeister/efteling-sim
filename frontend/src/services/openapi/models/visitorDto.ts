@@ -7,8 +7,10 @@ import type { coordinatesDto } from './coordinatesDto';
 
 export type visitorDto = {
     id: string;
-    dateOfBirth: string;
+    dateOfBirth?: string;
     currentLocation: coordinatesDto;
-    length: number;
+    length?: number;
+    targetLocation?: coordinatesDto;
+    step?: number;
 };
 

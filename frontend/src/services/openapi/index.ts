@@ -19,3 +19,4 @@ export type { workplaceDto } from './models/workplaceDto';
 export { FairyTaleService } from './services/FairyTaleService';
 export { RideService } from './services/RideService';
 export { StandService } from './services/StandService';
+export { VisitorService } from './services/VisitorService';
