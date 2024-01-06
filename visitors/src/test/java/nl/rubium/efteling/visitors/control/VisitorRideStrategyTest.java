@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 import nl.rubium.efteling.common.event.entity.EventSource;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.model.GridLocationDto;
 import org.openapitools.client.model.RideDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -116,8 +118,8 @@ public class VisitorRideStrategyTest {
                 null,
                 null,
                 null,
-                new org.openapitools.client.model.CoordinatesDto(1.0, 1.0),
                 LocationType.RIDE.toString(),
+                GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build(),
                 RideDto.StatusEnum.OPEN);
     }
 }

@@ -6,11 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.util.List;
 import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class FairyTaleDeserializerTest {
 
@@ -24,9 +23,9 @@ public class FairyTaleDeserializerTest {
         var input =
                 "{"
                         + "    \"name\": \"Doornroosje\","
-                        + "    \"coordinate\": {"
-                        + "      \"x\": 51.65078,"
-                        + "      \"y\": 5.04723"
+                        + "    \"location\": {"
+                        + "      \"x\": 10,"
+                        + "      \"y\": 20"
                         + "    }"
                         + "  }";
 
@@ -45,15 +44,16 @@ public class FairyTaleDeserializerTest {
         var input =
                 "[{"
                         + "    \"name\": \"Doornroosje\","
-                        + "    \"coordinate\": {"
-                        + "      \"x\": 51.65078,"
-                        + "      \"y\": 5.04723"
+                        + "    \"location\": {"
+                        + "      \"x\": 10,"
+                        + "      \"y\": 20"
                         + "    }"
                         + "  }]";
 
-        JavaType fairyTaleListType = mapper.getTypeFactory().constructCollectionType(List.class, Location.class);
+        JavaType fairyTaleListType =
+                mapper.getTypeFactory().constructCollectionType(List.class, Location.class);
 
-        var output = (List<FairyTale>)mapper.readValue(input, fairyTaleListType);
+        var output = (List<FairyTale>) mapper.readValue(input, fairyTaleListType);
 
         assertEquals("Doornroosje", output.get(0).getName());
     }

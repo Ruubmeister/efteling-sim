@@ -12,15 +12,15 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.fairytales.boundary.KafkaProducer;
-import nl.rubium.efteling.fairytales.entity.SFFairyTale;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
+import nl.rubium.efteling.fairytales.entity.SFFairyTale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,10 +35,9 @@ public class FairyTaleControlTest {
     @BeforeEach
     public void init() {
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>();
+        fairyTaleList.add(SFFairyTale.getFairyTale("Snow white", new Coordinates(5, 10)));
         fairyTaleList.add(
-                SFFairyTale.getFairyTale("Snow white", new Coordinate(51.65078, 5.04723)));
-        fairyTaleList.add(
-                SFFairyTale.getFairyTale("Hansel and Gretel", new Coordinate(51.65032, 5.04772)));
+                SFFairyTale.getFairyTale("Hansel and Gretel", new Coordinates(5, 10)));
 
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);
 
@@ -85,10 +84,10 @@ public class FairyTaleControlTest {
         var ft4 = SFFairyTale.getFairyTale("FT4");
         var ft5 = SFFairyTale.getFairyTale("FT5");
 
-        ft1.addDistanceToOther(1.0, ft3.getId());
-        ft1.addDistanceToOther(44.0, ft2.getId());
-        ft1.addDistanceToOther(85.0, ft5.getId());
-        ft1.addDistanceToOther(2.0, ft4.getId());
+        ft1.addDistanceToOther(1, ft3.getId());
+        ft1.addDistanceToOther(44, ft2.getId());
+        ft1.addDistanceToOther(85, ft5.getId());
+        ft1.addDistanceToOther(2, ft4.getId());
 
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>(List.of(ft1, ft2, ft3, ft4, ft5));
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);
@@ -109,17 +108,18 @@ public class FairyTaleControlTest {
         var ft4 = SFFairyTale.getFairyTale("FT4");
         var ft5 = SFFairyTale.getFairyTale("FT5");
 
-        ft1.addDistanceToOther(1.0, ft3.getId());
-        ft1.addDistanceToOther(44.0, ft2.getId());
-        ft1.addDistanceToOther(85.0, ft5.getId());
-        ft1.addDistanceToOther(2.0, ft4.getId());
+        ft1.addDistanceToOther(1, ft3.getId());
+        ft1.addDistanceToOther(44, ft2.getId());
+        ft1.addDistanceToOther(85, ft5.getId());
+        ft1.addDistanceToOther(2, ft4.getId());
 
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>(List.of(ft1, ft2, ft3, ft4, ft5));
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);
 
         var fairyTaleControl = new FairyTaleControl(kafkaProducer, fairyTaleRepository);
 
-        var result = fairyTaleControl.getNextFairyTale(ft1.getId(), List.of(ft3.getId(), ft2.getId()));
+        var result =
+                fairyTaleControl.getNextFairyTale(ft1.getId(), List.of(ft3.getId(), ft2.getId()));
         var expectedPossibleObjects = List.of(ft4, ft5);
 
         assertTrue(expectedPossibleObjects.contains(result));

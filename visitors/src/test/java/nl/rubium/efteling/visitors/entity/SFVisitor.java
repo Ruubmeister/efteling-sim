@@ -1,34 +1,48 @@
 package nl.rubium.efteling.visitors.entity;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.UUID;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.control.VisitorLocationStrategy;
-import org.locationtech.jts.geom.Coordinate;
 
 public class SFVisitor {
 
     public static Visitor getVisitor() {
-        return new Visitor(UUID.randomUUID(), new Coordinate(), null, null, 0.0D, null);
+        return new Visitor(
+                UUID.randomUUID(), new Coordinates(1, 2), null, null, null, new PriorityQueue<>());
     }
 
     public static Visitor getVisitor(UUID targetLocation, LocationType type) {
+        var steps = new PriorityQueue<Coordinates>();
+        steps.add(new Coordinates(9, 11));
+        steps.add(new Coordinates(10, 11));
+
         return new Visitor(
                 UUID.randomUUID(),
-                new Coordinate(5.049271, 51.650103),
-                new Location(targetLocation, type, new Coordinate(5.048205, 51.650601)),
+                new Coordinates(8, 11),
+                new Location(targetLocation, type, new Coordinates(10, 11)),
                 null,
-                1.0D,
-                null);
+                null,
+                steps);
     }
 
     public static Visitor getVisitor(LocalDateTime availableAt) {
-        return new Visitor(UUID.randomUUID(), new Coordinate(), null, availableAt, 1.0D, null);
+        var steps = new PriorityQueue<Coordinates>();
+        steps.add(new Coordinates(9, 11));
+        steps.add(new Coordinates(10, 11));
+
+        return new Visitor(UUID.randomUUID(), null, null, availableAt, null, steps);
     }
 
     public static Visitor getVisitor(Location lastLocation) {
-        var visitor =
-                new Visitor(UUID.randomUUID(), new Coordinate(), lastLocation, null, 1.0D, null);
+        var steps = new PriorityQueue<Coordinates>();
+        steps.add(new Coordinates(9, 11));
+        steps.add(new Coordinates(10, 11));
+
+        var visitor = new Visitor(UUID.randomUUID(), null, lastLocation, null, null, steps);
 
         visitor.addVisitedLocation(lastLocation);
 
@@ -37,14 +51,35 @@ public class SFVisitor {
 
     public static Visitor getVisitor(
             Location lastLocation, VisitorLocationStrategy strategy, LocalDateTime availableAt) {
+        var steps = new PriorityQueue<Coordinates>();
+        steps.add(new Coordinates(9, 11));
+        steps.add(new Coordinates(10, 11));
+
         var visitor =
                 new Visitor(
                         UUID.randomUUID(),
-                        new Coordinate(),
+                        new Coordinates(1, 5),
                         lastLocation,
                         availableAt,
-                        1.0D,
-                        strategy);
+                        strategy,
+                        steps);
+
+        visitor.addVisitedLocation(lastLocation);
+
+        return visitor;
+    }
+
+    public static Visitor getVisitor(
+            Location lastLocation, VisitorLocationStrategy strategy, LocalDateTime availableAt,
+            LinkedList<Coordinates> steps) {
+        var visitor =
+                new Visitor(
+                        UUID.randomUUID(),
+                        new Coordinates(1, 5),
+                        lastLocation,
+                        availableAt,
+                        strategy,
+                        steps);
 
         visitor.addVisitedLocation(lastLocation);
 

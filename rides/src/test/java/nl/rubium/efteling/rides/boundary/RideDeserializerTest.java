@@ -33,6 +33,10 @@ public class RideDeserializerTest {
                         + "    \"coordinates\": {\n"
                         + "      \"lat\": 51.64829,\n"
                         + "      \"long\": 5.05073\n"
+                        + "    },\n"
+                        + "    \"location\": {\n"
+                        + "      \"x\": 2,\n"
+                        + "      \"y\": 5\n"
                         + "    }\n"
                         + "  }";
 
@@ -61,6 +65,10 @@ public class RideDeserializerTest {
                         + "    \"coordinates\": {\n"
                         + "      \"lat\": 51.64829,\n"
                         + "      \"long\": 5.05073\n"
+                        + "    },\n"
+                        + "    \"location\": {\n"
+                        + "      \"x\": 2,\n"
+                        + "      \"y\": 5\n"
                         + "    }\n"
                         + "  }]";
 

@@ -1,5 +1,19 @@
 package nl.rubium.efteling.rides.control;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.rides.boundary.KafkaProducer;
@@ -11,44 +25,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class RideControlTest {
 
-    @Mock
-    KafkaProducer kafkaProducer;
+    @Mock KafkaProducer kafkaProducer;
 
-    @Mock
-    org.openapitools.client.api.VisitorApi visitorClient;
+    @Mock org.openapitools.client.api.VisitorApi visitorClient;
 
     RideControl rideControl;
 
     @BeforeEach
     public void init() {
         var rideList = new CopyOnWriteArrayList<Ride>();
-        rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723)));
-        rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772)));
+        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(10, 20)));
+        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(11, 21)));
 
         var rideRepository = new LocationRepository<>(rideList);
 
@@ -77,10 +71,10 @@ public class RideControlTest {
         var ride4 = SFRide.getRide("FT4");
         var ride5 = SFRide.getRide("FT5");
 
-        ride1.addDistanceToOther(1.0, ride3.getId());
-        ride1.addDistanceToOther(44.0, ride2.getId());
-        ride1.addDistanceToOther(85.0, ride5.getId());
-        ride1.addDistanceToOther(2.0, ride4.getId());
+        ride1.addDistanceToOther(1, ride3.getId());
+        ride1.addDistanceToOther(44, ride2.getId());
+        ride1.addDistanceToOther(85, ride5.getId());
+        ride1.addDistanceToOther(2, ride4.getId());
 
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);
@@ -101,10 +95,10 @@ public class RideControlTest {
         var ride4 = SFRide.getRide("FT4");
         var ride5 = SFRide.getRide("FT5");
 
-        ride1.addDistanceToOther(1.0, ride3.getId());
-        ride1.addDistanceToOther(44.0, ride2.getId());
-        ride1.addDistanceToOther(85.0, ride5.getId());
-        ride1.addDistanceToOther(2.0, ride4.getId());
+        ride1.addDistanceToOther(1, ride3.getId());
+        ride1.addDistanceToOther(44, ride2.getId());
+        ride1.addDistanceToOther(85, ride5.getId());
+        ride1.addDistanceToOther(2, ride4.getId());
 
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);
@@ -118,79 +112,99 @@ public class RideControlTest {
     }
 
     @Test
-    void openRides_givenRidesAreClosed_allRidesAreOpen(){
+    void openRides_givenRidesAreClosed_allRidesAreOpen() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(11, 21), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
         var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
-        assertTrue(rideControl.getRides().stream().noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
 
         rideControl.openRides();
 
-        assertTrue(rideControl.getRides().stream().allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
     }
 
     @Test
-    void openRides_givenRidesAreOpen_nothingHappens(){
+    void openRides_givenRidesAreOpen_nothingHappens() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(10, 20), RideStatus.OPEN));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(11, 21), RideStatus.OPEN));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
         var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
-        assertTrue(rideControl.getRides().stream().allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
 
         rideControl.openRides();
 
-        assertTrue(rideControl.getRides().stream().allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
     }
 
     @Test
-    void closeRides_givenRidesAreOpen_allRidesAreClosed(){
+    void closeRides_givenRidesAreOpen_allRidesAreClosed() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(10, 20), RideStatus.OPEN));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(11, 21), RideStatus.OPEN));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
         var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
-        assertTrue(rideControl.getRides().stream().allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
 
         rideControl.closeRides();
 
-        assertTrue(rideControl.getRides().stream().noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
     }
 
     @Test
-    void closeRides_givenRidesAreClosed_nothingHappens(){
+    void closeRides_givenRidesAreClosed_nothingHappens() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
         var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
-        assertTrue(rideControl.getRides().stream().noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
 
         rideControl.closeRides();
 
-        assertTrue(rideControl.getRides().stream().noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
+        assertTrue(
+                rideControl.getRides().stream()
+                        .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
     }
 
     @Test
-    void rideToMaintenance_givenRideIsNotInMaintenance_rideIsInMaintenance(){
+    void rideToMaintenance_givenRideIsNotInMaintenance_rideIsInMaintenance() {
         var ride = rideControl.getRides().stream().findFirst().get();
 
         assertNotEquals(ride.getStatus(), RideStatus.MAINTENANCE);
@@ -201,7 +215,7 @@ public class RideControlTest {
     }
 
     @Test
-    void rideToOpen_givenRideIsNotOpen_rideIsOpen(){
+    void rideToOpen_givenRideIsNotOpen_rideIsOpen() {
         var ride = rideControl.getRides().stream().findFirst().get();
         rideControl.closeRides();
 
@@ -213,7 +227,7 @@ public class RideControlTest {
     }
 
     @Test
-    void rideToClosed_givenRideIsNotClosed_rideIsClosed(){
+    void rideToClosed_givenRideIsNotClosed_rideIsClosed() {
         var ride = rideControl.getRides().stream().findFirst().get();
 
         assertNotEquals(ride.getStatus(), RideStatus.CLOSED);
@@ -224,12 +238,14 @@ public class RideControlTest {
     }
 
     @Test
-    void handleOpenRides_noRidesAreOpen_nothingHappens(){
+    void handleOpenRides_noRidesAreOpen_nothingHappens() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -241,11 +257,19 @@ public class RideControlTest {
     }
 
     @Test
-    void handleOpenRides_noRidePassedEndTime_nothingHappens(){
-        var ride1 = SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.OPEN,
-                Duration.ofSeconds(5));
-        var ride2 = SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.OPEN,
-                Duration.ofSeconds(5));
+    void handleOpenRides_noRidePassedEndTime_nothingHappens() {
+        var ride1 =
+                SFRide.getRide(
+                        "Rollercoaster",
+                        new Coordinates(10, 20),
+                        RideStatus.OPEN,
+                        Duration.ofSeconds(5));
+        var ride2 =
+                SFRide.getRide(
+                        "Rollercoaster",
+                        new Coordinates(10, 20),
+                        RideStatus.OPEN,
+                        Duration.ofSeconds(5));
         var visitor1 = SFVisitor.getVisitor();
         var visitor2 = SFVisitor.getVisitor();
         var visitor3 = SFVisitor.getVisitor();
@@ -271,9 +295,19 @@ public class RideControlTest {
     }
 
     @Test
-    void handleOpenRides_multipleRidePassedEndTime_eventsAreSend(){
-        var ride1 = SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.OPEN, Duration.ofSeconds(-1));
-        var ride2 = SFRide.getRide("Rollercoaster", new Coordinate(51.65032, 5.04772), RideStatus.OPEN, Duration.ofSeconds(-1));
+    void handleOpenRides_multipleRidePassedEndTime_eventsAreSend() {
+        var ride1 =
+                SFRide.getRide(
+                        "Rollercoaster",
+                        new Coordinates(10, 20),
+                        RideStatus.OPEN,
+                        Duration.ofSeconds(-1));
+        var ride2 =
+                SFRide.getRide(
+                        "Rollercoaster",
+                        new Coordinates(10, 20),
+                        RideStatus.OPEN,
+                        Duration.ofSeconds(-1));
         var visitor1 = SFVisitor.getVisitor();
         var visitor2 = SFVisitor.getVisitor();
         var visitor3 = SFVisitor.getVisitor();
@@ -301,15 +335,18 @@ public class RideControlTest {
 
         var capturedPayloads = eventsCaptor.getAllValues();
 
-        assertEquals("%s,%s".formatted(visitor1.getId(), visitor2.getId()), capturedPayloads.get(0).get("visitors"));
+        assertEquals(
+                "%s,%s".formatted(visitor1.getId(), visitor2.getId()),
+                capturedPayloads.get(0).get("visitors"));
         assertEquals(visitor3.getId().toString(), capturedPayloads.get(1).get("visitors"));
     }
 
     @Test
-    void findRide_rideExists_expectRide(){
+    void findRide_rideExists_expectRide() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -319,10 +356,11 @@ public class RideControlTest {
     }
 
     @Test
-    void findRide_rideDoesNotExists_expectNull(){
+    void findRide_rideDoesNotExists_expectNull() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new Coordinate(51.65078, 5.04723), RideStatus.CLOSED));
+                SFRide.getRide(
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -334,9 +372,10 @@ public class RideControlTest {
     }
 
     @Test
-    void handleEmployeeChangedWorkplace_workplaceExist_employeeIsAdded(){
+    void handleEmployeeChangedWorkplace_workplaceExist_employeeIsAdded() {
         var ride = rideControl.getRandomRide();
-        var workplace = org.openapitools.client.model.WorkplaceDto.builder().id(ride.getId()).build();
+        var workplace =
+                org.openapitools.client.model.WorkplaceDto.builder().id(ride.getId()).build();
         var employeeId = UUID.randomUUID();
         var skill = WorkplaceSkill.CONTROL;
 
@@ -346,16 +385,19 @@ public class RideControlTest {
     }
 
     @Test
-    void handleEmployeeChangedWorkplace_workplaceDoesNotExist_nothingHappens(){
-        var workplace = org.openapitools.client.model.WorkplaceDto.builder().id(UUID.randomUUID()).build();
+    void handleEmployeeChangedWorkplace_workplaceDoesNotExist_nothingHappens() {
+        var workplace =
+                org.openapitools.client.model.WorkplaceDto.builder().id(UUID.randomUUID()).build();
         var employeeId = UUID.randomUUID();
         var skill = WorkplaceSkill.CONTROL;
 
-        assertThrows(IllegalArgumentException.class, () -> rideControl.handleEmployeeChangedWorkplace(workplace, employeeId, skill));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> rideControl.handleEmployeeChangedWorkplace(workplace, employeeId, skill));
     }
 
     @Test
-    void handleVisitorSteppingInRideLine_rideDoesNotExist_eventIsSend(){
+    void handleVisitorSteppingInRideLine_rideDoesNotExist_eventIsSend() {
         var rideId = UUID.randomUUID();
         var visitorId = UUID.randomUUID();
 
@@ -365,7 +407,7 @@ public class RideControlTest {
     }
 
     @Test
-    void handleVisitorSteppingInRideLine_rideIsClosed_eventIsSend(){
+    void handleVisitorSteppingInRideLine_rideIsClosed_eventIsSend() {
         var ride = rideControl.getRides().get(0);
         ride.toClosed();
 
@@ -377,7 +419,8 @@ public class RideControlTest {
     }
 
     @Test
-    void handleVisitorSteppingInRideLine_rideIsOpen_visitorIsAddedToLine() throws org.openapitools.client.ApiException {
+    void handleVisitorSteppingInRideLine_rideIsOpen_visitorIsAddedToLine()
+            throws org.openapitools.client.ApiException {
         var ride = rideControl.getRides().get(0);
         ride.toOpen();
 

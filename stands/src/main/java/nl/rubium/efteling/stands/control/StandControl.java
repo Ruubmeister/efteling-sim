@@ -1,6 +1,15 @@
 package nl.rubium.efteling.stands.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
@@ -12,17 +21,6 @@ import nl.rubium.efteling.stands.entity.Stand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -100,14 +98,16 @@ public class StandControl {
     @Scheduled(fixedDelay = 1000)
     public void handleProducedOrders() {
         var now = LocalDateTime.now();
-        var ordersDone = ordersDoneAtTime.entrySet().stream()
-                .filter(entry -> entry.getValue().isBefore(now))
-                .toList();
-        
-        ordersDone.forEach(entry -> {
-            sendOrderTicket(entry.getKey().toString());
-            ordersDoneAtTime.remove(entry.getKey());
-        });
+        var ordersDone =
+                ordersDoneAtTime.entrySet().stream()
+                        .filter(entry -> entry.getValue().isBefore(now))
+                        .toList();
+
+        ordersDone.forEach(
+                entry -> {
+                    sendOrderTicket(entry.getKey().toString());
+                    ordersDoneAtTime.remove(entry.getKey());
+                });
     }
 
     public Dinner getReadyDinner(String ticket) {

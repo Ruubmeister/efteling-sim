@@ -3,8 +3,6 @@ package nl.rubium.efteling.visitors.entity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import io.swagger.models.auth.In;
 import nl.rubium.efteling.common.location.entity.LocationType;
 
 public class VisitorLocationSelector {
@@ -18,16 +16,16 @@ public class VisitorLocationSelector {
         locationNumbers.put(LocationType.STAND, 10);
     }
 
-    public VisitorLocationSelector(HashMap<LocationType, Integer> numbers){
+    public VisitorLocationSelector(HashMap<LocationType, Integer> numbers) {
         this.locationNumbers = numbers;
     }
 
     public void reduceAndBalance(LocationType type) {
         var reducer =
                 switch (type) {
-                    case LocationType.FAIRYTALE -> 5;
-                    case LocationType.RIDE -> 10;
-                    case LocationType.STAND -> 50;
+                    case FAIRYTALE -> 5;
+                    case RIDE -> 10;
+                    case STAND -> 50;
                 };
 
         locationNumbers.compute(type, (key, val) -> reducer <= val ? val - reducer : 0);

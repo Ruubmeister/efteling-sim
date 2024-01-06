@@ -11,11 +11,10 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
-import org.locationtech.jts.geom.Coordinate;
-import org.openapitools.client.model.CoordinatesDto;
 import org.openapitools.client.model.RideDto;
 import org.openapitools.client.model.VisitorDto;
 
@@ -34,13 +33,13 @@ public class Ride extends Location {
 
     public Ride(
             RideStatus status,
-            Coordinate coordinate,
             String name,
             int minimumAge,
             float minimumLength,
             Duration duration,
-            int maxPersons) {
-        super(name, coordinate, LocationType.RIDE);
+            int maxPersons,
+            Coordinates locationCoordinates) {
+        super(name, LocationType.RIDE, locationCoordinates);
         this.status = status;
         this.minimumAge = minimumAge;
         this.minimumLength = minimumLength;
@@ -105,11 +104,6 @@ public class Ride extends Location {
         return RideDto.builder()
                 .id(this.getId())
                 .name(this.getName())
-                .coordinates(
-                        CoordinatesDto.builder()
-                                .lat(this.getCoordinate().x)
-                                .lon(this.getCoordinate().y)
-                                .build())
                 .status(RideDto.StatusEnum.valueOf(this.status.name()))
                 .durationInSec(BigDecimal.valueOf(this.duration.getSeconds()))
                 .locationType(this.getLocationType().name())
@@ -125,6 +119,11 @@ public class Ride extends Location {
                                         Collectors.toMap(
                                                 e -> e.getKey().toString(),
                                                 e -> e.getValue().toString())))
+                .location(
+                        org.openapitools.client.model.GridLocationDto.builder()
+                                .x(BigDecimal.valueOf(this.getLocationCoordinates().x()))
+                                .y(BigDecimal.valueOf(this.getLocationCoordinates().y()))
+                                .build())
                 .build();
     }
 }

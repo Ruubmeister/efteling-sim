@@ -6,15 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.boundary.KafkaProducer;
 import nl.rubium.efteling.visitors.entity.Location;
@@ -23,9 +25,11 @@ import nl.rubium.efteling.visitors.entity.VisitorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.api.NavigationApi;
+import org.openapitools.client.model.GridLocationDto;
 
 @ExtendWith(MockitoExtension.class)
 public class VisitorControlTest {
@@ -35,11 +39,11 @@ public class VisitorControlTest {
 
     @Mock private org.openapitools.client.api.StandApi standApi;
 
-    @Mock private MovementService movementService;
-
     @Mock private LocationTypeStrategy locationTypeStrategy;
 
     @Mock private VisitorStandStrategy strategy;
+
+    @Mock private NavigationApi navigationApi;
 
     private VisitorControl visitorControl;
 
@@ -47,12 +51,11 @@ public class VisitorControlTest {
     void setUp() {
         this.visitorControl =
                 new VisitorControl(
-                        kafkaProducer,
                         visitorRepository,
-                        movementService,
                         locationTypeStrategy,
                         standApi,
-                        new ConcurrentHashMap<>());
+                        new ConcurrentHashMap<>(),
+                        navigationApi);
     }
 
     @Test
@@ -80,13 +83,13 @@ public class VisitorControlTest {
                 List.of(
                         SFVisitor.getVisitor(
                                 new Location(
-                                        UUID.randomUUID(), LocationType.STAND, new Coordinate()),
+                                        UUID.randomUUID(),
+                                        LocationType.STAND,
+                                        new Coordinates(1, 5)),
                                 strategy,
                                 LocalDateTime.now().minusMinutes(1)));
 
-        doNothing().when(movementService).setNextStepDistance(any());
         doReturn(visitors).when(visitorRepository).idleVisitors();
-        doReturn(true).when(movementService).isInLocationRange(any());
 
         visitorControl.handleIdleVisitors();
 
@@ -95,24 +98,59 @@ public class VisitorControlTest {
     }
 
     @Test
-    void handleIdleVisitors_visitorNotInRange_setStepToTarget() {
+    void handleIdleVisitors_visitorNotInRange_setStepToTarget() throws ApiException {
         var idleTime = LocalDateTime.now().minusMinutes(1);
         var visitors =
                 List.of(
                         SFVisitor.getVisitor(
                                 new Location(
-                                        UUID.randomUUID(), LocationType.STAND, new Coordinate()),
+                                        UUID.randomUUID(),
+                                        LocationType.STAND,
+                                        new Coordinates(1, 2)),
                                 strategy,
                                 idleTime));
 
-        doNothing().when(movementService).setNextStepDistance(any());
         doReturn(visitors).when(visitorRepository).idleVisitors();
-        doReturn(false).when(movementService).isInLocationRange(any());
+
+        assertNotEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
 
         visitorControl.handleIdleVisitors();
 
-        verify(movementService).walkToDestination(any());
         assertNotEquals(idleTime, visitors.get(0).getAvailableAt());
+        assertEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
+        verify(navigationApi, never()).postNavigate(any());
+    }
+
+    @Test
+    void handleIdleVisitors_visitorHasNoStepsToTarget_stepsAreSet() throws ApiException {
+        var idleTime = LocalDateTime.now().minusMinutes(1);
+        var visitors =
+                List.of(
+                        SFVisitor.getVisitor(
+                                new Location(
+                                        UUID.randomUUID(),
+                                        LocationType.STAND,
+                                        new Coordinates(1, 2)),
+                                strategy,
+                                idleTime,
+                                new LinkedList<>()));
+
+        var gridLocations = List.of(
+                GridLocationDto.builder().x(BigDecimal.valueOf(9)).y(BigDecimal.valueOf(11)).build(),
+                GridLocationDto.builder().x(BigDecimal.valueOf(9)).y(BigDecimal.valueOf(12)).build(),
+                GridLocationDto.builder().x(BigDecimal.valueOf(10)).y(BigDecimal.valueOf(12)).build()
+        );
+
+        doReturn(visitors).when(visitorRepository).idleVisitors();
+        doReturn(gridLocations).when(navigationApi).postNavigate(any());
+
+        assertNotEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
+
+        visitorControl.handleIdleVisitors();
+
+        assertNotEquals(idleTime, visitors.get(0).getAvailableAt());
+        assertEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
+        verify(navigationApi).postNavigate(any());
     }
 
     @Test
