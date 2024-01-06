@@ -18,8 +18,14 @@ function App (){
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(fetchRides())
-      dispatch(fetchVisitors())
     }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(fetchVisitors())
+    }, 300);
     return () => clearInterval(interval);
   }, [dispatch]);
 

@@ -11,6 +11,10 @@
     "coordinates": {
       "lat": 51.64829,
       "long": 5.05073
+    },
+    "location": {
+      "x": 295,
+      "y": 422
     }
   },
   {
@@ -25,6 +29,10 @@
     "coordinates": {
       "lat": 51.65224,
       "long": 5.05222
+    },
+    "location": {
+      "x": 366,
+      "y": 111
     }
   },
   {
@@ -39,6 +47,10 @@
     "coordinates": {
       "lat": 51.65233,
       "long": 5.04612
+    },
+    "location": {
+      "x": 86,
+      "y": 75
     }
   },
   {
@@ -51,8 +63,12 @@
     },
     "maxPersons": 70,
     "coordinates": {
-      "lat": 51.64900,
+      "lat": 51.649,
       "long": 5.04673
+    },
+    "location": {
+      "x": 104,
+      "y": 373
     }
   },
   {
@@ -67,6 +83,10 @@
     "coordinates": {
       "lat": 51.64719,
       "long": 5.04529
+    },
+    "location": {
+      "x": 52,
+      "y": 521
     }
   },
   {
@@ -81,12 +101,16 @@
     "coordinates": {
       "lat": 51.65049,
       "long": 5.05124
+    },
+    "location": {
+      "x": 323,
+      "y": 245
     }
   },
   {
     "name": "Halve Maen",
     "minimumAge": 8,
-    "minimumLength": 1.20,
+    "minimumLength": 1.2,
     "duration": {
       "minutes": 3,
       "seconds": 0
@@ -95,12 +119,16 @@
     "coordinates": {
       "lat": 51.64877,
       "long": 5.05341
+    },
+    "location": {
+      "x": 428,
+      "y": 384
     }
   },
   {
     "name": "Joris en de Draak",
     "minimumAge": "0",
-    "minimumLength": 1.10,
+    "minimumLength": 1.1,
     "duration": {
       "minutes": 2,
       "seconds": 0
@@ -109,10 +137,14 @@
     "coordinates": {
       "lat": 51.64686,
       "long": 5.05244
+    },
+    "location": {
+      "x": 391,
+      "y": 534
     }
   },
   {
-    "name": "Monsieur Cannibale",
+    "name": "Sirocco",
     "minimumAge": "0",
     "minimumLength": "0",
     "duration": {
@@ -121,8 +153,12 @@
     },
     "maxPersons": 40,
     "coordinates": {
-      "lat": 51.64820,
+      "lat": 51.6482,
       "long": 5.05352
+    },
+    "location": {
+      "x": 365,
+      "y": 148
     }
   },
   {
@@ -137,6 +173,10 @@
     "coordinates": {
       "lat": 51.65043,
       "long": 5.05072
+    },
+    "location": {
+      "x": 298,
+      "y": 243
     }
   },
   {
@@ -151,26 +191,16 @@
     "coordinates": {
       "lat": 51.64723,
       "long": 5.04894
-    }
-  },
-  {
-    "name": "Spookslot",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 15,
-      "seconds": 0
     },
-    "maxPersons": 80,
-    "coordinates": {
-      "lat": 51.64876,
-      "long": 5.04853
+    "location": {
+      "x": 209,
+      "y": 506
     }
   },
   {
     "name": "Python",
     "minimumAge": "0",
-    "minimumLength": 1.20,
+    "minimumLength": 1.2,
     "duration": {
       "minutes": 2,
       "seconds": 8
@@ -179,6 +209,10 @@
     "coordinates": {
       "lat": 51.64763,
       "long": 5.05361
+    },
+    "location": {
+      "x": 429,
+      "y": 486
     }
   },
   {
@@ -193,12 +227,16 @@
     "coordinates": {
       "lat": 51.65003,
       "long": 5.04974
+    },
+    "location": {
+      "x": 249,
+      "y": 284
     }
   },
   {
     "name": "Villa Volta",
     "minimumAge": "0",
-    "minimumLength": 1.0,
+    "minimumLength": 1,
     "duration": {
       "minutes": 10,
       "seconds": 0
@@ -207,12 +245,16 @@
     "coordinates": {
       "lat": 51.65302,
       "long": 5.04727
+    },
+    "location": {
+      "x": 135,
+      "y": 40
     }
   },
   {
     "name": "De Vliegende Hollander",
     "minimumAge": "0",
-    "minimumLength": 1.20,
+    "minimumLength": 1.2,
     "duration": {
       "minutes": 3,
       "seconds": 43
@@ -221,20 +263,28 @@
     "coordinates": {
       "lat": 51.64756,
       "long": 5.05224
+    },
+    "location": {
+      "x": 373,
+      "y": 481
     }
   },
   {
     "name": "Vogel Rok",
     "minimumAge": "0",
-    "minimumLength": 1.20,
+    "minimumLength": 1.2,
     "duration": {
       "minutes": 1,
       "seconds": 31
     },
     "maxPersons": 40,
     "coordinates": {
-      "lat": 51.65210,
+      "lat": 51.6521,
       "long": 5.05268
+    },
+    "location": {
+      "x": 408,
+      "y": 98
     }
   },
   {
@@ -249,20 +299,10 @@
     "coordinates": {
       "lat": 51.65281,
       "long": 5.04902
-    }
-  },
-  {
-    "name": "Land van Laaf",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 3,
-      "seconds": 0
     },
-    "maxPersons": 40,
-    "coordinates": {
-      "lat": 51.65328,
-      "long": 5.04854
+    "location": {
+      "x": 213,
+      "y": 59
     }
   },
   {
@@ -277,6 +317,10 @@
     "coordinates": {
       "lat": 51.65304,
       "long": 5.04627
+    },
+    "location": {
+      "x": 82,
+      "y": 40
     }
   },
   {
@@ -291,6 +335,10 @@
     "coordinates": {
       "lat": 51.65221,
       "long": 5.04916
+    },
+    "location": {
+      "x": 237,
+      "y": 92
     }
   },
   {
@@ -304,7 +352,11 @@
     "maxPersons": 20,
     "coordinates": {
       "lat": 51.65256,
-      "long": 5.05010
+      "long": 5.0501
+    },
+    "location": {
+      "x": 266,
+      "y": 78
     }
   },
   {
@@ -319,20 +371,10 @@
     "coordinates": {
       "lat": 51.65283,
       "long": 5.04991
-    }
-  },
-  {
-    "name": "Monsieur Canibale",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 4,
-      "seconds": 30
     },
-    "maxPersons": 20,
-    "coordinates": {
-      "lat": 51.65169,
-      "long": 5.05205
+    "location": {
+      "x": 257,
+      "y": 59
     }
   },
   {
@@ -347,12 +389,16 @@
     "coordinates": {
       "lat": 51.64975,
       "long": 5.05339
+    },
+    "location": {
+      "x": 430,
+      "y": 305
     }
   },
   {
     "name": "Max en Moritz",
     "minimumAge": "0",
-    "minimumLength": 0.70,
+    "minimumLength": 0.7,
     "duration": {
       "minutes": 1,
       "seconds": 45
@@ -361,6 +407,10 @@
     "coordinates": {
       "lat": 51.64808,
       "long": 5.04741
+    },
+    "location": {
+      "x": 135,
+      "y": 440
     }
   }
 ]

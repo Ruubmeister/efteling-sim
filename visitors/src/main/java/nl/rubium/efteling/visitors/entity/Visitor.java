@@ -4,34 +4,41 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.control.VisitorLocationStrategy;
-import org.locationtech.jts.geom.Coordinate;
-import org.openapitools.client.model.CoordinatesDto;
+import org.openapitools.client.model.GridLocationDto;
+import org.openapitools.client.model.VisitorDto;
 
 @AllArgsConstructor
 @Getter
 public class Visitor {
     private final UUID id;
-    private Coordinate currentCoordinates;
+    private Coordinates currentCoordinates;
     private Location targetLocation;
     private LocalDateTime availableAt;
-    private double nextStepDistance;
     private VisitorLocationStrategy strategy;
 
     private final VisitorLocationSelector visitorLocationSelector = new VisitorLocationSelector();
     private final Map<LocalDateTime, Location> visitedLocations = new HashMap<>();
+    private Queue<Coordinates> stepsToTarget = new LinkedList<>();
 
     public Visitor() {
         this.id = UUID.randomUUID();
         this.availableAt = LocalDateTime.now();
-        this.currentCoordinates = new Coordinate(51.649175, 5.045545);
+        this.currentCoordinates = new Coordinates(53, 378);
+    }
+
+    public void setStepsToTarget(Queue<Coordinates> steps){
+        this.stepsToTarget = steps;
     }
 
     public void doActivity(Location locationDto) {
@@ -50,12 +57,15 @@ public class Visitor {
         }
     }
 
-    public void setCurrentCoordinates(Coordinate coordinates) {
-        this.currentCoordinates = coordinates;
+    public boolean isAtDestination() {
+        return currentCoordinates.equals(targetLocation.coordinate());
     }
 
-    public void setNextStepDistance(double stepDistance) {
-        this.nextStepDistance = stepDistance;
+    public void setNextStep() {
+        var nextStep = this.stepsToTarget.poll();
+        if (nextStep != null) {
+            this.currentCoordinates = new Coordinates(nextStep.x(), nextStep.y());
+        }
     }
 
     public Location getLastLocation() {
@@ -95,19 +105,18 @@ public class Visitor {
     }
 
     public org.openapitools.client.model.VisitorDto toDto() {
-        return org.openapitools.client.model.VisitorDto.builder()
+        return VisitorDto.builder()
                 .id(id)
-                .step(BigDecimal.valueOf(nextStepDistance))
-                .targetLocation(
-                        targetLocation != null
-                                ? new CoordinatesDto(
-                                        targetLocation.coordinate().x,
-                                        targetLocation.coordinate().y)
+                .target(
+                        getTargetLocation() != null
+                                ? new GridLocationDto(
+                                        BigDecimal.valueOf(getTargetLocation().coordinate().x()),
+                                        BigDecimal.valueOf(getTargetLocation().coordinate().y()))
                                 : null)
-                .currentLocation(
-                        org.openapitools.client.model.CoordinatesDto.builder()
-                                .lat(this.getCurrentCoordinates().x)
-                                .lon(this.getCurrentCoordinates().y)
+                .location(
+                        GridLocationDto.builder()
+                                .x(BigDecimal.valueOf(getCurrentCoordinates().x()))
+                                .y(BigDecimal.valueOf(getCurrentCoordinates().y()))
                                 .build())
                 .build();
     }

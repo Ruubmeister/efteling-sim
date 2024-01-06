@@ -2,6 +2,15 @@ version: '3.4'
 
 services:
 
+  navigation:
+    container_name: navigation
+    image: navigation
+    build:
+      context: .
+      dockerfile: navigation/Dockerfile
+    ports:
+      - "49985:49985"
+
   park:
     container_name: park
     image: park
@@ -22,6 +31,7 @@ services:
     depends_on: 
       - park
       - kafka
+      - navigation
     build:
       context: .
       dockerfile: rides/Dockerfile
@@ -38,6 +48,7 @@ services:
     depends_on: 
       - park
       - kafka
+      - navigation
     build:
       context: .
       dockerfile: fairy-tales/Dockerfile
@@ -53,6 +64,7 @@ services:
     depends_on: 
       - park
       - kafka
+      - navigation
     build:
       context: .
       dockerfile: stands/Dockerfile
@@ -71,6 +83,7 @@ services:
       - fairytales
       - stands
       - kafka
+      - navigation
     restart: on-failure
     build:
       context: .

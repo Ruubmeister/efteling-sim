@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
-
 import nl.rubium.efteling.common.location.entity.Location;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
-import org.locationtech.jts.geom.Coordinate;
 
 public class FairyTaleDeserializer extends StdDeserializer<Location> {
 
@@ -24,12 +23,12 @@ public class FairyTaleDeserializer extends StdDeserializer<Location> {
     public FairyTale deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
         String name = node.get("name").asText();
-        double lat = node.get("coordinate").findPath("x").asDouble();
-        double lon = node.get("coordinate").findPath("y").asDouble();
-        ;
 
-        var coordinate = new Coordinate(lat, lon);
+        var locationCoordinates =
+                new Coordinates(
+                        node.get("location").findPath("x").asInt(),
+                        node.get("location").findPath("y").asInt());
 
-        return new FairyTale(name, coordinate);
+        return new FairyTale(name, locationCoordinates);
     }
 }

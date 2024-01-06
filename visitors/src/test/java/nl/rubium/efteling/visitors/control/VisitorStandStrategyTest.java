@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.model.GridLocationDto;
 
 @ExtendWith(MockitoExtension.class)
 public class VisitorStandStrategyTest {
@@ -116,8 +118,8 @@ public class VisitorStandStrategyTest {
         return new org.openapitools.client.model.StandDto(
                 UUID.randomUUID(),
                 null,
-                new org.openapitools.client.model.CoordinatesDto(1.0, 1.0),
                 LocationType.STAND.toString(),
+                GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build(),
                 List.of("meal 1", "meal 2"),
                 List.of("drink 1", "drink 2"));
     }

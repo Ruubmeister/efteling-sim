@@ -3,14 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { coordinatesDto } from './coordinatesDto';
+import type { gridLocationDto } from './gridLocationDto';
 
 export type visitorDto = {
     id: string;
     dateOfBirth?: string;
-    currentLocation: coordinatesDto;
+    location: gridLocationDto;
     length?: number;
-    targetLocation?: coordinatesDto;
+    target?: gridLocationDto;
     step?: number;
 };
 

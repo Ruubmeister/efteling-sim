@@ -8,26 +8,25 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 import lombok.Getter;
-import org.locationtech.jts.geom.Coordinate;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Location {
     private final UUID id;
     private final String name;
-    private final Coordinate coordinate;
     private final LocationType locationType;
-    private final SortedMap<Double, UUID> distanceToOthers;
+    private final SortedMap<Integer, UUID> distanceToOthers;
+    private final Coordinates locationCoordinates;
 
-    public Location(String name, Coordinate coordinate, LocationType locationType) {
+    public Location(String name, LocationType locationType, Coordinates locationCoordinates) {
         id = UUID.randomUUID();
         this.name = name;
-        this.coordinate = coordinate;
         this.locationType = locationType;
         this.distanceToOthers = new TreeMap<>();
+        this.locationCoordinates = locationCoordinates;
     }
 
-    public void addDistanceToOther(double distance, UUID id) {
+    public void addDistanceToOther(int distance, UUID id) {
         distanceToOthers.put(distance, id);
     }
 

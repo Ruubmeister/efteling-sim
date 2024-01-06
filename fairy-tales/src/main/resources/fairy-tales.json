@@ -1,205 +1,205 @@
 [
   {
     "name": "Doornroosje",
-    "coordinate": {
-      "x": 51.65078,
-      "y": 5.04723
+    "location": {
+      "x": 124,
+      "y": 218
     }
   },
   {
     "name": "Kabouterdorp",
-    "coordinate": {
-      "x": 51.65032,
-      "y": 5.04772
+    "location": {
+      "x": 153,
+      "y": 257
     }
   },
   {
     "name": "De Zes Dienaren",
-    "coordinate": {
-      "x": 51.64958,
-      "y": 5.04770
+    "location": {
+      "x": 147,
+      "y": 313
     }
   },
   {
     "name": "Roodkapje",
-    "coordinate": {
-      "x": 51.64959,
-      "y": 5.04661
+    "location": {
+      "x": 93,
+      "y": 314
     }
   },
   {
     "name": "Pinokkio",
-    "coordinate": {
-      "x": 51.64950,
-      "y": 5.04615
+    "location": {
+      "x": 73,
+      "y": 326
     }
   },
   {
     "name": "De Rode Schoentjes",
-    "coordinate": {
-      "x": 51.64957,
-      "y": 5.04573
+    "location": {
+      "x": 53,
+      "y": 317
     }
   },
   {
     "name": "Trollenkoning",
-    "coordinate": {
-      "x": 51.64994,
-      "y": 5.04576
+    "location": {
+      "x": 51,
+      "y": 290
     }
   },
   {
     "name": "Het stoute prinsesje",
-    "coordinate": {
-      "x": 51.64991,
-      "y": 5.04635
+    "location": {
+      "x": 78,
+      "y": 293
     }
   },
   {
     "name": "Raponsje",
-    "coordinate": {
-      "x": 51.64993,
-      "y": 5.04672
+    "location": {
+      "x": 95,
+      "y": 291
     }
   },
   {
     "name": "De Kleine Zeemeermin",
-    "coordinate": {
-      "x": 51.64980,
-      "y": 5.04725
+    "location": {
+      "x": 125,
+      "y": 302
     }
   },
   {
     "name": "Draak Lichtgeraakt",
-    "coordinate": {
-      "x": 51.65012,
-      "y": 5.04725
+    "location": {
+      "x": 121,
+      "y": 274
     }
   },
   {
     "name": "De Wolf en de Zeven Geitjes",
-    "coordinate": {
-      "x": 51.65040,
-      "y": 5.04694
+    "location": {
+      "x": 111,
+      "y": 253
     }
   },
   {
     "name": "Hans en Grietje",
-    "coordinate": {
-      "x": 51.65025,
-      "y": 5.04647
+    "location": {
+      "x": 79,
+      "y": 259
     }
   },
   {
     "name": "Vrouw Holle",
-    "coordinate": {
-      "x": 51.65026,
-      "y": 5.04550
+    "location": {
+      "x": 40,
+      "y": 270
     }
   },
   {
     "name": "Tafeltje Dek Je, Ezeltje Strek Je, Knuppel uit de Zak",
-    "coordinate": {
-      "x": 51.65048,
-      "y": 5.04536
+    "location": {
+      "x": 33,
+      "y": 244
     }
   },
   {
     "name": "Sneeuwwitje",
-    "coordinate": {
-      "x": 51.65051,
-      "y": 5.04510
+    "location": {
+      "x": 26,
+      "y": 235
     }
   },
   {
     "name": "Het Bruidskleed van Genoveva",
-    "coordinate": {
-      "x": 51.65068,
-      "y": 5.04587
+    "location": {
+      "x": 43,
+      "y": 230
     }
   },
   {
     "name": "De Zes Zwanen",
-    "coordinate": {
-      "x": 51.65085,
-      "y": 5.04514
+    "location": {
+      "x": 18,
+      "y": 211
     }
   },
   {
     "name": "Assepoester",
-    "coordinate": {
-      "x": 51.65088,
-      "y": 5.04558
+    "location": {
+      "x": 35,
+      "y": 212
     }
   },
   {
     "name": "De Kikkerkoning",
-    "coordinate": {
-      "x": 51.65063,
-      "y": 5.04582
+    "location": {
+      "x": 51,
+      "y": 235
     }
   },
   {
     "name": "De Magische Klok",
-    "coordinate": {
-      "x": 51.65054,
-      "y": 5.04621
+    "location": {
+      "x": 73,
+      "y": 240
     }
   },
   {
     "name": "De Indische Waterlelies",
-    "coordinate": {
-      "x": 51.65131,
-      "y": 5.04624
+    "location": {
+      "x": 76,
+      "y": 186
     }
   },
   {
     "name": "Klein Duimpje",
-    "coordinate": {
-      "x": 51.65115,
-      "y": 5.04759
+    "location": {
+      "x": 138,
+      "y": 188
     }
   },
   {
     "name": "Repelsteeltje",
-    "coordinate": {
-      "x": 51.65129,
-      "y": 5.04719
+    "location": {
+      "x": 124,
+      "y": 179
     }
   },
   {
     "name": "Het Meisje met de Zwavelstokjes",
-    "coordinate": {
-      "x": 51.65143,
-      "y": 5.04610
+    "location": {
+      "x": 66,
+      "y": 170
     }
   },
   {
     "name": "De Nieuwe Kleren van de Keizer",
-    "coordinate": {
-      "x": 51.65122,
-      "y": 5.04519
+    "location": {
+      "x": 28,
+      "y": 182
     }
   },
   {
     "name": "Sprookjesboom (Sprookjesbos)",
-    "coordinate": {
-      "x": 51.65182,
-      "y": 5.04610
+    "location": {
+      "x": 67,
+      "y": 146
     }
   },
   {
     "name": "De Vliegende Fakir",
-    "coordinate": {
-      "x": 51.65175,
-      "y": 5.04669
+    "location": {
+      "x": 97,
+      "y": 143
     }
   },
   {
     "name": "De Chinese Nachtegaal",
-    "coordinate": {
-      "x": 51.65160,
-      "y": 5.04745
+    "location": {
+      "x": 133,
+      "y": 154
     }
   }
 ]

@@ -2,27 +2,30 @@ package nl.rubium.efteling.fairytales.entity;
 
 import lombok.Getter;
 import nl.rubium.efteling.common.location.entity.Location;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
-import org.locationtech.jts.geom.Coordinate;
-import org.openapitools.client.model.CoordinatesDto;
 import org.openapitools.client.model.FairyTaleDto;
+import org.openapitools.client.model.GridLocationDto;
+
+import java.math.BigDecimal;
 
 @Getter
 public class FairyTale extends Location {
-    public FairyTale(String name, Coordinate coordinate) {
-        super(name, coordinate, LocationType.FAIRYTALE);
+    public FairyTale(String name, Coordinates coordinate) {
+        super(name, LocationType.FAIRYTALE, coordinate);
     }
 
     public FairyTaleDto toDto() {
         return FairyTaleDto.builder()
                 .id(this.getId())
                 .locationType(this.getLocationType().name())
+                .location(
+                        GridLocationDto.builder()
+                                .x(BigDecimal.valueOf(getLocationCoordinates().x()))
+                                .y(BigDecimal.valueOf(getLocationCoordinates().y()))
+                                .build()
+                )
                 .name(this.getName())
-                .coordinates(
-                        CoordinatesDto.builder()
-                                .lat(this.getCoordinate().x)
-                                .lon(this.getCoordinate().y)
-                                .build())
                 .build();
     }
 }

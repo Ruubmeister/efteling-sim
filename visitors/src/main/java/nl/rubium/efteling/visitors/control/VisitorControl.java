@@ -1,19 +1,25 @@
 package nl.rubium.efteling.visitors.control;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
-import nl.rubium.efteling.common.event.entity.EventSource;
-import nl.rubium.efteling.common.event.entity.EventType;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.boundary.KafkaProducer;
 import nl.rubium.efteling.visitors.entity.Visitor;
 import nl.rubium.efteling.visitors.entity.VisitorRepository;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.api.NavigationApi;
 import org.openapitools.client.api.StandApi;
+import org.openapitools.client.model.NavigationRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,25 +28,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class VisitorControl {
     private final VisitorRepository visitorRepository;
-    private final KafkaProducer kafkaProducer;
     private final org.openapitools.client.api.StandApi standClient;
 
     private Random random = new Random();
 
     LocationTypeStrategy locationTypeStrategy;
 
+    private final NavigationApi navigationApi;
+
     private final ConcurrentHashMap<String, UUID> visitorsWaitingForOrder;
 
-    MovementService movementService;
-
     @Autowired
-    public VisitorControl(KafkaProducer kafkaProducer, MovementService movementService) {
-        this.kafkaProducer = kafkaProducer;
+    public VisitorControl(KafkaProducer kafkaProducer) {
         visitorRepository = new VisitorRepository();
-        this.movementService = movementService;
         this.locationTypeStrategy = new LocationTypeStrategy();
         this.visitorsWaitingForOrder = new ConcurrentHashMap<>();
         this.standClient = new StandApi();
+        this.navigationApi = new NavigationApi();
 
         locationTypeStrategy.register(
                 LocationType.FAIRYTALE, new VisitorFairyTaleStrategy(kafkaProducer));
@@ -49,18 +53,16 @@ public class VisitorControl {
     }
 
     public VisitorControl(
-            KafkaProducer kafkaProducer,
             VisitorRepository visitorRepository,
-            MovementService movementService,
             LocationTypeStrategy locationTypeStrategy,
             StandApi standApi,
-            ConcurrentHashMap<String, UUID> visitorsWaitingForOrder) {
-        this.kafkaProducer = kafkaProducer;
-        this.movementService = movementService;
+            ConcurrentHashMap<String, UUID> visitorsWaitingForOrder,
+            NavigationApi navigationApi) {
         this.visitorRepository = visitorRepository;
         this.visitorsWaitingForOrder = visitorsWaitingForOrder;
         this.standClient = standApi;
         this.locationTypeStrategy = locationTypeStrategy;
+        this.navigationApi = navigationApi;
     }
 
     @Scheduled(fixedDelay = 300)
@@ -86,24 +88,54 @@ public class VisitorControl {
                         return;
                     }
 
-                    movementService.setNextStepDistance(visitor);
                     visitor.clearAvailableAt();
 
-                    if (movementService.isInLocationRange(visitor)) {
+                    if (visitor.isAtDestination()) {
                         log.debug(
                                 "Visitor {} arrived at location {}",
                                 visitor.getId(),
                                 visitor.getTargetLocation().id());
                         visitor.getStrategy().startLocationActivity(visitor);
                     } else {
+                        if(visitor.getStepsToTarget().isEmpty()){
+                            getVisitorPath(visitor);
+                        }
                         log.debug(
                                 "Visitor {} walking to location {}",
                                 visitor.getId(),
                                 visitor.getTargetLocation().id());
-                        movementService.walkToDestination(visitor);
-                        this.setIdleVisitor(visitor);
+                        visitor.setNextStep();
+                        var millis = random.nextLong(1000);
+                        this.setIdleVisitor(visitor, LocalDateTime.now()
+                                .plus(1000+millis, ChronoUnit.MILLIS));
                     }
                 });
+    }
+
+    private void getVisitorPath(Visitor visitor) {
+        var navigationRequest = NavigationRequestDto.builder()
+                .startX(BigDecimal.valueOf(visitor.getCurrentCoordinates().x()))
+                .startY(BigDecimal.valueOf(visitor.getCurrentCoordinates().y()))
+                .destX(BigDecimal.valueOf(visitor.getTargetLocation().coordinate().x()))
+                .destY(BigDecimal.valueOf(visitor.getTargetLocation().coordinate().y()))
+                .build();
+        try{
+            var steps = navigationApi.postNavigate(navigationRequest);
+            visitor.setStepsToTarget(steps.stream()
+                    .map(gridLocation -> new Coordinates(
+                            gridLocation.getX().intValue(),
+                            gridLocation.getY().intValue()
+                    ))
+                    .collect(Collectors.toCollection(LinkedList::new))
+            );
+        } catch (ApiException e){
+            log.error("Could not fetch steps from {} {} to {} {}",
+                    visitor.getCurrentCoordinates().x(),
+                    visitor.getCurrentCoordinates().y(),
+                    visitor.getTargetLocation().coordinate().x(),
+                    visitor.getTargetLocation().coordinate().y(),
+                    e);
+        }
     }
 
     public void notifyOrderReady(String guid) {
@@ -150,7 +182,7 @@ public class VisitorControl {
 
     @Scheduled(fixedDelay = 1000)
     public void doVisitorAdditions() {
-        if (visitorRepository.all().size() <= 2000) {
+        if (visitorRepository.all().size() <= 5000) {
             var newVisitors = random.nextInt(10) + 5;
             addVisitors(newVisitors);
         }
@@ -175,8 +207,8 @@ public class VisitorControl {
     private void setIdleVisitor(Visitor visitor) {
         visitor.setAvailableAt(LocalDateTime.now());
     }
-    private void setIdleVisitor(Visitor visitor, LocalDateTime localDateTime)
-    {
+
+    private void setIdleVisitor(Visitor visitor, LocalDateTime localDateTime) {
         visitor.setAvailableAt(localDateTime);
     }
 }
