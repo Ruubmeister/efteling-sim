@@ -1,25 +1,22 @@
+mod grid;
+
 use pathfinding::prelude::astar;
 use actix_web::{App, HttpServer, Result, web, HttpResponse, http::Error};
 use serde::Deserialize;
 use visitor_route::{Board, Pos};
+use grid::get_grid;
 
 #[derive(Deserialize)]
 struct PFRequest {
-    start_x: i16,
-    start_y: i16,
-    dest_x: i16,
-    dest_y: i16
+    start_x: i32,
+    start_y: i32,
+    dest_x: i32,
+    dest_y: i32
 }
 
 fn get_board() -> Board {
-  return Board::new(vec![
-    "21397X2",
-    "1X19452",
-    "62251X1",
-    "1612179",
-    "1348512",
-    "61453X1",
-    "7861243"], false);
+  let grid: Vec<&str> = get_grid();
+  return Board::new(grid, false);
 }
 
 fn get_path(start: Pos, dest: Pos) -> String {
@@ -57,7 +54,7 @@ async fn index(info: web::Json<PFRequest>) -> Result<HttpResponse, Error>  {
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-          .route("/", web::post().to(index))
+          .route("/api/v1/navigate", web::post().to(index))
     })
     .bind(("127.0.0.1", 49985))?
     .run()

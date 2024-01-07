@@ -17,6 +17,38 @@ components:
         lon:
           type: number
           format: double
+    gridLocationDto:
+      type: object
+      required:
+        - x
+        - y
+      properties:
+        x:
+          type: number
+          format: int32
+        y:
+          type: number
+          format: int32
+    navigationRequestDto:
+      type: object
+      required:
+        - start_x
+        - start_y
+        - dest_x
+        - dest_y
+      properties:
+        start_x:
+          type: number
+          format: int32
+        start_y:
+          type: number
+          format: int32
+        dest_x:
+          type: number
+          format: int32
+        dest_y:
+          type: number
+          format: int32
     dinnerDto:
       type: object
       required:
@@ -57,6 +89,7 @@ components:
         - name
         - coordinates
         - locationType
+        - location
       properties:
         id:
           type: string
@@ -67,6 +100,8 @@ components:
           $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
     rideDto:
       type: object
       required:
@@ -83,6 +118,7 @@ components:
         - employeesToSkill
         - coordinates
         - locationType
+        - location
         - status
       properties:
         id:
@@ -113,6 +149,8 @@ components:
           $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
         status:
           type: string
           enum:
@@ -128,6 +166,7 @@ components:
         - locationType
         - meals
         - drinks
+        - location
       properties:
         id:
           type: string
@@ -138,6 +177,8 @@ components:
           $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
         meals:
           type: array
           items:
@@ -159,11 +200,15 @@ components:
           type: string
         currentLocation:
           $ref: '#/components/schemas/coordinatesDto'
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
         length:
           type: number
           format: float
         targetLocation:
           $ref: '#/components/schemas/coordinatesDto'
+        target:
+          $ref: '#/components/schemas/gridLocationDto'
         step:
           type: number
     workplaceDto:
@@ -487,3 +532,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/visitorDto'
+# Navigation
+  /api/v1/navigate:
+    servers:
+      - url: http://navigation:49985
+    post:
+      operationId: postNavigate    
+      tags:
+        - navigation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/navigationRequestDto'
+      responses:
+        '200':
+          description: Route to destination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/gridLocationDto'

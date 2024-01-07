@@ -24,9 +24,9 @@ public class FairyTaleDeserializerTest {
         var input =
                 "{"
                         + "    \"name\": \"Doornroosje\","
-                        + "    \"coordinate\": {"
-                        + "      \"x\": 51.65078,"
-                        + "      \"y\": 5.04723"
+                        + "    \"location\": {"
+                        + "      \"x\": 10,"
+                        + "      \"y\": 20"
                         + "    }"
                         + "  }";
 
@@ -45,9 +45,9 @@ public class FairyTaleDeserializerTest {
         var input =
                 "[{"
                         + "    \"name\": \"Doornroosje\","
-                        + "    \"coordinate\": {"
-                        + "      \"x\": 51.65078,"
-                        + "      \"y\": 5.04723"
+                        + "    \"location\": {"
+                        + "      \"x\": 10,"
+                        + "      \"y\": 20"
                         + "    }"
                         + "  }]";
 

@@ -1,24 +1,25 @@
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct Pos(pub i16, pub i16);
+pub struct Pos(pub i32, pub i32);
 
 pub struct Board {
-    pub width: u8,
-    pub height: u8,
-    pub data: Vec<Vec<Option<u8>>>,
+    pub width: u16,
+    pub height: u16,
+    pub data: Vec<Vec<Option<u16>>>,
     pub allow_diagonal: bool
 }
 
 impl Board {
     pub fn new(board_lines: Vec<&str>, allow_diagonal: bool) -> Board {
-        let width = board_lines[0].len() as u8;
-        let height = board_lines.len() as u8;
+        let width = board_lines[0].len() as u16;
+        let height = board_lines.len() as u16;
         let mut data = Vec::new();
         for board_line in board_lines {
-            let mut row: Vec<Option<u8>> = Vec::new();
+            let mut row: Vec<Option<u16>> = Vec::new();
             for c in board_line.chars() {
                 match c {
+                    'x' => row.push(None),
                     'X' => row.push(None),
-                    '1'..='9' => row.push(Some(c as u8 - b'0')),
+                    '1'..='9' => row.push(Some((c as u8 - b'0').into())),
                     _ => panic!("invalid character")
                 }
             }
@@ -29,8 +30,8 @@ impl Board {
 
     pub fn get_successors(&self, position: &Pos) -> Vec<Successor> {
         let mut successors = Vec::new();
-        for dx in -1i16..=1 {
-            for dy in -1i16..=1 {
+        for dx in -1i32..=1 {
+            for dy in -1i32..=1 {
                 if self.allow_diagonal {
                     if dx == 0 && dy == 0 {
                         continue;

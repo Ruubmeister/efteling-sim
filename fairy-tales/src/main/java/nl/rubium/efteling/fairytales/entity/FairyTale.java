@@ -2,15 +2,15 @@ package nl.rubium.efteling.fairytales.entity;
 
 import lombok.Getter;
 import nl.rubium.efteling.common.location.entity.Location;
+import nl.rubium.efteling.common.location.entity.LocationCoordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
-import org.locationtech.jts.geom.Coordinate;
 import org.openapitools.client.model.CoordinatesDto;
 import org.openapitools.client.model.FairyTaleDto;
 
 @Getter
 public class FairyTale extends Location {
-    public FairyTale(String name, Coordinate coordinate) {
-        super(name, coordinate, LocationType.FAIRYTALE);
+    public FairyTale(String name, LocationCoordinates coordinate) {
+        super(name, LocationType.FAIRYTALE, coordinate);
     }
 
     public FairyTaleDto toDto() {

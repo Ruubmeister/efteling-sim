@@ -11,6 +11,10 @@
     "coordinates": {
       "lat": 51.64829,
       "long": 5.05073
+    },
+    "location": {
+      "x": 254,
+      "y": 237
     }
   },
   {
@@ -25,6 +29,10 @@
     "coordinates": {
       "lat": 51.65224,
       "long": 5.05222
+    },
+    "location": {
+      "x": 292,
+      "y": 67
     }
   },
   {
@@ -39,6 +47,10 @@
     "coordinates": {
       "lat": 51.65233,
       "long": 5.04612
+    },
+    "location": {
+      "x": 133,
+      "y": 46
     }
   },
   {
@@ -53,6 +65,10 @@
     "coordinates": {
       "lat": 51.64900,
       "long": 5.04673
+    },
+    "location": {
+      "x": 141,
+      "y": 210
     }
   },
   {
@@ -67,6 +83,10 @@
     "coordinates": {
       "lat": 51.64719,
       "long": 5.04529
+    },
+    "location": {
+      "x": 115,
+      "y": 300
     }
   },
   {
@@ -81,6 +101,10 @@
     "coordinates": {
       "lat": 51.65049,
       "long": 5.05124
+    },
+    "location": {
+      "x": 261,
+      "y": 139
     }
   },
   {
@@ -95,6 +119,10 @@
     "coordinates": {
       "lat": 51.64877,
       "long": 5.05341
+    },
+    "location": {
+      "x": 327,
+      "y": 221
     }
   },
   {
@@ -109,10 +137,14 @@
     "coordinates": {
       "lat": 51.64686,
       "long": 5.05244
+    },
+    "location": {
+      "x": 305,
+      "y": 305
     }
   },
   {
-    "name": "Monsieur Cannibale",
+    "name": "Sirocco",
     "minimumAge": "0",
     "minimumLength": "0",
     "duration": {
@@ -123,6 +155,10 @@
     "coordinates": {
       "lat": 51.64820,
       "long": 5.05352
+    },
+    "location": {
+      "x": 295,
+      "y": 87
     }
   },
   {
@@ -137,6 +173,10 @@
     "coordinates": {
       "lat": 51.65043,
       "long": 5.05072
+    },
+    "location": {
+      "x": 255,
+      "y": 139
     }
   },
   {
@@ -151,20 +191,10 @@
     "coordinates": {
       "lat": 51.64723,
       "long": 5.04894
-    }
-  },
-  {
-    "name": "Spookslot",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 15,
-      "seconds": 0
     },
-    "maxPersons": 80,
-    "coordinates": {
-      "lat": 51.64876,
-      "long": 5.04853
+    "location": {
+      "x": 203,
+      "y": 289
     }
   },
   {
@@ -179,6 +209,10 @@
     "coordinates": {
       "lat": 51.64763,
       "long": 5.05361
+    },
+    "location": {
+      "x": 326,
+      "y": 278
     }
   },
   {
@@ -193,6 +227,10 @@
     "coordinates": {
       "lat": 51.65003,
       "long": 5.04974
+    },
+    "location": {
+      "x": 226,
+      "y": 165
     }
   },
   {
@@ -207,6 +245,10 @@
     "coordinates": {
       "lat": 51.65302,
       "long": 5.04727
+    },
+    "location": {
+      "x": 161,
+      "y": 27
     }
   },
   {
@@ -221,6 +263,10 @@
     "coordinates": {
       "lat": 51.64756,
       "long": 5.05224
+    },
+    "location": {
+      "x": 296,
+      "y": 275
     }
   },
   {
@@ -235,6 +281,10 @@
     "coordinates": {
       "lat": 51.65210,
       "long": 5.05268
+    },
+    "location": {
+      "x": 308,
+      "y": 62
     }
   },
   {
@@ -249,20 +299,10 @@
     "coordinates": {
       "lat": 51.65281,
       "long": 5.04902
-    }
-  },
-  {
-    "name": "Land van Laaf",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 3,
-      "seconds": 0
     },
-    "maxPersons": 40,
-    "coordinates": {
-      "lat": 51.65328,
-      "long": 5.04854
+    "location": {
+      "x": 205,
+      "y": 37
     }
   },
   {
@@ -277,6 +317,10 @@
     "coordinates": {
       "lat": 51.65304,
       "long": 5.04627
+    },
+    "location": {
+      "x": 126,
+      "y": 25
     }
   },
   {
@@ -291,6 +335,10 @@
     "coordinates": {
       "lat": 51.65221,
       "long": 5.04916
+    },
+    "location": {
+      "x": 216,
+      "y": 56
     }
   },
   {
@@ -305,6 +353,10 @@
     "coordinates": {
       "lat": 51.65256,
       "long": 5.05010
+    },
+    "location": {
+      "x": 233,
+      "y": 49
     }
   },
   {
@@ -319,20 +371,10 @@
     "coordinates": {
       "lat": 51.65283,
       "long": 5.04991
-    }
-  },
-  {
-    "name": "Monsieur Canibale",
-    "minimumAge": "0",
-    "minimumLength": "0",
-    "duration": {
-      "minutes": 4,
-      "seconds": 30
     },
-    "maxPersons": 20,
-    "coordinates": {
-      "lat": 51.65169,
-      "long": 5.05205
+    "location": {
+      "x": 230,
+      "y": 39
     }
   },
   {
@@ -347,6 +389,10 @@
     "coordinates": {
       "lat": 51.64975,
       "long": 5.05339
+    },
+    "location": {
+      "x": 329,
+      "y": 177
     }
   },
   {
@@ -361,6 +407,10 @@
     "coordinates": {
       "lat": 51.64808,
       "long": 5.04741
+    },
+    "location": {
+      "x": 156,
+      "y": 255
     }
   }
 ]

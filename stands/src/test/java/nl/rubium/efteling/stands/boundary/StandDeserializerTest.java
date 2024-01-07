@@ -1,16 +1,15 @@
 package nl.rubium.efteling.stands.boundary;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.util.List;
 import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.stands.entity.Stand;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StandDeserializerTest {
 
@@ -22,25 +21,25 @@ public class StandDeserializerTest {
         mapper.registerModule(module);
 
         var input =
-                "{\n" +
-                        "    \"name\": \"De Gulden Gaarde\",\n" +
-                        "    \"coordinates\": {\n" +
-                        "      \"lat\": 51.6522,\n" +
-                        "      \"long\": 5.04609\n" +
-                        "    },\n" +
-                        "    \"products\": [\n" +
-                        "      {\n" +
-                        "        \"name\": \"Appelpannenkoek\",\n" +
-                        "        \"price\": 6.70,\n" +
-                        "        \"type\": \"meal\"\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"name\": \"Cola\",\n" +
-                        "        \"price\": 1.60,\n" +
-                        "        \"type\": \"drink\"\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }";
+                "{\n"
+                        + "    \"name\": \"De Gulden Gaarde\",\n"
+                        + "    \"location\": {\n"
+                        + "      \"x\": 2,\n"
+                        + "      \"y\": 10\n"
+                        + "    },\n"
+                        + "    \"products\": [\n"
+                        + "      {\n"
+                        + "        \"name\": \"Appelpannenkoek\",\n"
+                        + "        \"price\": 6.70,\n"
+                        + "        \"type\": \"meal\"\n"
+                        + "      },\n"
+                        + "      {\n"
+                        + "        \"name\": \"Cola\",\n"
+                        + "        \"price\": 1.60,\n"
+                        + "        \"type\": \"drink\"\n"
+                        + "      }\n"
+                        + "    ]\n"
+                        + "  }";
 
         var output = mapper.readValue(input, Location.class);
 
@@ -55,29 +54,30 @@ public class StandDeserializerTest {
         mapper.registerModule(module);
 
         var input =
-                "[{\n" +
-                        "    \"name\": \"De Gulden Gaarde\",\n" +
-                        "    \"coordinates\": {\n" +
-                        "      \"lat\": 51.6522,\n" +
-                        "      \"long\": 5.04609\n" +
-                        "    },\n" +
-                        "    \"products\": [\n" +
-                        "      {\n" +
-                        "        \"name\": \"Appelpannenkoek\",\n" +
-                        "        \"price\": 6.70,\n" +
-                        "        \"type\": \"meal\"\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"name\": \"Cola\",\n" +
-                        "        \"price\": 1.60,\n" +
-                        "        \"type\": \"drink\"\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }]";
+                "[{\n"
+                        + "    \"name\": \"De Gulden Gaarde\",\n"
+                        + "    \"location\": {\n"
+                        + "      \"x\": 2,\n"
+                        + "      \"y\": 10\n"
+                        + "    },\n"
+                        + "    \"products\": [\n"
+                        + "      {\n"
+                        + "        \"name\": \"Appelpannenkoek\",\n"
+                        + "        \"price\": 6.70,\n"
+                        + "        \"type\": \"meal\"\n"
+                        + "      },\n"
+                        + "      {\n"
+                        + "        \"name\": \"Cola\",\n"
+                        + "        \"price\": 1.60,\n"
+                        + "        \"type\": \"drink\"\n"
+                        + "      }\n"
+                        + "    ]\n"
+                        + "  }]";
 
-        JavaType fairyTaleListType = mapper.getTypeFactory().constructCollectionType(List.class, Location.class);
+        JavaType fairyTaleListType =
+                mapper.getTypeFactory().constructCollectionType(List.class, Location.class);
 
-        var output = (List<Stand>)mapper.readValue(input, fairyTaleListType);
+        var output = (List<Stand>) mapper.readValue(input, fairyTaleListType);
 
         assertEquals("De Gulden Gaarde", output.get(0).getName());
     }
