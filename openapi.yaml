@@ -5,18 +5,6 @@ info:
   version: 0.0.1
 components:
   schemas:
-    coordinatesDto:
-      type: object
-      required:
-        - lat
-        - lon
-      properties:
-        lat:
-          type: number
-          format: double
-        lon:
-          type: number
-          format: double
     gridLocationDto:
       type: object
       required:
@@ -87,7 +75,6 @@ components:
       required:
         - id
         - name
-        - coordinates
         - locationType
         - location
       properties:
@@ -96,8 +83,6 @@ components:
           format: uuid
         name:
           type: string
-        coordinates:
-          $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
         location:
@@ -116,7 +101,6 @@ components:
         - visitorsInRide
         - endTime
         - employeesToSkill
-        - coordinates
         - locationType
         - location
         - status
@@ -145,8 +129,6 @@ components:
           type: object
           additionalProperties:
             type: string
-        coordinates:
-          $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
         location:
@@ -162,7 +144,6 @@ components:
       required:
         - id
         - name
-        - coordinates
         - locationType
         - meals
         - drinks
@@ -173,8 +154,6 @@ components:
           format: uuid
         name:
           type: string
-        coordinates:
-          $ref: '#/components/schemas/coordinatesDto'
         locationType:
           type: string
         location:
@@ -198,15 +177,11 @@ components:
           format: uuid
         dateOfBirth:
           type: string
-        currentLocation:
-          $ref: '#/components/schemas/coordinatesDto'
         location:
           $ref: '#/components/schemas/gridLocationDto'
         length:
           type: number
           format: float
-        targetLocation:
-          $ref: '#/components/schemas/coordinatesDto'
         target:
           $ref: '#/components/schemas/gridLocationDto'
         step:

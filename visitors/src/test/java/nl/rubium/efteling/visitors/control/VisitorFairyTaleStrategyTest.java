@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 import nl.rubium.efteling.common.event.entity.EventSource;
@@ -23,8 +24,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openapitools.client.model.CoordinatesDto;
 import org.openapitools.client.model.FairyTaleDto;
+import org.openapitools.client.model.GridLocationDto;
 
 @ExtendWith(MockitoExtension.class)
 public class VisitorFairyTaleStrategyTest {
@@ -61,8 +62,8 @@ public class VisitorFairyTaleStrategyTest {
                 new FairyTaleDto(
                         UUID.randomUUID(),
                         null,
-                        new CoordinatesDto(1.0, 1.0),
-                        LocationType.FAIRYTALE.toString());
+                        LocationType.FAIRYTALE.toString(),
+                        new GridLocationDto(BigDecimal.ONE, BigDecimal.TEN));
         doReturn(fairyTale).when(fairyTaleApi).getNewFairyTale(any(), any());
 
         var lastLocation =
@@ -70,8 +71,11 @@ public class VisitorFairyTaleStrategyTest {
                         new FairyTaleDto(
                                 UUID.randomUUID(),
                                 null,
-                                new CoordinatesDto(1.0, 1.0),
-                                LocationType.FAIRYTALE.toString()));
+                                LocationType.FAIRYTALE.toString(),
+                                GridLocationDto.builder()
+                                        .x(BigDecimal.ONE)
+                                        .y(BigDecimal.TEN)
+                                        .build()));
         var visitor = SFVisitor.getVisitor(lastLocation);
 
         visitorFairyTaleStrategy.setNewLocation(visitor);
@@ -88,8 +92,8 @@ public class VisitorFairyTaleStrategyTest {
                 new FairyTaleDto(
                         UUID.randomUUID(),
                         null,
-                        new CoordinatesDto(1.0, 1.0),
-                        LocationType.FAIRYTALE.toString());
+                        LocationType.FAIRYTALE.toString(),
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build());
         doReturn(fairyTale).when(fairyTaleApi).getRandomFairyTale();
 
         var lastLocation =
@@ -97,8 +101,11 @@ public class VisitorFairyTaleStrategyTest {
                         new FairyTaleDto(
                                 UUID.randomUUID(),
                                 null,
-                                new CoordinatesDto(1.0, 1.0),
-                                LocationType.FAIRYTALE.toString()));
+                                LocationType.FAIRYTALE.toString(),
+                                GridLocationDto.builder()
+                                        .x(BigDecimal.ONE)
+                                        .y(BigDecimal.TEN)
+                                        .build()));
         var visitor = SFVisitor.getVisitor(lastLocation);
 
         visitorFairyTaleStrategy.setNewLocation(visitor);
@@ -121,8 +128,11 @@ public class VisitorFairyTaleStrategyTest {
                         new FairyTaleDto(
                                 UUID.randomUUID(),
                                 null,
-                                new CoordinatesDto(1.0, 1.0),
-                                LocationType.FAIRYTALE.toString()));
+                                LocationType.FAIRYTALE.toString(),
+                                GridLocationDto.builder()
+                                        .x(BigDecimal.ONE)
+                                        .y(BigDecimal.TEN)
+                                        .build()));
         var visitor = SFVisitor.getVisitor(lastLocation);
 
         visitorFairyTaleStrategy.setNewLocation(visitor);

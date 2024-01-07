@@ -22,6 +22,11 @@ public class LocationService<T extends Location> {
         this.navigationApi = new NavigationApi();
     }
 
+    public LocationService(ObjectMapper objectMapper, NavigationApi navigationApi) {
+        this.objectMapper = objectMapper;
+        this.navigationApi = navigationApi;
+    }
+
     public void calculateLocationDistances(CopyOnWriteArrayList<T> locations) {
         locations.forEach(
                 location -> {

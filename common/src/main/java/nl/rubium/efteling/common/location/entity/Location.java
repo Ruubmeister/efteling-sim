@@ -16,10 +16,9 @@ public abstract class Location {
     private final String name;
     private final LocationType locationType;
     private final SortedMap<Integer, UUID> distanceToOthers;
-    private final LocationCoordinates locationCoordinates;
+    private final Coordinates locationCoordinates;
 
-    public Location(
-            String name, LocationType locationType, LocationCoordinates locationCoordinates) {
+    public Location(String name, LocationType locationType, Coordinates locationCoordinates) {
         id = UUID.randomUUID();
         this.name = name;
         this.locationType = locationType;

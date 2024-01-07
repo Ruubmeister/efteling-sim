@@ -7,7 +7,7 @@ public class LocationTestImpl extends Location {
     @JsonCreator
     public LocationTestImpl(
             @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "location") LocationCoordinates locationCoordinates) {
+            @JsonProperty(value = "location") Coordinates locationCoordinates) {
         super(name, LocationType.RIDE, locationCoordinates);
     }
 }

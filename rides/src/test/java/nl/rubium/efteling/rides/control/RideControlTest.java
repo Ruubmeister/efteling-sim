@@ -36,6 +36,7 @@ public class RideControlTest {
 
     @Mock org.openapitools.client.api.VisitorApi visitorClient;
 
+
     RideControl rideControl;
 
     @BeforeEach
@@ -71,10 +72,10 @@ public class RideControlTest {
         var ride4 = SFRide.getRide("FT4");
         var ride5 = SFRide.getRide("FT5");
 
-        ride1.addDistanceToOther(1.0, ride3.getId());
-        ride1.addDistanceToOther(44.0, ride2.getId());
-        ride1.addDistanceToOther(85.0, ride5.getId());
-        ride1.addDistanceToOther(2.0, ride4.getId());
+        ride1.addDistanceToOther(1, ride3.getId());
+        ride1.addDistanceToOther(44, ride2.getId());
+        ride1.addDistanceToOther(85, ride5.getId());
+        ride1.addDistanceToOther(2, ride4.getId());
 
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);
@@ -95,10 +96,10 @@ public class RideControlTest {
         var ride4 = SFRide.getRide("FT4");
         var ride5 = SFRide.getRide("FT5");
 
-        ride1.addDistanceToOther(1.0, ride3.getId());
-        ride1.addDistanceToOther(44.0, ride2.getId());
-        ride1.addDistanceToOther(85.0, ride5.getId());
-        ride1.addDistanceToOther(2.0, ride4.getId());
+        ride1.addDistanceToOther(1, ride3.getId());
+        ride1.addDistanceToOther(44, ride2.getId());
+        ride1.addDistanceToOther(85, ride5.getId());
+        ride1.addDistanceToOther(2, ride4.getId());
 
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);

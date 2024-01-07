@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -15,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.boundary.KafkaProducer;
 import nl.rubium.efteling.visitors.entity.Location;
@@ -23,7 +24,6 @@ import nl.rubium.efteling.visitors.entity.VisitorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -34,8 +34,6 @@ public class VisitorControlTest {
     @Mock private KafkaProducer kafkaProducer;
 
     @Mock private org.openapitools.client.api.StandApi standApi;
-
-    @Mock private MovementService movementService;
 
     @Mock private LocationTypeStrategy locationTypeStrategy;
 
@@ -49,7 +47,6 @@ public class VisitorControlTest {
                 new VisitorControl(
                         kafkaProducer,
                         visitorRepository,
-                        movementService,
                         locationTypeStrategy,
                         standApi,
                         new ConcurrentHashMap<>());
@@ -80,13 +77,13 @@ public class VisitorControlTest {
                 List.of(
                         SFVisitor.getVisitor(
                                 new Location(
-                                        UUID.randomUUID(), LocationType.STAND, new Coordinate()),
+                                        UUID.randomUUID(),
+                                        LocationType.STAND,
+                                        new Coordinates(1, 5)),
                                 strategy,
                                 LocalDateTime.now().minusMinutes(1)));
 
-        doNothing().when(movementService).setNextStepDistance(any());
         doReturn(visitors).when(visitorRepository).idleVisitors();
-        doReturn(true).when(movementService).isInLocationRange(any());
 
         visitorControl.handleIdleVisitors();
 
@@ -101,18 +98,20 @@ public class VisitorControlTest {
                 List.of(
                         SFVisitor.getVisitor(
                                 new Location(
-                                        UUID.randomUUID(), LocationType.STAND, new Coordinate()),
+                                        UUID.randomUUID(),
+                                        LocationType.STAND,
+                                        new Coordinates(1, 2)),
                                 strategy,
                                 idleTime));
 
-        doNothing().when(movementService).setNextStepDistance(any());
         doReturn(visitors).when(visitorRepository).idleVisitors();
-        doReturn(false).when(movementService).isInLocationRange(any());
+
+        assertNotEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
 
         visitorControl.handleIdleVisitors();
 
-        verify(movementService).walkToDestination(any());
         assertNotEquals(idleTime, visitors.get(0).getAvailableAt());
+        assertEquals(new Coordinates(9, 11), visitors.get(0).getCurrentCoordinates());
     }
 
     @Test

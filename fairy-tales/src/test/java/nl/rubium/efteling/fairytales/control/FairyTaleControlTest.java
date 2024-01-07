@@ -84,10 +84,10 @@ public class FairyTaleControlTest {
         var ft4 = SFFairyTale.getFairyTale("FT4");
         var ft5 = SFFairyTale.getFairyTale("FT5");
 
-        ft1.addDistanceToOther(1.0, ft3.getId());
-        ft1.addDistanceToOther(44.0, ft2.getId());
-        ft1.addDistanceToOther(85.0, ft5.getId());
-        ft1.addDistanceToOther(2.0, ft4.getId());
+        ft1.addDistanceToOther(1, ft3.getId());
+        ft1.addDistanceToOther(44, ft2.getId());
+        ft1.addDistanceToOther(85, ft5.getId());
+        ft1.addDistanceToOther(2, ft4.getId());
 
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>(List.of(ft1, ft2, ft3, ft4, ft5));
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);
@@ -108,10 +108,10 @@ public class FairyTaleControlTest {
         var ft4 = SFFairyTale.getFairyTale("FT4");
         var ft5 = SFFairyTale.getFairyTale("FT5");
 
-        ft1.addDistanceToOther(1.0, ft3.getId());
-        ft1.addDistanceToOther(44.0, ft2.getId());
-        ft1.addDistanceToOther(85.0, ft5.getId());
-        ft1.addDistanceToOther(2.0, ft4.getId());
+        ft1.addDistanceToOther(1, ft3.getId());
+        ft1.addDistanceToOther(44, ft2.getId());
+        ft1.addDistanceToOther(85, ft5.getId());
+        ft1.addDistanceToOther(2, ft4.getId());
 
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>(List.of(ft1, ft2, ft3, ft4, ft5));
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);

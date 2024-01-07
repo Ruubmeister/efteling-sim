@@ -2,13 +2,10 @@ package nl.rubium.efteling.visitors.control;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
-import nl.rubium.efteling.common.event.entity.EventSource;
-import nl.rubium.efteling.common.event.entity.EventType;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.boundary.KafkaProducer;
 import nl.rubium.efteling.visitors.entity.Visitor;
@@ -31,13 +28,10 @@ public class VisitorControl {
 
     private final ConcurrentHashMap<String, UUID> visitorsWaitingForOrder;
 
-    MovementService movementService;
-
     @Autowired
-    public VisitorControl(KafkaProducer kafkaProducer, MovementService movementService) {
+    public VisitorControl(KafkaProducer kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
         visitorRepository = new VisitorRepository();
-        this.movementService = movementService;
         this.locationTypeStrategy = new LocationTypeStrategy();
         this.visitorsWaitingForOrder = new ConcurrentHashMap<>();
         this.standClient = new StandApi();
@@ -51,12 +45,10 @@ public class VisitorControl {
     public VisitorControl(
             KafkaProducer kafkaProducer,
             VisitorRepository visitorRepository,
-            MovementService movementService,
             LocationTypeStrategy locationTypeStrategy,
             StandApi standApi,
             ConcurrentHashMap<String, UUID> visitorsWaitingForOrder) {
         this.kafkaProducer = kafkaProducer;
-        this.movementService = movementService;
         this.visitorRepository = visitorRepository;
         this.visitorsWaitingForOrder = visitorsWaitingForOrder;
         this.standClient = standApi;
@@ -86,10 +78,9 @@ public class VisitorControl {
                         return;
                     }
 
-                    movementService.setNextStepDistance(visitor);
                     visitor.clearAvailableAt();
 
-                    if (movementService.isInLocationRange(visitor)) {
+                    if (visitor.isAtDestination()) {
                         log.debug(
                                 "Visitor {} arrived at location {}",
                                 visitor.getId(),
@@ -100,7 +91,7 @@ public class VisitorControl {
                                 "Visitor {} walking to location {}",
                                 visitor.getId(),
                                 visitor.getTargetLocation().id());
-                        movementService.walkToDestination(visitor);
+                        visitor.setNextStep();
                         this.setIdleVisitor(visitor);
                     }
                 });
@@ -175,8 +166,8 @@ public class VisitorControl {
     private void setIdleVisitor(Visitor visitor) {
         visitor.setAvailableAt(LocalDateTime.now());
     }
-    private void setIdleVisitor(Visitor visitor, LocalDateTime localDateTime)
-    {
+
+    private void setIdleVisitor(Visitor visitor, LocalDateTime localDateTime) {
         visitor.setAvailableAt(localDateTime);
     }
 }
