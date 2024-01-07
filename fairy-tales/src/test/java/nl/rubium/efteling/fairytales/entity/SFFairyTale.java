@@ -1,14 +1,14 @@
 package nl.rubium.efteling.fairytales.entity;
 
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 
 public class SFFairyTale {
 
-    public static FairyTale getFairyTale(String name, LocationCoordinates coordinate) {
+    public static FairyTale getFairyTale(String name, Coordinates coordinate) {
         return new FairyTale(name, coordinate);
     }
 
     public static FairyTale getFairyTale(String name) {
-        return new FairyTale(name, new LocationCoordinates(1, 2));
+        return new FairyTale(name, new Coordinates(1, 2));
     }
 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
 
 public class FairyTaleDeserializer extends StdDeserializer<Location> {
@@ -25,7 +25,7 @@ public class FairyTaleDeserializer extends StdDeserializer<Location> {
         String name = node.get("name").asText();
 
         var locationCoordinates =
-                new LocationCoordinates(
+                new Coordinates(
                         node.get("location").findPath("x").asInt(),
                         node.get("location").findPath("y").asInt());
 

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
 import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import org.openapitools.client.model.GridLocationDto;
 import org.openapitools.client.model.StandDto;
@@ -14,7 +14,7 @@ public class Stand extends Location {
     private final List<Product> meals;
     private final List<Product> drinks;
 
-    public Stand(String name, List<Product> products, LocationCoordinates coordinates) {
+    public Stand(String name, List<Product> products, Coordinates coordinates) {
         super(name, LocationType.STAND, coordinates);
         this.meals = products.stream().filter(Product::isMeal).toList();
         this.drinks = products.stream().filter(Product::isDrink).toList();

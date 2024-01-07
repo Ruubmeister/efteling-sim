@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.time.Duration;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
 import nl.rubium.efteling.rides.entity.Ride;
 import nl.rubium.efteling.rides.entity.RideStatus;
 
@@ -35,7 +35,7 @@ public class RideDeserializer extends StdDeserializer<Location> {
         int maxPersons = node.get("maxPersons").asInt();
 
         var locationCoordinates =
-                new LocationCoordinates(
+                new Coordinates(
                         node.get("location").findPath("x").asInt(),
                         node.get("location").findPath("y").asInt());
 

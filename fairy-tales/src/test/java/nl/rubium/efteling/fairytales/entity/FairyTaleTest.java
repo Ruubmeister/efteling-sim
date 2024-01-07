@@ -3,7 +3,7 @@ package nl.rubium.efteling.fairytales.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.Coordinate;
@@ -16,7 +16,7 @@ public class FairyTaleTest {
 
     @Test
     public void construct_createFairyTale_expectFairyTale() {
-        var fairyTale = SFFairyTale.getFairyTale("Snow white", new LocationCoordinates(5, 10));
+        var fairyTale = SFFairyTale.getFairyTale("Snow white", new Coordinates(5, 10));
 
         assertEquals("Snow white", fairyTale.getName());
         assertFalse(fairyTale.getId().toString().isBlank());
@@ -24,7 +24,7 @@ public class FairyTaleTest {
 
     @Test
     public void toDto_givenFairyTale_expectFairyTaleDto() {
-        var fairyTale = new FairyTale("Snow white", new LocationCoordinates(5, 10));
+        var fairyTale = new FairyTale("Snow white", new Coordinates(5, 10));
 
         var dto = fairyTale.toDto();
 

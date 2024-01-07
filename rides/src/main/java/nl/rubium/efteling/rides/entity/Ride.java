@@ -11,8 +11,8 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import org.openapitools.client.model.RideDto;
@@ -38,7 +38,7 @@ public class Ride extends Location {
             float minimumLength,
             Duration duration,
             int maxPersons,
-            LocationCoordinates locationCoordinates) {
+            Coordinates locationCoordinates) {
         super(name, LocationType.RIDE, locationCoordinates);
         this.status = status;
         this.minimumAge = minimumAge;

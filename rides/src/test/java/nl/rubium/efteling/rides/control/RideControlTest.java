@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.rides.boundary.KafkaProducer;
@@ -36,14 +36,13 @@ public class RideControlTest {
 
     @Mock org.openapitools.client.api.VisitorApi visitorClient;
 
-
     RideControl rideControl;
 
     @BeforeEach
     public void init() {
         var rideList = new CopyOnWriteArrayList<Ride>();
-        rideList.add(SFRide.getRide("Rollercoaster", new LocationCoordinates(10, 20)));
-        rideList.add(SFRide.getRide("Rollercoaster", new LocationCoordinates(11, 21)));
+        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(10, 20)));
+        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(11, 21)));
 
         var rideRepository = new LocationRepository<>(rideList);
 
@@ -117,10 +116,10 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(11, 21), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(11, 21), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -140,9 +139,9 @@ public class RideControlTest {
     void openRides_givenRidesAreOpen_nothingHappens() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new LocationCoordinates(10, 20), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(10, 20), RideStatus.OPEN));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new LocationCoordinates(11, 21), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(11, 21), RideStatus.OPEN));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -162,9 +161,9 @@ public class RideControlTest {
     void closeRides_givenRidesAreOpen_allRidesAreClosed() {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
-                SFRide.getRide("Rollercoaster", new LocationCoordinates(10, 20), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(10, 20), RideStatus.OPEN));
         rideList.add(
-                SFRide.getRide("Rollercoaster", new LocationCoordinates(11, 21), RideStatus.OPEN));
+                SFRide.getRide("Rollercoaster", new Coordinates(11, 21), RideStatus.OPEN));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -185,10 +184,10 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -243,10 +242,10 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -262,13 +261,13 @@ public class RideControlTest {
         var ride1 =
                 SFRide.getRide(
                         "Rollercoaster",
-                        new LocationCoordinates(10, 20),
+                        new Coordinates(10, 20),
                         RideStatus.OPEN,
                         Duration.ofSeconds(5));
         var ride2 =
                 SFRide.getRide(
                         "Rollercoaster",
-                        new LocationCoordinates(10, 20),
+                        new Coordinates(10, 20),
                         RideStatus.OPEN,
                         Duration.ofSeconds(5));
         var visitor1 = SFVisitor.getVisitor();
@@ -300,13 +299,13 @@ public class RideControlTest {
         var ride1 =
                 SFRide.getRide(
                         "Rollercoaster",
-                        new LocationCoordinates(10, 20),
+                        new Coordinates(10, 20),
                         RideStatus.OPEN,
                         Duration.ofSeconds(-1));
         var ride2 =
                 SFRide.getRide(
                         "Rollercoaster",
-                        new LocationCoordinates(10, 20),
+                        new Coordinates(10, 20),
                         RideStatus.OPEN,
                         Duration.ofSeconds(-1));
         var visitor1 = SFVisitor.getVisitor();
@@ -347,7 +346,7 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
@@ -361,7 +360,7 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>();
         rideList.add(
                 SFRide.getRide(
-                        "Rollercoaster", new LocationCoordinates(10, 20), RideStatus.CLOSED));
+                        "Rollercoaster", new Coordinates(10, 20), RideStatus.CLOSED));
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 

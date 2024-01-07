@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,10 +15,10 @@ public class RideTest {
 
     @Test
     public void construct_createRide_expectRide() {
-        var fairyTale = SFRide.getRide("Rollercoaster", new LocationCoordinates(1, 2));
+        var fairyTale = SFRide.getRide("Rollercoaster", new Coordinates(1, 2));
 
         assertEquals("Rollercoaster", fairyTale.getName());
-        assertEquals(new LocationCoordinates(1, 2), fairyTale.getLocationCoordinates());
+        assertEquals(new Coordinates(1, 2), fairyTale.getLocationCoordinates());
         assertFalse(fairyTale.getId().toString().isBlank());
     }
 
@@ -32,7 +32,7 @@ public class RideTest {
                         1.5f,
                         Duration.ZERO,
                         10,
-                        new LocationCoordinates(10, 20));
+                        new Coordinates(10, 20));
 
         var dto = ride.toDto();
 

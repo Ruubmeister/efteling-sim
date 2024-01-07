@@ -10,7 +10,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
 import nl.rubium.efteling.common.location.entity.Location;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.stands.entity.Product;
 import nl.rubium.efteling.stands.entity.ProductType;
 import nl.rubium.efteling.stands.entity.Stand;
@@ -49,7 +49,7 @@ public class StandDeserializer extends StdDeserializer<Location> {
                         .toList();
 
         var locationCoordinates =
-                new LocationCoordinates(
+                new Coordinates(
                         node.get("location").findPath("x").asInt(),
                         node.get("location").findPath("y").asInt());
 

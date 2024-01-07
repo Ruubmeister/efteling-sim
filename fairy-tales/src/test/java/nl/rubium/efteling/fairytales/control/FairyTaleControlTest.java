@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
-import nl.rubium.efteling.common.location.entity.LocationCoordinates;
+import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.fairytales.boundary.KafkaProducer;
 import nl.rubium.efteling.fairytales.entity.FairyTale;
@@ -35,9 +35,9 @@ public class FairyTaleControlTest {
     @BeforeEach
     public void init() {
         var fairyTaleList = new CopyOnWriteArrayList<FairyTale>();
-        fairyTaleList.add(SFFairyTale.getFairyTale("Snow white", new LocationCoordinates(5, 10)));
+        fairyTaleList.add(SFFairyTale.getFairyTale("Snow white", new Coordinates(5, 10)));
         fairyTaleList.add(
-                SFFairyTale.getFairyTale("Hansel and Gretel", new LocationCoordinates(5, 10)));
+                SFFairyTale.getFairyTale("Hansel and Gretel", new Coordinates(5, 10)));
 
         var fairyTaleRepository = new LocationRepository<FairyTale>(fairyTaleList);
 
