@@ -170,7 +170,7 @@ components:
       type: object
       required:
         - id
-        - currentLocation
+        - location
       properties:
         id:
           type: string

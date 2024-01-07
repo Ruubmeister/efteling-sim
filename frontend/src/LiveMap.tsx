@@ -15,6 +15,7 @@ import VectorSource from 'ol/source/Vector';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { fairyTaleDto, rideDto, standDto, visitorDto } from './services/openapi';
 import { RootState } from './redux/store';
+import {calculateLat, calculateLon} from "./helpers";
 
 var rideIconStyle = new Style({
   image: new Icon({
@@ -147,7 +148,7 @@ class LiveMap extends React.Component<Props> {
     });
 
     this.props.visitors.forEach(visitor => {
-      var iconFeature = this.getFeature(visitor.id, visitor.currentLocation.lon, visitor.currentLocation.lat);
+      var iconFeature = this.getFeature(visitor.id, calculateLon(visitor.location.y), calculateLat(visitor.location.x));
       vectorSource.addFeature(iconFeature);
     });
 
@@ -161,10 +162,10 @@ class LiveMap extends React.Component<Props> {
       var mapRide = ridesSource?.getFeatureById(ride.id);
 
       if(mapRide == null){
-        var iconFeature = this.getFeature(ride.id, ride.coordinates.lon, ride.coordinates.lat);
+        var iconFeature = this.getFeature(ride.id, calculateLon(ride.location.y), calculateLat(ride.location.x));
         ridesSource?.addFeature(iconFeature);
       } else {
-        (mapRide.getGeometry() as any).setCoordinates(fromLonLat([ride.coordinates.lon, ride.coordinates.lat]));
+        (mapRide.getGeometry() as any).setCoordinates(fromLonLat([calculateLon(ride.location.y), calculateLat(ride.location.x)]));
       }
     });
   }
@@ -176,10 +177,10 @@ class LiveMap extends React.Component<Props> {
       var mapTale = fairyTalesSource?.getFeatureById(tale.id);
 
       if(mapTale == null){
-        var iconFeature = this.getFeature(tale.id, tale.coordinates.lon, tale.coordinates.lat);
+        var iconFeature = this.getFeature(tale.id, calculateLon(tale.location.y), calculateLat(tale.location.x));
         fairyTalesSource?.addFeature(iconFeature);
       } else {
-        (mapTale.getGeometry() as any).setCoordinates(fromLonLat([tale.coordinates.lon, tale.coordinates.lat]));
+        (mapTale.getGeometry() as any).setCoordinates(fromLonLat([calculateLon(tale.location.y), calculateLat(tale.location.x)]));
       }
     });
   }
@@ -191,11 +192,11 @@ class LiveMap extends React.Component<Props> {
       var mapStand = standsSource?.getFeatureById(stand.id);
 
       if(mapStand == null){
-        var iconFeature = this.getFeature(stand.id, stand.coordinates.lon, stand.coordinates.lat);
+        var iconFeature = this.getFeature(stand.id, calculateLon(stand.location.y), calculateLat(stand.location.x));
         standsSource?.addFeature(iconFeature);
 
       } else {
-        (mapStand.getGeometry() as any).setCoordinates(fromLonLat([stand.coordinates.lon, stand.coordinates.lat]));
+        (mapStand.getGeometry() as any).setCoordinates(fromLonLat([calculateLon(stand.location.y), calculateLat(stand.location.x)]));
       }
     });
   }

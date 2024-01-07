@@ -3,12 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { coordinatesDto } from './coordinatesDto';
+import type { gridLocationDto } from './gridLocationDto';
 
 export type fairyTaleDto = {
     id: string;
     name: string;
-    coordinates: coordinatesDto;
     locationType: string;
+    location: gridLocationDto;
 };
 

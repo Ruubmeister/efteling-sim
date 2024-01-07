@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { coordinatesDto } from './coordinatesDto';
+import type { gridLocationDto } from './gridLocationDto';
 
 export type rideDto = {
     id: string;
@@ -16,8 +16,8 @@ export type rideDto = {
     visitorsInRide: number;
     endTime: string;
     employeesToSkill: Record<string, string>;
-    coordinates: coordinatesDto;
     locationType: string;
+    location: gridLocationDto;
     status: rideDto.status;
 };
 
