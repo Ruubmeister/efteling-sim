@@ -56,7 +56,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
           .route("/api/v1/navigate", web::post().to(index))
     })
-    .bind(("127.0.0.1", 49985))?
+    .bind(("0.0.0.0", 49985))?
     .run()
     .await
 }
