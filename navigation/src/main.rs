@@ -3,7 +3,7 @@ mod grid;
 use pathfinding::prelude::astar;
 use actix_web::{App, HttpServer, Result, web, HttpResponse, http::Error};
 use serde::Deserialize;
-use visitor_route::{Board, Pos};
+use navigation::{Board, Pos};
 use grid::get_grid;
 
 #[derive(Deserialize)]

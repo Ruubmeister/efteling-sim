@@ -1,11 +1,11 @@
-FROM rust:1.61.0 AS build
+FROM rust:1.75.0-buster AS builder
 
 WORKDIR /usr/src/navigation
 COPY . .
 
 RUN cargo install --path .
 
-FROM debian:buster-slim
+FROM debian:stable-slim
 
 RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/cargo/bin/navigation /usr/local/bin/navigation
