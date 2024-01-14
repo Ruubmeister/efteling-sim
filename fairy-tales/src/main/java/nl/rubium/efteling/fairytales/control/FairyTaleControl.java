@@ -73,7 +73,7 @@ public class FairyTaleControl {
 
     private LocalDateTime getEndDateTimeForVisitorWatchingFairyTale() {
         var r = new Random();
-        var watchInSeconds = r.nextInt(300 - 120) + 120;
+        var watchInSeconds = r.nextInt(120) + 60;
 
         return LocalDateTime.now().plusSeconds(watchInSeconds);
     }
