@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import nl.rubium.efteling.common.location.entity.Coordinates;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
