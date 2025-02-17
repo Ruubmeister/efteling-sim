@@ -117,7 +117,7 @@ public class VisitorStandStrategyTest {
     private org.openapitools.client.model.StandDto getStandDto() {
         return new org.openapitools.client.model.StandDto(
                 UUID.randomUUID(),
-                null,
+                "test",
                 LocationType.STAND.toString(),
                 GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build(),
                 List.of("meal 1", "meal 2"),

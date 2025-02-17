@@ -86,7 +86,7 @@ public class KafkaConsumerTest {
     public void eventsTopicListener_givenEmployeeChangedWorkplace_expectChangeHandled()
             throws Exception {
         var objectMapper = new ObjectMapper(); //Todo: Change this to bean
-        var workplace = org.openapitools.client.model.WorkplaceDto.builder().build();
+        var workplace = org.openapitools.client.model.WorkplaceDto.builder().id(UUID.randomUUID()).locationType("something").build();
         var payload = Map.of(
                 "employee", UUID.randomUUID().toString(),
                 "workplace", objectMapper.writeValueAsString(workplace),

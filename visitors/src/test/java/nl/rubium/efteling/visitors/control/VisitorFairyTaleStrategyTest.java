@@ -61,7 +61,7 @@ public class VisitorFairyTaleStrategyTest {
         var fairyTale =
                 new FairyTaleDto(
                         UUID.randomUUID(),
-                        null,
+                        "test",
                         LocationType.FAIRYTALE.toString(),
                         new GridLocationDto(BigDecimal.ONE, BigDecimal.TEN));
         doReturn(fairyTale).when(fairyTaleApi).getNewFairyTale(any(), any());
@@ -70,7 +70,7 @@ public class VisitorFairyTaleStrategyTest {
                 Location.valueOf(
                         new FairyTaleDto(
                                 UUID.randomUUID(),
-                                null,
+                                "test",
                                 LocationType.FAIRYTALE.toString(),
                                 GridLocationDto.builder()
                                         .x(BigDecimal.ONE)
@@ -91,7 +91,7 @@ public class VisitorFairyTaleStrategyTest {
         var fairyTale =
                 new FairyTaleDto(
                         UUID.randomUUID(),
-                        null,
+                        "test",
                         LocationType.FAIRYTALE.toString(),
                         GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build());
         doReturn(fairyTale).when(fairyTaleApi).getRandomFairyTale();
@@ -100,7 +100,7 @@ public class VisitorFairyTaleStrategyTest {
                 Location.valueOf(
                         new FairyTaleDto(
                                 UUID.randomUUID(),
-                                null,
+                                "test",
                                 LocationType.FAIRYTALE.toString(),
                                 GridLocationDto.builder()
                                         .x(BigDecimal.ONE)
@@ -127,7 +127,7 @@ public class VisitorFairyTaleStrategyTest {
                 Location.valueOf(
                         new FairyTaleDto(
                                 UUID.randomUUID(),
-                                null,
+                                "test",
                                 LocationType.FAIRYTALE.toString(),
                                 GridLocationDto.builder()
                                         .x(BigDecimal.ONE)
