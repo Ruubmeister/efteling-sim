@@ -1,7 +1,6 @@
 package nl.rubium.efteling.rides.control;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -13,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import nl.rubium.efteling.common.location.control.LocationService;
 import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
@@ -35,6 +36,8 @@ public class RideControlTest {
     @Mock KafkaProducer kafkaProducer;
 
     @Mock org.openapitools.client.api.VisitorApi visitorClient;
+
+    @Mock LocationService<Ride> locationService;
 
     RideControl rideControl;
 
@@ -375,7 +378,7 @@ public class RideControlTest {
     void handleEmployeeChangedWorkplace_workplaceExist_employeeIsAdded() {
         var ride = rideControl.getRandomRide();
         var workplace =
-                org.openapitools.client.model.WorkplaceDto.builder().id(ride.getId()).build();
+                org.openapitools.client.model.WorkplaceDto.builder().id(ride.getId()).locationType("ride").build();
         var employeeId = UUID.randomUUID();
         var skill = WorkplaceSkill.CONTROL;
 
@@ -387,7 +390,7 @@ public class RideControlTest {
     @Test
     void handleEmployeeChangedWorkplace_workplaceDoesNotExist_nothingHappens() {
         var workplace =
-                org.openapitools.client.model.WorkplaceDto.builder().id(UUID.randomUUID()).build();
+                org.openapitools.client.model.WorkplaceDto.builder().id(UUID.randomUUID()).locationType("ride").build();
         var employeeId = UUID.randomUUID();
         var skill = WorkplaceSkill.CONTROL;
 
