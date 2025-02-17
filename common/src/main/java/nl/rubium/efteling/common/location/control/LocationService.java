@@ -64,7 +64,7 @@ public class LocationService<T extends Location> {
                                                             .build());
                                     location.addDistanceToOther(steps.size(), toLocation.getId());
                                 } catch (ApiException e) {
-                                    logger.error("Could not determine distance from {} to {}", location.getName(), toLocation.getName());
+                                    logger.error("Could not determine distance from {} to {}: {}", location.getName(), toLocation.getName(), e);
                                 }
                             });
                 });
