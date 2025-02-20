@@ -94,7 +94,6 @@ class LiveMap extends React.Component<Props> {
   }
 
   componentDidMount() {
-    console.log(this.map)
     this.eftelingMap = new Map({
       target: this.map.current as any,
       layers: [
@@ -165,7 +164,6 @@ class LiveMap extends React.Component<Props> {
         var iconFeature = this.getFeature(ride.id, calculateLon(ride.location.x, ride.location.x), calculateLat(ride.location.x, ride.location.y));
         ridesSource?.addFeature(iconFeature);
       } else {
-        console.log(`${ride.name}: ${calculateLat(ride.location.x, ride.location.y)}; ${calculateLon(ride.location.x, ride.location.y)}`);
         (mapRide.getGeometry() as any).setCoordinates(fromLonLat([calculateLon(ride.location.x, ride.location.y), calculateLat(ride.location.x, ride.location.y)]));
       }
     });
