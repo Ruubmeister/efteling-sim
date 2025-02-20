@@ -52,7 +52,7 @@
     "@types/node": "^20.9.1",
     "@vitejs/plugin-react": "^4.2.0",
     "openapi-typescript": "^6.7.3",
-    "openapi-typescript-codegen": "^0.25.0",
+    "openapi-typescript-codegen": "^0.29.0",
     "vite": "^5.0.13",
     "vite-tsconfig-paths": "^3.5.0"
   },
