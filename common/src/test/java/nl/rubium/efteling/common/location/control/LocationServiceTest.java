@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationMixIn;
@@ -28,11 +29,11 @@ public class LocationServiceTest {
 
         var mockedDistance =
                 List.of(
-                        GridLocationDto.builder().build(),
-                        GridLocationDto.builder().build(),
-                        GridLocationDto.builder().build(),
-                        GridLocationDto.builder().build(),
-                        GridLocationDto.builder().build());
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TWO).build(),
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TWO).build(),
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TWO).build(),
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TWO).build(),
+                        GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TWO).build());
         when(navigationApi.postNavigate(any())).thenReturn(mockedDistance);
 
         var locationService = new LocationService<LocationTestImpl>(objectMapper, navigationApi);
