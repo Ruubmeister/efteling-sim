@@ -1,16 +1,13 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { gridLocationDto } from '../models/gridLocationDto';
 import type { navigationRequestDto } from '../models/navigationRequestDto';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class NavigationService {
-
     /**
      * @param requestBody
      * @returns gridLocationDto Route to destination
@@ -26,5 +23,4 @@ export class NavigationService {
             mediaType: 'application/json',
         });
     }
-
 }

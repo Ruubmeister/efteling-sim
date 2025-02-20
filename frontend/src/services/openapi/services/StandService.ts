@@ -1,16 +1,13 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { dinnerDto } from '../models/dinnerDto';
 import type { standDto } from '../models/standDto';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class StandService {
-
     /**
      * @returns standDto A JSON array of stands
      * @throws ApiError
@@ -21,7 +18,6 @@ export class StandService {
             url: '/api/v1/stands',
         });
     }
-
     /**
      * @returns standDto A random stand
      * @throws ApiError
@@ -32,7 +28,6 @@ export class StandService {
             url: '/api/v1/stands/random',
         });
     }
-
     /**
      * @param id
      * @param exclude
@@ -54,7 +49,6 @@ export class StandService {
             },
         });
     }
-
     /**
      * @param id
      * @returns standDto The stand that is requested
@@ -71,7 +65,6 @@ export class StandService {
             },
         });
     }
-
     /**
      * @param ticket
      * @returns dinnerDto The order that is ready for picked up
@@ -88,7 +81,6 @@ export class StandService {
             },
         });
     }
-
     /**
      * @param id
      * @param requestBody
@@ -109,5 +101,4 @@ export class StandService {
             mediaType: 'application/json',
         });
     }
-
 }
