@@ -17,7 +17,7 @@
     "bootstrap": "^5.3.3",
     "ol": "^6.4.3",
     "react": "^19.0.0",
-    "react-bootstrap": "^2.9.2",
+    "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
