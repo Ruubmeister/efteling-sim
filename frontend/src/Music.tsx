@@ -22,8 +22,8 @@ class Music extends React.Component<Props> {
       this.audio.removeEventListener('ended', () => this.setState({ play: false }));  
     }
   
-    togglePlay = () => {
-      if(this.musicIsAvailable()){
+    togglePlay = async () => {
+      if(await this.musicIsAvailable()){
         console.info("Song found, playing it")
         this.setState({ play: !this.state.play }, () => {
           this.state.play ? this.audio.play() : this.audio.pause();
@@ -33,19 +33,21 @@ class Music extends React.Component<Props> {
       }
     }
 
-    musicIsAvailable = () => {
-      axios.get(this.props.url)
+    musicIsAvailable = async () => {
+      const result = await axios.get(this.props.url)
       .then(function(){
         return true;
       })
       .catch(function (error) {
+        console.error(error);
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
         }
+        return false;
     });
-    return false
+    return result;
     }
   
     render() {
