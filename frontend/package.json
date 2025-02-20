@@ -49,7 +49,7 @@
   "devDependencies": {
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
-    "@types/node": "^20.9.1",
+    "@types/node": "^22.13.4",
     "@vitejs/plugin-react": "^4.3.4",
     "openapi-typescript": "^6.7.3",
     "openapi-typescript-codegen": "^0.29.0",
