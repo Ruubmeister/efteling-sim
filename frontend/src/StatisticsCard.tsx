@@ -60,7 +60,6 @@ export function StatisticsCard(props: Props) {
 
     const putStatus = (status: string) => {
         var ride = props.ride
-        console.info(status)
         //ride.status = status; Todo: Fix
         axios({
             method: 'put',

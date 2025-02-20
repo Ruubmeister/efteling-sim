@@ -24,9 +24,12 @@ class Music extends React.Component<Props> {
   
     togglePlay = () => {
       if(this.musicIsAvailable()){
+        console.info("Song found, playing it")
         this.setState({ play: !this.state.play }, () => {
           this.state.play ? this.audio.play() : this.audio.pause();
         });
+      } else {
+        console.warn("Could not find song.")
       }
     }
 
