@@ -1,10 +1,8 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { gridLocationDto } from './gridLocationDto';
-
 export type rideDto = {
     id: string;
     name: string;
@@ -20,15 +18,11 @@ export type rideDto = {
     location: gridLocationDto;
     status: rideDto.status;
 };
-
 export namespace rideDto {
-
     export enum status {
         OPEN = 'OPEN',
         CLOSED = 'CLOSED',
         MAINTENANCE = 'MAINTENANCE',
     }
-
-
 }
 

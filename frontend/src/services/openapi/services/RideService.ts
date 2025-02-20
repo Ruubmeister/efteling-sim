@@ -1,15 +1,12 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { rideDto } from '../models/rideDto';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class RideService {
-
     /**
      * @returns rideDto A JSON array of rides
      * @throws ApiError
@@ -20,7 +17,6 @@ export class RideService {
             url: '/api/v1/rides',
         });
     }
-
     /**
      * @returns rideDto A random ride
      * @throws ApiError
@@ -31,7 +27,6 @@ export class RideService {
             url: '/api/v1/rides/random',
         });
     }
-
     /**
      * @param id
      * @param exclude
@@ -53,7 +48,6 @@ export class RideService {
             },
         });
     }
-
     /**
      * @param id
      * @param requestBody
@@ -74,5 +68,4 @@ export class RideService {
             mediaType: 'application/json',
         });
     }
-
 }

@@ -1,15 +1,12 @@
-/* generated using openapi-typescript-codegen -- do no edit */
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { visitorDto } from '../models/visitorDto';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class VisitorService {
-
     /**
      * @returns visitorDto A JSON array of visitors
      * @throws ApiError
@@ -20,7 +17,6 @@ export class VisitorService {
             url: '/api/v1/visitors',
         });
     }
-
     /**
      * @param id
      * @returns visitorDto The visitor that is requested
@@ -37,5 +33,4 @@ export class VisitorService {
             },
         });
     }
-
 }
