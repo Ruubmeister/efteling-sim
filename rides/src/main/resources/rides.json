@@ -405,6 +405,24 @@
     },
     "maxPersons": 40,
     "coordinates": {
+      "lat": 51.648432,
+      "long": 5.048725
+    },
+    "location": {
+      "x": 193,
+      "y": 397
+    }
+  },
+  {
+    "name": "Danse Macabre",
+    "minimumAge": "0",
+    "minimumLength": 0.7,
+    "duration": {
+      "minutes": 1,
+      "seconds": 45
+    },
+    "maxPersons": 80,
+    "coordinates": {
       "lat": 51.64808,
       "long": 5.04741
     },
