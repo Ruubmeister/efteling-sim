@@ -2,6 +2,7 @@
   "name": "efteling-frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@fontsource/roboto": "^5.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
