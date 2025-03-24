@@ -14,7 +14,7 @@
     "@types/ol": "^7.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "axios": "^1.8.2",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "ol": "^10.4.0",
     "react": "^19.0.0",
