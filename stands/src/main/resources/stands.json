@@ -720,5 +720,43 @@
         "type": "drink"
       }
     ]
+  },
+  {
+    "name": "In den Swarte Kat",
+    "location": {
+      "x": 197,
+      "y": 441
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.7,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.6,
+        "type": "drink"
+      }
+    ]
+  },
+  {
+    "name": "'t Koetshuys",
+    "location": {
+      "x": 179,
+      "y": 412
+    },
+    "products": [
+      {
+        "name": "Appelpannenkoek",
+        "price": 6.7,
+        "type": "meal"
+      },
+      {
+        "name": "Cola",
+        "price": 1.6,
+        "type": "drink"
+      }
+    ]
   }
 ]
