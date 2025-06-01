@@ -398,7 +398,7 @@
   {
     "name": "Max en Moritz",
     "minimumAge": "0",
-    "minimumLength": 0.7,
+    "minimumLength": 1.0,
     "duration": {
       "minutes": 1,
       "seconds": 45
@@ -416,12 +416,12 @@
   {
     "name": "Danse Macabre",
     "minimumAge": "0",
-    "minimumLength": 0.7,
+    "minimumLength": "1.2",
     "duration": {
-      "minutes": 1,
-      "seconds": 45
+      "minutes": 5,
+      "seconds": 11
     },
-    "maxPersons": 80,
+    "maxPersons": 108,
     "coordinates": {
       "lat": 51.64808,
       "long": 5.04741
