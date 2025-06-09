@@ -13,7 +13,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@types/ol": "^7.0.0",
     "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
+    "@types/react-dom": "^19.1.6",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "ol": "^10.5.0",
