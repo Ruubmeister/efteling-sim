@@ -2,22 +2,23 @@ package nl.rubium.efteling.rides.control;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import nl.rubium.efteling.common.event.entity.EventSource;
+import nl.rubium.efteling.common.event.entity.EventType;
 import nl.rubium.efteling.common.location.control.LocationService;
 import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.rides.boundary.KafkaProducer;
 import nl.rubium.efteling.rides.entity.Ride;
+import nl.rubium.efteling.rides.entity.RideEmployeeConfig;
 import nl.rubium.efteling.rides.entity.RideStatus;
 import nl.rubium.efteling.rides.entity.SFRide;
 import nl.rubium.efteling.rides.entity.SFVisitor;
@@ -28,34 +29,67 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.api.VisitorApi;
+import org.openapitools.client.model.WorkplaceDto;
 
 @ExtendWith(MockitoExtension.class)
 public class RideControlTest {
 
     @Mock KafkaProducer kafkaProducer;
 
-    @Mock org.openapitools.client.api.VisitorApi visitorClient;
+    @Mock VisitorApi visitorClient;
 
     @Mock LocationService<Ride> locationService;
 
+    @Mock RideEmployeeLoader employeeLoader;
+
     RideControl rideControl;
+    Ride testRide;
 
     @BeforeEach
     public void init() {
+        testRide =
+                new Ride(
+                        RideStatus.OPEN,
+                        "Test Ride",
+                        0,
+                        0,
+                        Duration.ofMinutes(5),
+                        50,
+                        new Coordinates(1, 1));
+
         var rideList = new CopyOnWriteArrayList<Ride>();
-        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(10, 20)));
-        rideList.add(SFRide.getRide("Rollercoaster", new Coordinates(11, 21)));
+        rideList.add(testRide);
 
         var rideRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, rideRepository);
+        when(employeeLoader.getConfigForRide("Test Ride"))
+                .thenReturn(
+                        new RideEmployeeConfig(
+                                "Test Ride",
+                                Map.of(
+                                        WorkplaceSkill.CONTROL, 2,
+                                        WorkplaceSkill.ENGINEER, 1)));
+
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, rideRepository, employeeLoader);
+
+        testRide.addEmployee(UUID.randomUUID(), WorkplaceSkill.CONTROL);
+        testRide.addEmployee(UUID.randomUUID(), WorkplaceSkill.CONTROL);
+        testRide.addEmployee(UUID.randomUUID(), WorkplaceSkill.ENGINEER);
+    }
+
+    private void removeAllInitiallyAddedEmployeesFromTestRide() {
+        testRide.removeEmployee(UUID.randomUUID(), WorkplaceSkill.CONTROL);
+        testRide.removeEmployee(UUID.randomUUID(), WorkplaceSkill.CONTROL);
+        testRide.removeEmployee(UUID.randomUUID(), WorkplaceSkill.ENGINEER);
     }
 
     @Test
     public void getRides_givenRidesExist_expectTwoRides() {
         var result = rideControl.getRides();
 
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
     }
 
     @Test
@@ -81,7 +115,8 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, rideRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, rideRepository, employeeLoader);
 
         var result = rideControl.getNextRide(ride1.getId(), List.of());
         var expectedPossibleObjects = List.of(ride3, ride2, ride4);
@@ -105,7 +140,8 @@ public class RideControlTest {
         var rideList = new CopyOnWriteArrayList<Ride>(List.of(ride1, ride2, ride3, ride4, ride5));
         var rideRepository = new LocationRepository<Ride>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, rideRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, rideRepository, employeeLoader);
 
         var result = rideControl.getNextRide(ride1.getId(), List.of(ride3.getId(), ride2.getId()));
         var expectedPossibleObjects = List.of(ride4, ride5);
@@ -121,7 +157,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
         assertTrue(
                 rideControl.getRides().stream()
                         .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
@@ -141,7 +178,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
         assertTrue(
                 rideControl.getRides().stream()
                         .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
@@ -161,7 +199,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
         assertTrue(
                 rideControl.getRides().stream()
                         .allMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
@@ -181,7 +220,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        var rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        var rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
         assertTrue(
                 rideControl.getRides().stream()
                         .noneMatch(ride -> ride.getStatus().equals(RideStatus.OPEN)));
@@ -207,24 +247,23 @@ public class RideControlTest {
     @Test
     void rideToOpen_givenRideIsNotOpen_rideIsOpen() {
         var ride = rideControl.getRides().stream().findFirst().get();
-        rideControl.closeRides();
+        rideControl.rideToClosed(ride.getId());
 
-        assertNotEquals(ride.getStatus(), RideStatus.OPEN);
+        assertNotEquals(RideStatus.OPEN, ride.getStatus());
         rideControl.rideToOpen(ride.getId());
 
         var updatedRide = rideControl.findRide(ride.getId());
-        assertEquals(updatedRide.getStatus(), RideStatus.OPEN);
+        assertEquals(RideStatus.OPEN, updatedRide.getStatus());
     }
 
     @Test
     void rideToClosed_givenRideIsNotClosed_rideIsClosed() {
         var ride = rideControl.getRides().stream().findFirst().get();
-
-        assertNotEquals(ride.getStatus(), RideStatus.CLOSED);
+        assertNotEquals(RideStatus.CLOSED, ride.getStatus());
         rideControl.rideToClosed(ride.getId());
 
         var updatedRide = rideControl.findRide(ride.getId());
-        assertEquals(updatedRide.getStatus(), RideStatus.CLOSED);
+        assertEquals(RideStatus.CLOSED, updatedRide.getStatus());
     }
 
     @Test
@@ -235,7 +274,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
 
         this.rideControl.handleOpenRides();
 
@@ -273,7 +313,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
 
         this.rideControl.handleOpenRides();
 
@@ -313,7 +354,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
 
         this.rideControl.handleOpenRides();
 
@@ -334,7 +376,8 @@ public class RideControlTest {
 
         var fairyTaleRepository = new LocationRepository<>(rideList);
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
 
         assertEquals(rideList.get(0), rideControl.findRide(rideList.get(0).getId()));
     }
@@ -348,40 +391,10 @@ public class RideControlTest {
 
         var ride2 = SFRide.getRide("Some other ride");
 
-        this.rideControl = new RideControl(kafkaProducer, visitorClient, fairyTaleRepository);
+        this.rideControl =
+                new RideControl(kafkaProducer, visitorClient, fairyTaleRepository, employeeLoader);
 
         assertThrows(IllegalArgumentException.class, () -> rideControl.findRide(ride2.getId()));
-    }
-
-    @Test
-    void handleEmployeeChangedWorkplace_workplaceExist_employeeIsAdded() {
-        var ride = rideControl.getRandomRide();
-        var workplace =
-                org.openapitools.client.model.WorkplaceDto.builder()
-                        .id(ride.getId())
-                        .locationType("ride")
-                        .build();
-        var employeeId = UUID.randomUUID();
-        var skill = WorkplaceSkill.CONTROL;
-
-        rideControl.handleEmployeeChangedWorkplace(workplace, employeeId, skill);
-
-        assertEquals(skill, ride.getEmployeesToSkill().get(employeeId));
-    }
-
-    @Test
-    void handleEmployeeChangedWorkplace_workplaceDoesNotExist_nothingHappens() {
-        var workplace =
-                org.openapitools.client.model.WorkplaceDto.builder()
-                        .id(UUID.randomUUID())
-                        .locationType("ride")
-                        .build();
-        var employeeId = UUID.randomUUID();
-        var skill = WorkplaceSkill.CONTROL;
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> rideControl.handleEmployeeChangedWorkplace(workplace, employeeId, skill));
     }
 
     @Test
@@ -421,5 +434,79 @@ public class RideControlTest {
         verify(kafkaProducer, never()).sendEvent(any(), any(), any());
         assertEquals(1, ride.getVisitorsInLine().size());
         assertEquals(visitorDto, ride.getVisitorsInLine().peek());
+    }
+
+    @Test
+    void initializeEmployeeRequirements_setsRequirements() {
+        var missingEmployees = testRide.getMissingEmployees();
+        var requiredEmployees = testRide.getWorkplace().getRequiredSkillCount();
+
+        assertEquals(2, requiredEmployees.get(WorkplaceSkill.CONTROL));
+        assertEquals(1, requiredEmployees.get(WorkplaceSkill.ENGINEER));
+    }
+
+    @Test
+    void openRides_withoutEmployees_staysClosedAndRequestsEmployees() {
+        removeAllInitiallyAddedEmployeesFromTestRide();
+        testRide.toClosed();
+
+        rideControl.openRides();
+
+        assertEquals(RideStatus.CLOSED, testRide.getStatus());
+        verify(kafkaProducer, times(2))
+                .sendEvent(eq(EventSource.RIDE), eq(EventType.REQUESTEMPLOYEE), any());
+    }
+
+    @Test
+    void handleEmployeeChangedWorkplace_addsEmployee() {
+        var workplaceDto = new WorkplaceDto();
+        workplaceDto.setId(testRide.getId());
+        var employeeId = UUID.randomUUID();
+
+        removeAllInitiallyAddedEmployeesFromTestRide();
+
+        rideControl.handleEmployeeChangedWorkplace(
+                workplaceDto, employeeId, WorkplaceSkill.CONTROL);
+
+        var missingEmployees = testRide.getMissingEmployees();
+        assertEquals(1, missingEmployees.get(WorkplaceSkill.CONTROL));
+        assertEquals(1, missingEmployees.get(WorkplaceSkill.ENGINEER));
+    }
+
+    @Test
+    void checkRequiredEmployees_whenMissing_requestsEmployees() {
+        removeAllInitiallyAddedEmployeesFromTestRide();
+
+        rideControl.checkRequiredEmployees(testRide);
+
+        var captor = ArgumentCaptor.forClass(Map.class);
+        verify(kafkaProducer, times(2))
+                .sendEvent(eq(EventSource.RIDE), eq(EventType.REQUESTEMPLOYEE), captor.capture());
+
+        var payloads = captor.getAllValues();
+        assertTrue(
+                payloads.stream()
+                        .anyMatch(
+                                p ->
+                                        p.get("skill").equals(WorkplaceSkill.CONTROL.name())
+                                                && p.get("count").equals("2")));
+        assertTrue(
+                payloads.stream()
+                        .anyMatch(
+                                p ->
+                                        p.get("skill").equals(WorkplaceSkill.ENGINEER.name())
+                                                && p.get("count").equals("1")));
+    }
+
+    @Test
+    void rideToOpen_withoutEmployees_staysClosedAndRequestsEmployees() {
+        removeAllInitiallyAddedEmployeesFromTestRide();
+        testRide.toClosed();
+
+        rideControl.rideToOpen(testRide.getId());
+
+        assertEquals(RideStatus.CLOSED, testRide.getStatus());
+        verify(kafkaProducer, times(2))
+                .sendEvent(eq(EventSource.RIDE), eq(EventType.REQUESTEMPLOYEE), any());
     }
 }
