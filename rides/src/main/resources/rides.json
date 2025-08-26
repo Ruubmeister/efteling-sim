@@ -416,7 +416,7 @@
   {
     "name": "Danse Macabre",
     "minimumAge": "0",
-    "minimumLength": "1.2",
+    "minimumLength": 1.2,
     "duration": {
       "minutes": 5,
       "seconds": 11

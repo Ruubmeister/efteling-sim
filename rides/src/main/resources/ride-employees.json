@@ -1,0 +1,79 @@
+[
+  {
+    "rideName": "Baron 1898",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Carnaval Festival",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Droomvlucht",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Fabula",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Fata Morgana",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Gondoletta",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Halve Maen",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Joris en de Draak",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Sirocco",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Pagode",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Piraña",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  }
+] 

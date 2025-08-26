@@ -1,5 +1,8 @@
 package nl.rubium.efteling.stands;
 
+import nl.rubium.efteling.common.location.control.LocationService;
+import nl.rubium.efteling.stands.entity.Stand;
+import org.mockito.Mock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -9,15 +12,15 @@ import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestStandsApplication {
+    @Mock private LocationService<Stand> locationService;
 
-	@Bean
-	@ServiceConnection
-	KafkaContainer kafkaContainer() {
-		return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
-	}
+    @Bean
+    @ServiceConnection
+    KafkaContainer kafkaContainer() {
+        return new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.from(StandsApplication::main).with(TestStandsApplication.class).run(args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.from(StandsApplication::main).with(TestStandsApplication.class).run(args);
+    }
 }

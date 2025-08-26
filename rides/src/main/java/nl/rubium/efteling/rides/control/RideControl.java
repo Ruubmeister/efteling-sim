@@ -1,6 +1,15 @@
 package nl.rubium.efteling.rides.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
@@ -16,30 +25,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-
 @Component
 @Slf4j
 public class RideControl {
-    LocationRepository<Ride> rideRepository;
-    KafkaProducer kafkaProducer;
-    org.openapitools.client.api.VisitorApi visitorClient;
+    private LocationRepository<Ride> rideRepository;
+    private final KafkaProducer kafkaProducer;
+    private final org.openapitools.client.api.VisitorApi visitorClient;
+    private final RideEmployeeLoader employeeLoader;
 
     @Autowired
     public RideControl(
-            KafkaProducer kafkaProducer, ObjectMapper objectMapper) {
+            KafkaProducer kafkaProducer,
+            ObjectMapper objectMapper,
+            RideEmployeeLoader employeeLoader) {
         this.kafkaProducer = kafkaProducer;
         this.visitorClient = new VisitorApi();
+        this.employeeLoader = employeeLoader;
 
         try {
             rideRepository = new LocationService<Ride>(objectMapper).loadLocations("rides.json");
+            initializeEmployeeRequirements();
         } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load rides: ", e);
             rideRepository = new LocationRepository<Ride>(new CopyOnWriteArrayList<>());
@@ -49,24 +54,43 @@ public class RideControl {
     public RideControl(
             KafkaProducer kafkaProducer,
             VisitorApi visitorClient,
-            LocationRepository<Ride> rideRepository) {
+            LocationRepository<Ride> rideRepository,
+            RideEmployeeLoader employeeLoader) {
         this.kafkaProducer = kafkaProducer;
         this.visitorClient = visitorClient;
         this.rideRepository = rideRepository;
+        this.employeeLoader = employeeLoader;
+        initializeEmployeeRequirements();
+    }
+
+    private void initializeEmployeeRequirements() {
+        rideRepository
+                .getLocations()
+                .forEach(
+                        ride -> {
+                            var config = employeeLoader.getConfigForRide(ride.getName());
+                            if (config != null) {
+                                ride.setRequiredEmployees(config.getRequiredEmployees());
+                                log.info("Set employee requirements for ride {}", ride.getName());
+                            } else {
+                                log.warn(
+                                        "No employee configuration found for ride {}",
+                                        ride.getName());
+                            }
+                        });
     }
 
     public List<Ride> getRides() {
         return rideRepository.getLocations();
     }
 
+    private void openRideAndCheckEmployees(Ride ride) {
+        ride.toOpen();
+        checkRequiredEmployees(ride);
+    }
+
     public void openRides() {
-        rideRepository
-                .getLocations()
-                .forEach(
-                        ride -> {
-                            ride.toOpen();
-                            checkRequiredEmployees(ride);
-                        });
+        rideRepository.getLocations().forEach(this::openRideAndCheckEmployees);
     }
 
     public void closeRides() {
@@ -78,7 +102,8 @@ public class RideControl {
     }
 
     public void rideToOpen(UUID uuid) {
-        rideRepository.getLocation(uuid).toOpen();
+        var ride = rideRepository.getLocation(uuid);
+        openRideAndCheckEmployees(ride);
     }
 
     public void rideToClosed(UUID uuid) {
@@ -130,7 +155,24 @@ public class RideControl {
     }
 
     public void checkRequiredEmployees(Ride ride) {
-        // Todo: Implement this
+        var missingEmployees = ride.getMissingEmployees();
+        if (!missingEmployees.isEmpty()) {
+            missingEmployees.forEach(
+                    (skill, count) -> {
+                        var payload = new HashMap<String, String>();
+                        payload.put("workplace", ride.getId().toString());
+                        payload.put("skill", skill.name());
+                        payload.put("count", count.toString());
+
+                        kafkaProducer.sendEvent(
+                                EventSource.RIDE, EventType.REQUESTEMPLOYEE, payload);
+                        log.info(
+                                "Requesting {} employee(s) with skill {} for ride {}",
+                                count,
+                                skill,
+                                ride.getName());
+                    });
+        }
     }
 
     public void handleEmployeeChangedWorkplace(
@@ -138,6 +180,11 @@ public class RideControl {
         var ride = rideRepository.getLocation(workplaceDto.getId());
         if (ride != null) {
             ride.addEmployee(employeeId, workplaceSkill);
+            log.info(
+                    "Employee {} with skill {} added to ride {}",
+                    employeeId,
+                    workplaceSkill,
+                    ride.getName());
         }
     }
 

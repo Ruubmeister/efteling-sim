@@ -3,6 +3,7 @@ package nl.rubium.efteling.stands.control;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -15,9 +16,11 @@ import nl.rubium.efteling.common.event.entity.EventSource;
 import nl.rubium.efteling.common.event.entity.EventType;
 import nl.rubium.efteling.common.location.control.LocationService;
 import nl.rubium.efteling.common.location.entity.LocationRepository;
+import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.stands.boundary.KafkaProducer;
 import nl.rubium.efteling.stands.entity.Dinner;
 import nl.rubium.efteling.stands.entity.Stand;
+import org.openapitools.client.model.WorkplaceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -29,17 +32,40 @@ public class StandControl {
     private final Map<UUID, LocalDateTime> ordersDoneAtTime = new ConcurrentHashMap<>();
     private LocationRepository<Stand> standRepository;
     private final KafkaProducer kafkaProducer;
+    private final StandEmployeeLoader employeeLoader;
 
     @Autowired
-    public StandControl(KafkaProducer kafkaProducer, ObjectMapper objectMapper) {
+    public StandControl(
+            KafkaProducer kafkaProducer,
+            ObjectMapper objectMapper,
+            StandEmployeeLoader employeeLoader) {
         this.kafkaProducer = kafkaProducer;
+        this.employeeLoader = employeeLoader;
 
         try {
             standRepository = new LocationService<Stand>(objectMapper).loadLocations("stands.json");
+            initializeEmployeeRequirements();
         } catch (IOException | IllegalArgumentException e) {
             log.error("Could not load stands: ", e);
             standRepository = new LocationRepository<Stand>(new CopyOnWriteArrayList<>());
         }
+    }
+
+    private void initializeEmployeeRequirements() {
+        standRepository
+                .getLocations()
+                .forEach(
+                        stand -> {
+                            var config = employeeLoader.getConfigForStand(stand.getName());
+                            if (config != null) {
+                                stand.setRequiredEmployees(config.getRequiredEmployees());
+                                log.info("Set employee requirements for stand {}", stand.getName());
+                            } else {
+                                log.warn(
+                                        "No employee configuration found for stand {}",
+                                        stand.getName());
+                            }
+                        });
     }
 
     public List<Stand> getAll() {
@@ -71,6 +97,11 @@ public class StandControl {
 
     public String placeOrder(UUID standId, List<String> products) {
         var stand = standRepository.getLocation(standId);
+
+        if (!stand.isOpen()) {
+            log.error("Cannot place order at closed stand {}", stand.getName());
+            throw new IllegalStateException("Stand is closed");
+        }
 
         var dinner =
                 new Dinner(
@@ -127,6 +158,41 @@ public class StandControl {
         openDinnerOrders.remove(id);
 
         return dinner;
+    }
+
+    public void handleEmployeeChangedWorkplace(
+            WorkplaceDto workplaceDto, UUID employeeId, WorkplaceSkill workplaceSkill) {
+        var stand = standRepository.getLocation(workplaceDto.getId());
+        if (stand != null) {
+            stand.addEmployee(employeeId, workplaceSkill);
+            log.info(
+                    "Employee {} with skill {} added to stand {}",
+                    employeeId,
+                    workplaceSkill,
+                    stand.getName());
+            checkRequiredEmployees(stand);
+        }
+    }
+
+    public void checkRequiredEmployees(Stand stand) {
+        var missingEmployees = stand.getMissingEmployees();
+        if (!missingEmployees.isEmpty()) {
+            missingEmployees.forEach(
+                    (skill, count) -> {
+                        var payload = new HashMap<String, String>();
+                        payload.put("workplace", stand.getId().toString());
+                        payload.put("skill", skill.name());
+                        payload.put("count", count.toString());
+
+                        kafkaProducer.sendEvent(
+                                EventSource.STAND, EventType.REQUESTEMPLOYEE, payload);
+                        log.info(
+                                "Requesting {} employee(s) with skill {} for stand {}",
+                                count,
+                                skill,
+                                stand.getName());
+                    });
+        }
     }
 
     private void sendOrderTicket(String ticket) {

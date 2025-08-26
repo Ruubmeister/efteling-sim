@@ -197,6 +197,67 @@ components:
           format: uuid
         locationType:
           type: string
+    RideDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [OPEN, CLOSED, MAINTENANCE]
+        durationInSec:
+          type: number
+        locationType:
+          type: string
+        maxPersons:
+          type: number
+        minimumAge:
+          type: number
+        minimumLength:
+          type: number
+        endTime:
+          type: string
+        visitorsInLine:
+          type: number
+        visitorsInRide:
+          type: number
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
+    StandDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        locationType:
+          type: string
+        meals:
+          type: array
+          items:
+            type: string
+        drinks:
+          type: array
+          items:
+            type: string
+        isOpen:
+          type: boolean
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
+    WorkplaceDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        locationType:
+          type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
 paths:
 #Fairy tales
   /api/v1/fairy-tales:

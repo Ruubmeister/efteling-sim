@@ -1,0 +1,30 @@
+[
+  {
+    "standName": "De Hongerige Machinist",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "De Vrolijke Volière",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Het Witte Paard",
+    "requiredEmployees": {
+      "COOK": 3,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Fabula Café",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 2
+    }
+  }
+] 
