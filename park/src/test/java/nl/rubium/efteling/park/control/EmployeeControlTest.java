@@ -1,6 +1,11 @@
 package nl.rubium.efteling.park.control;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.UUID;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.park.boundary.KafkaProducer;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,17 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.model.WorkplaceDto;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-
 @ExtendWith(MockitoExtension.class)
 @DirtiesContext
 public class EmployeeControlTest {
-    @Mock
-    KafkaProducer kafkaProducer;
+    @Mock KafkaProducer kafkaProducer;
 
     EmployeeControl employeeControl;
 
@@ -31,55 +29,66 @@ public class EmployeeControlTest {
     }
 
     @Test
-    void getAssignableSkillsFromEmployeeSkill_givenCONTROL_expectCONTROLAndHOST(){
+    void getAssignableSkillsFromEmployeeSkill_givenCONTROL_expectCONTROLAndHOST() {
         var result = EmployeeControl.getAssignableSkillsFromEmployeeSkill(WorkplaceSkill.CONTROL);
-        assertTrue(result.stream().allMatch(skill -> skill.equals(WorkplaceSkill.CONTROL) || skill.equals(WorkplaceSkill.HOST)));
+        assertTrue(
+                result.stream()
+                        .allMatch(
+                                skill ->
+                                        skill.equals(WorkplaceSkill.CONTROL)
+                                                || skill.equals(WorkplaceSkill.HOST)));
     }
 
     @Test
-    void hireEmployee_expectEmployeeAdded(){
+    void hireEmployee_expectEmployeeAddedWithCorrectSkills() {
         assertTrue(employeeControl.getEmployees().isEmpty());
 
-        employeeControl.hireEmployee("first", "last", WorkplaceSkill.CONTROL);
+        var employee = employeeControl.hireEmployee("first", "last", WorkplaceSkill.CONTROL);
 
         assertEquals(1, employeeControl.getEmployees().size());
+        assertTrue(employee.getSkills().contains(WorkplaceSkill.CONTROL));
+        assertTrue(employee.getSkills().contains(WorkplaceSkill.HOST));
     }
 
     @Test
-    void assignEmployeeToWorkplace_employeeExists_expectEmployeeAssigned() throws JsonProcessingException {
+    void findAvailableEmployee_whenAvailable_returnsEmployee() {
+        var employee = employeeControl.hireEmployee("first", "last", WorkplaceSkill.ENGINEER);
+
+        var found = employeeControl.findAvailableEmployee(WorkplaceSkill.ENGINEER);
+
+        assertNotNull(found);
+        assertEquals(employee.getId(), found.getId());
+    }
+
+    @Test
+    void findAvailableEmployee_whenWorking_returnsNull() {
+        var employee = employeeControl.hireEmployee("first", "last", WorkplaceSkill.ENGINEER);
+        var workplace = new WorkplaceDto();
+        employee.goToWork(workplace, WorkplaceSkill.ENGINEER);
+
+        var found = employeeControl.findAvailableEmployee(WorkplaceSkill.ENGINEER);
+
+        assertNull(found);
+    }
+
+    @Test
+    void assignEmployeeToWorkplace_existingEmployee_expectEmployeeAssigned()
+            throws JsonProcessingException {
         var workplaceDto = new WorkplaceDto();
         var skill = WorkplaceSkill.HOST;
-        employeeControl.hireEmployee("first", "last", skill);
-        assertFalse(employeeControl.getEmployees().get(0).isWorking());
+        var employee = employeeControl.hireEmployee("first", "last", skill);
+        assertFalse(employee.isWorking());
 
-        assertEquals(1, employeeControl.getEmployees().size());
         employeeControl.assignEmployeeToWorkplace(workplaceDto, skill);
 
-        assertEquals(1, employeeControl.getEmployees().size());
-        assertTrue(employeeControl.getEmployees().get(0).isWorking());
+        assertTrue(employee.isWorking());
+        assertEquals(workplaceDto, employee.getCurrentWorkplace());
+        assertEquals(skill, employee.getCurrentSkill());
         verify(kafkaProducer).sendEvent(any(), any(), any());
     }
 
     @Test
-    void assignEmployeeToWorkplace_employeesAtWork_expectNewEmployeeAssigned() throws JsonProcessingException {
-        var workplaceDto = new WorkplaceDto();
-        var skill = WorkplaceSkill.HOST;
-        employeeControl.hireEmployee("first", "last", skill);
-        assertFalse(employeeControl.getEmployees().get(0).isWorking());
-
-        employeeControl.getEmployees().get(0).goToWork(workplaceDto, skill);
-        assertTrue(employeeControl.getEmployees().get(0).isWorking());
-
-        assertEquals(1, employeeControl.getEmployees().size());
-        employeeControl.assignEmployeeToWorkplace(workplaceDto, skill);
-
-        assertEquals(2, employeeControl.getEmployees().size());
-        assertTrue(employeeControl.getEmployees().get(0).isWorking());
-        verify(kafkaProducer).sendEvent(any(), any(), any());
-    }
-
-    @Test
-    void assignEmployeeToWorkplace_employeeDoesNotExists_expectNewEmployeeAssigned() throws JsonProcessingException {
+    void assignEmployeeToWorkplace_noAvailableEmployee_hiresNew() throws JsonProcessingException {
         var workplaceDto = new WorkplaceDto();
         var skill = WorkplaceSkill.HOST;
 
@@ -87,8 +96,31 @@ public class EmployeeControlTest {
         employeeControl.assignEmployeeToWorkplace(workplaceDto, skill);
 
         assertEquals(1, employeeControl.getEmployees().size());
-        assertTrue(employeeControl.getEmployees().get(0).isWorking());
+        var employee = employeeControl.getEmployees().get(0);
+        assertTrue(employee.isWorking());
+        assertEquals(workplaceDto, employee.getCurrentWorkplace());
+        assertEquals(skill, employee.getCurrentSkill());
         verify(kafkaProducer).sendEvent(any(), any(), any());
     }
 
+    @Test
+    void releaseEmployee_whenWorking_stopsWorkAndSendsEvent() throws JsonProcessingException {
+        var workplaceDto = new WorkplaceDto();
+        var skill = WorkplaceSkill.SELL;
+        var employee = employeeControl.hireEmployee("first", "last", skill);
+        employee.goToWork(workplaceDto, skill);
+
+        employeeControl.releaseEmployee(employee.getId());
+
+        assertFalse(employee.isWorking());
+        assertNull(employee.getCurrentWorkplace());
+        assertNull(employee.getCurrentSkill());
+        verify(kafkaProducer, times(1)).sendEvent(any(), any(), any());
+    }
+
+    @Test
+    void releaseEmployee_whenNotFound_doesNothing() throws JsonProcessingException {
+        employeeControl.releaseEmployee(UUID.randomUUID());
+        verify(kafkaProducer, never()).sendEvent(any(), any(), any());
+    }
 }
