@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -41,8 +40,6 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 )
 @Testcontainers
 public class KafkaConsumerTest {
-
-
     @Value(value = "${events.topic-name}")
     String topicName;
 
@@ -54,7 +51,7 @@ public class KafkaConsumerTest {
         registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
     }
 
-    @MockBean
+    @MockitoBean
     VisitorControl visitorControl;
 
     @Autowired
