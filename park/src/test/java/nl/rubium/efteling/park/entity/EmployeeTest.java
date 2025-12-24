@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;;
 
 public class EmployeeTest {
 

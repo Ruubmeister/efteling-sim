@@ -3,12 +3,11 @@ package nl.rubium.efteling.fairytales.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.math.BigDecimal;
 import nl.rubium.efteling.common.location.entity.Coordinates;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
 public class FairyTaleTest {
