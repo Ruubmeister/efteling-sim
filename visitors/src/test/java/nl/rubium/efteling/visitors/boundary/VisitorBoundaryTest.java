@@ -9,17 +9,19 @@ import nl.rubium.efteling.visitors.entity.SFVisitor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 public class VisitorBoundaryTest {
 
     @Autowired WebTestClient testClient;
 
-    @MockBean VisitorControl visitorControl;
+    @MockitoBean VisitorControl visitorControl;
 
-    @MockBean KafkaConsumer kafkaConsumer;
+    @MockitoBean KafkaConsumer kafkaConsumer;
 
     @Test
     void getVisitors_expectVisitors() {
