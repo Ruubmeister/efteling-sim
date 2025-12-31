@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.List;
 import java.util.UUID;
 import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
 import nl.rubium.efteling.park.boundary.KafkaProducer;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.api.NavigationApi;
+import org.openapitools.client.model.GridLocationDto;
 import org.openapitools.client.model.WorkplaceDto;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -20,12 +23,29 @@ import org.springframework.test.annotation.DirtiesContext;
 @DirtiesContext
 public class EmployeeControlTest {
     @Mock KafkaProducer kafkaProducer;
+    @Mock NavigationApi navigationApi;
 
     EmployeeControl employeeControl;
 
     @BeforeEach
-    public void init() {
-        this.employeeControl = new EmployeeControl(kafkaProducer);
+    public void init() throws Exception {
+        lenient()
+                .when(navigationApi.postNavigate(any()))
+                .thenReturn(
+                        List.of(
+                                GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(60))
+                                        .y(java.math.BigDecimal.valueOf(370))
+                                        .build(),
+                                GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(80))
+                                        .y(java.math.BigDecimal.valueOf(350))
+                                        .build(),
+                                GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(100))
+                                        .y(java.math.BigDecimal.valueOf(100))
+                                        .build()));
+        this.employeeControl = new EmployeeControl(kafkaProducer, navigationApi);
     }
 
     @Test
@@ -74,7 +94,16 @@ public class EmployeeControlTest {
     @Test
     void assignEmployeeToWorkplace_existingEmployee_expectEmployeeAssigned()
             throws JsonProcessingException {
-        var workplaceDto = new WorkplaceDto();
+        var workplaceDto =
+                WorkplaceDto.builder()
+                        .id(UUID.randomUUID())
+                        .locationType("test")
+                        .location(
+                                org.openapitools.client.model.GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(100))
+                                        .y(java.math.BigDecimal.valueOf(100))
+                                        .build())
+                        .build();
         var skill = WorkplaceSkill.HOST;
         var employee = employeeControl.hireEmployee("first", "last", skill);
         assertFalse(employee.isWorking());
@@ -89,7 +118,16 @@ public class EmployeeControlTest {
 
     @Test
     void assignEmployeeToWorkplace_noAvailableEmployee_hiresNew() throws JsonProcessingException {
-        var workplaceDto = new WorkplaceDto();
+        var workplaceDto =
+                WorkplaceDto.builder()
+                        .id(UUID.randomUUID())
+                        .locationType("test")
+                        .location(
+                                org.openapitools.client.model.GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(100))
+                                        .y(java.math.BigDecimal.valueOf(100))
+                                        .build())
+                        .build();
         var skill = WorkplaceSkill.HOST;
 
         assertTrue(employeeControl.getEmployees().isEmpty());
@@ -105,7 +143,16 @@ public class EmployeeControlTest {
 
     @Test
     void releaseEmployee_whenWorking_stopsWorkAndSendsEvent() throws JsonProcessingException {
-        var workplaceDto = new WorkplaceDto();
+        var workplaceDto =
+                WorkplaceDto.builder()
+                        .id(UUID.randomUUID())
+                        .locationType("test")
+                        .location(
+                                org.openapitools.client.model.GridLocationDto.builder()
+                                        .x(java.math.BigDecimal.valueOf(100))
+                                        .y(java.math.BigDecimal.valueOf(100))
+                                        .build())
+                        .build();
         var skill = WorkplaceSkill.SELL;
         var employee = employeeControl.hireEmployee("first", "last", skill);
         employee.goToWork(workplaceDto, skill);

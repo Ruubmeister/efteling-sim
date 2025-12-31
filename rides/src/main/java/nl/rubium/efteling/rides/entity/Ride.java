@@ -6,20 +6,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import nl.rubium.efteling.common.dto.DtoConvertible;
 import nl.rubium.efteling.common.location.entity.Coordinates;
-import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationType;
-import nl.rubium.efteling.common.location.entity.Workplace;
-import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
+import nl.rubium.efteling.common.location.entity.WorkplaceLocation;
 import org.openapitools.client.model.RideDto;
 import org.openapitools.client.model.VisitorDto;
 
 @Getter
-public class Ride extends Location {
+public class Ride extends WorkplaceLocation implements DtoConvertible<RideDto> {
 
     private RideStatus status;
     private final int minimumAge;
@@ -29,7 +27,6 @@ public class Ride extends Location {
     private Queue<VisitorDto> visitorsInLine = new LinkedList<>();
     private Queue<VisitorDto> visitorsInRide = new LinkedList<>();
     private LocalDateTime endTime = LocalDateTime.now();
-    private final Workplace workplace;
 
     public Ride(
             RideStatus status,
@@ -45,7 +42,6 @@ public class Ride extends Location {
         this.minimumLength = minimumLength;
         this.duration = duration;
         this.maxPersons = maxPersons;
-        this.workplace = new Workplace(LocationType.RIDE);
     }
 
     public void toMaintenance() {
@@ -62,26 +58,6 @@ public class Ride extends Location {
 
     public void toClosed() {
         status = RideStatus.CLOSED;
-    }
-
-    public void setRequiredEmployees(Map<WorkplaceSkill, Integer> requirements) {
-        requirements.forEach((skill, count) -> workplace.setRequiredSkillCount(skill, count));
-    }
-
-    public boolean hasRequiredEmployees() {
-        return workplace.getMissingSkillCounts().isEmpty();
-    }
-
-    public void addEmployee(UUID id, WorkplaceSkill skill) {
-        workplace.addEmployee(skill);
-    }
-
-    public void removeEmployee(UUID id, WorkplaceSkill skill) {
-        workplace.removeEmployee(skill);
-    }
-
-    public Map<WorkplaceSkill, Integer> getMissingEmployees() {
-        return workplace.getMissingSkillCounts();
     }
 
     public boolean hasVisitor(VisitorDto visitorDto) {
@@ -127,15 +103,17 @@ public class Ride extends Location {
                 .locationType(this.getLocationType().name())
                 .maxPersons(BigDecimal.valueOf(this.maxPersons))
                 .minimumAge(BigDecimal.valueOf(this.minimumAge))
-                .minimumLength(BigDecimal.valueOf(this.minimumLength))
+                .minimumLength(this.minimumLength)
                 .endTime(this.endTime.toString())
                 .visitorsInLine(BigDecimal.valueOf(this.visitorsInLine.size()))
                 .visitorsInRide(BigDecimal.valueOf(this.visitorsInRide.size()))
-                .location(
-                        org.openapitools.client.model.GridLocationDto.builder()
-                                .x(BigDecimal.valueOf(this.getLocationCoordinates().x()))
-                                .y(BigDecimal.valueOf(this.getLocationCoordinates().y()))
-                                .build())
+                .employeesToSkill(
+                        this.workplace.getRequiredSkillCount().entrySet().stream()
+                                .collect(
+                                        Collectors.toMap(
+                                                entry -> entry.getKey().name(),
+                                                entry -> entry.getValue().toString())))
+                .location(getLocationAsDto())
                 .build();
     }
 }

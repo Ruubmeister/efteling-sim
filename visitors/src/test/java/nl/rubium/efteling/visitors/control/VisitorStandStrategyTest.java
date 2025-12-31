@@ -121,6 +121,7 @@ public class VisitorStandStrategyTest {
                 LocationType.STAND.toString(),
                 GridLocationDto.builder().x(BigDecimal.ONE).y(BigDecimal.TEN).build(),
                 List.of("meal 1", "meal 2"),
-                List.of("drink 1", "drink 2"));
+                List.of("drink 1", "drink 2"),
+                true);
     }
 }

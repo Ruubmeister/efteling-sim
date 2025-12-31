@@ -17,6 +17,7 @@ export type { standDto } from './models/standDto';
 export type { visitorDto } from './models/visitorDto';
 export type { workplaceDto } from './models/workplaceDto';
 
+export { EmployeeService } from './services/EmployeeService';
 export { FairyTaleService } from './services/FairyTaleService';
 export { NavigationService } from './services/NavigationService';
 export { RideService } from './services/RideService';

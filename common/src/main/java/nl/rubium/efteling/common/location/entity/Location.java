@@ -1,6 +1,7 @@
 package nl.rubium.efteling.common.location.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
 import lombok.Getter;
+import org.openapitools.client.model.GridLocationDto;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -53,5 +55,12 @@ public abstract class Location {
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new)
                 .getValue();
+    }
+
+    public GridLocationDto getLocationAsDto() {
+        return GridLocationDto.builder()
+                .x(BigDecimal.valueOf(locationCoordinates.x()))
+                .y(BigDecimal.valueOf(locationCoordinates.y()))
+                .build();
     }
 }

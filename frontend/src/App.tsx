@@ -7,6 +7,7 @@ import { fetchRides } from './redux/reducers/rides';
 import { fetchVisitors } from './redux/reducers/visitors';
 import { fetchStands } from './redux/reducers/stands';
 import { fetchFairyTales } from './redux/reducers/fairy-tales';
+import { fetchEmployees } from './redux/reducers/employees';
 import { AppDispatch, useAppDispatch } from './redux/store';
 
 function App (){
@@ -26,6 +27,13 @@ function App (){
     const interval = setInterval(() => {
       dispatch(fetchVisitors())
     }, 300);
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(fetchEmployees())
+    }, 500);
     return () => clearInterval(interval);
   }, [dispatch]);
 
