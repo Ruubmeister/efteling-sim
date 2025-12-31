@@ -3,6 +3,7 @@ import rideReducer from "./reducers/rides"
 import fairyTaleReducer from './reducers/fairy-tales'
 import standReducer from './reducers/stands'
 import visitorReducer from './reducers/visitors'
+import employeeReducer from './reducers/employees'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
         rideReducer: rideReducer,
         fairyTaleReducer: fairyTaleReducer,
         standReducer: standReducer,
-        visitorReducer: visitorReducer
+        visitorReducer: visitorReducer,
+        employeeReducer: employeeReducer
     }
 })
 

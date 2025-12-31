@@ -14,10 +14,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.openapitools.client.model.WorkplaceDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class KafkaConsumer {
 
     private final ObjectMapper objectMapper;
@@ -25,37 +27,38 @@ public class KafkaConsumer {
     private final RideControl rideControl;
 
     @Autowired
-    public KafkaConsumer(RideControl rideControl){
+    public KafkaConsumer(RideControl rideControl) {
         this.rideControl = rideControl;
         this.objectMapper = new ObjectMapper();
     }
 
     @KafkaListener(topics = "${events.topic-name}", groupId = "rides", containerFactory = "kafkaListenerContainerFactory")
     public void EventsTopicListener(Event event) throws JsonProcessingException {
-        if(event.getEventType().equals(EventType.STEPINRIDELINE)){
+        if (event.getEventType().equals(EventType.STEPINRIDELINE)) {
             var visitor = event.getPayload().get("visitor");
             var ride = event.getPayload().get("ride");
 
-            if(visitor != null && ride != null){
+            if (visitor != null && ride != null) {
                 rideControl.handleVisitorSteppingInRideLine(UUID.fromString(visitor), UUID.fromString(ride));
             }
-        }
-        else if (event.getEventType().equals(EventType.EMPLOYEECHANGEDWORKPLACE)){
+        } else if (event.getEventType().equals(EventType.EMPLOYEECHANGEDWORKPLACE)) {
             var workplace = event.getPayload().get("workplace");
             var employee = event.getPayload().get("employee");
             var skill = event.getPayload().get("skill");
 
-            if(workplace != null && employee != null && skill != null){
+            if (workplace != null && employee != null && skill != null) {
                 var workplaceSkill = WorkplaceSkill.valueOf(skill);
                 var workplaceDto = objectMapper.readValue(workplace, WorkplaceDto.class);
-                rideControl.handleEmployeeChangedWorkplace(workplaceDto, UUID.fromString(employee),workplaceSkill);
+                rideControl.handleEmployeeChangedWorkplace(workplaceDto, UUID.fromString(employee), workplaceSkill);
             }
-        }
-        else if (event.getEventType().equals(EventType.STATUSCHANGED) && event.getEventSource().equals(EventSource.PARK)){
-            if(event.getPayload().get("status").equals("open")){
+        } else if (event.getEventType().equals(EventType.STATUSCHANGED)
+                && event.getEventSource().equals(EventSource.PARK)) {
+            if (event.getPayload().get("status").equals("OPEN")) {
                 rideControl.openRides();
-            }else if (event.getPayload().get("status").equals("closed")){
+            } else if (event.getPayload().get("status").equals("CLOSED")) {
                 rideControl.closeRides();
+            } else {
+                log.error("Could not change ride statuses, unknown park status: {}", event.getPayload().get("status"));
             }
         }
     }

@@ -2,10 +2,11 @@ package nl.rubium.efteling.stands.entity;
 
 import java.util.Set;
 import lombok.Getter;
+import nl.rubium.efteling.common.dto.DtoConvertible;
 import org.openapitools.client.model.DinnerDto;
 
 @Getter
-public class Dinner {
+public class Dinner implements DtoConvertible<DinnerDto> {
     private final Set<Product> meals;
     private final Set<Product> drinks;
 

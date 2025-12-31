@@ -107,6 +107,19 @@ public class StandControl {
         return this.getAll().stream().skip(r.nextInt(this.getAll().size())).findFirst().get();
     }
 
+    private void openStandAndCheckEmployees(Stand stand) {
+        checkRequiredEmployees(stand);
+    }
+
+    public void openStands() {
+        standRepository.getLocations().forEach(this::openStandAndCheckEmployees);
+    }
+
+    public void openStand(UUID uuid) {
+        var stand = standRepository.getLocation(uuid);
+        openStandAndCheckEmployees(stand);
+    }
+
     public String placeOrder(UUID standId, List<String> products) {
         var stand = standRepository.getLocation(standId);
 
@@ -199,6 +212,10 @@ public class StandControl {
                         payload.put("workplace", stand.getId().toString());
                         payload.put("skill", skill.name());
                         payload.put("count", count.toString());
+                        payload.put(
+                                "locationX", String.valueOf(stand.getLocationCoordinates().x()));
+                        payload.put(
+                                "locationY", String.valueOf(stand.getLocationCoordinates().y()));
 
                         kafkaProducer.sendEvent(
                                 EventSource.STAND, EventType.REQUESTEMPLOYEE, payload);

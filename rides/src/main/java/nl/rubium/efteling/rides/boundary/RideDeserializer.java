@@ -10,6 +10,7 @@ import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.rides.entity.Ride;
 import nl.rubium.efteling.rides.entity.RideStatus;
+import lombok.extern.slf4j.Slf4j;
 
 public class RideDeserializer extends StdDeserializer<Location> {
 
@@ -28,19 +29,17 @@ public class RideDeserializer extends StdDeserializer<Location> {
         int minimumAge = node.get("minimumAge").asInt();
 
         float minimumLength = Double.valueOf(node.get("minimumLength").asDouble()).floatValue();
-        Duration duration =
-                Duration.ofSeconds(
-                        node.get("duration").findPath("minutes").asLong() * 60
-                                + node.get("duration").findPath("seconds").asLong());
+        Duration duration = Duration.ofSeconds(
+                node.get("duration").findPath("minutes").asLong() * 60
+                        + node.get("duration").findPath("seconds").asLong());
         int maxPersons = node.get("maxPersons").asInt();
 
-        var locationCoordinates =
-                new Coordinates(
-                        node.get("location").findPath("x").asInt(),
-                        node.get("location").findPath("y").asInt());
+        var locationCoordinates = new Coordinates(
+                node.get("location").findPath("x").asInt(),
+                node.get("location").findPath("y").asInt());
 
         return new Ride(
-                RideStatus.OPEN,
+                RideStatus.CLOSED,
                 name,
                 minimumAge,
                 minimumLength,

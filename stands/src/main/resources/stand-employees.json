@@ -1,13 +1,34 @@
 [
   {
-    "standName": "De Hongerige Machinist",
+    "standName": "De Gulden Gaarde",
+    "requiredEmployees": {
+      "COOK": 3,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Polles pannenkoeken",
     "requiredEmployees": {
       "COOK": 2,
       "SELL": 2
     }
   },
   {
-    "standName": "De Vrolijke Volière",
+    "standName": "Het Wapen van Raveleijn",
+    "requiredEmployees": {
+      "COOK": 3,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Unoxkraam Marerijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Eigenheymer Marerijk",
     "requiredEmployees": {
       "COOK": 1,
       "SELL": 1
@@ -21,10 +42,241 @@
     }
   },
   {
-    "standName": "Fabula Café",
+    "standName": "'t Gebraad",
     "requiredEmployees": {
-      "COOK": 1,
+      "COOK": 2,
       "SELL": 2
     }
+  },
+  {
+    "standName": "In De Gelaarsde Kat",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "'t Poffertje",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "In den Hoorn des Overvloeds",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Den Suykerbuyk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Smulpaap",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Den Olycke Tweelingh",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Soete Inval",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "'t Suyker Huys",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Carrousel Paleis bar",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Unoxkraam Reizenrijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Restaurant Kashba",
+    "requiredEmployees": {
+      "COOK": 3,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Toko Pagode",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "De Flierefluiter",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Meermin",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Verleiding",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Hongerige Machinist",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "De Rustende Reiziger",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Eigenheymer Ruigrijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Burgerhuys de Likkebaerd",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Unoxkraam Ruigrijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Kombuys",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Casa Caracol",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Unoxkraam Anderrijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Eigenheymer Anderrijk",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Frau Boltes Kuche",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Oase",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "'t Melkhuysje",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "Fabula Restaurant",
+    "requiredEmployees": {
+      "COOK": 3,
+      "SELL": 2
+    }
+  },
+  {
+    "standName": "Rondje van de Molen",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Smaeckmaker",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "De Kleyne Klaroen",
+    "requiredEmployees": {
+      "COOK": 1,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "In den Swarte Kat",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
+  },
+  {
+    "standName": "'t Koetshuys",
+    "requiredEmployees": {
+      "COOK": 2,
+      "SELL": 1
+    }
   }
-] 
+]
