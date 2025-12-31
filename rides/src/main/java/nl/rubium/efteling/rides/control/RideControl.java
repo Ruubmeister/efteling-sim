@@ -71,7 +71,12 @@ public class RideControl {
                             var config = employeeLoader.getConfigForRide(ride.getName());
                             if (config != null) {
                                 ride.setRequiredEmployees(config.getRequiredEmployees());
-                                log.info("Set employee requirements for ride {}", ride.getName());
+                                log.info(
+                                        "Set employee requirements for ride {}. Needed: {},"
+                                                + " Currently: {}",
+                                        ride.getName(),
+                                        ride.getWorkplace().getRequiredSkillCount(),
+                                        ride.getWorkplace().getCurrentSkillCount());
                             } else {
                                 log.warn(
                                         "No employee configuration found for ride {}",
@@ -126,13 +131,11 @@ public class RideControl {
                                 Map<String, String> payload =
                                         Map.of(
                                                 "visitors",
-                                                        unboardedVisitors.stream()
-                                                                .map(
-                                                                        visitor ->
-                                                                                visitor.getId()
-                                                                                        .toString())
-                                                                .collect(Collectors.joining(",")),
-                                                "dateTime", LocalDateTime.now().toString());
+                                                unboardedVisitors.stream()
+                                                        .map(visitor -> visitor.getId().toString())
+                                                        .collect(Collectors.joining(",")),
+                                                "dateTime",
+                                                LocalDateTime.now().toString());
 
                                 kafkaProducer.sendEvent(
                                         EventSource.RIDE, EventType.VISITORSUNBOARDED, payload);
@@ -163,6 +166,8 @@ public class RideControl {
                         payload.put("workplace", ride.getId().toString());
                         payload.put("skill", skill.name());
                         payload.put("count", count.toString());
+                        payload.put("locationX", String.valueOf(ride.getLocationCoordinates().x()));
+                        payload.put("locationY", String.valueOf(ride.getLocationCoordinates().y()));
 
                         kafkaProducer.sendEvent(
                                 EventSource.RIDE, EventType.REQUESTEMPLOYEE, payload);
@@ -172,6 +177,8 @@ public class RideControl {
                                 skill,
                                 ride.getName());
                     });
+        } else {
+            log.info("All required employees are present for ride {}", ride.getName());
         }
     }
 

@@ -58,6 +58,8 @@ components:
         - firstName
         - lastName
         - skills
+        - location
+        - isMoving
       properties:
         id:
           type: string
@@ -70,6 +72,10 @@ components:
           type: array
           items:
             type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
+        isMoving:
+          type: boolean
     fairyTaleDto:
       type: object
       required:
@@ -148,6 +154,7 @@ components:
         - meals
         - drinks
         - location
+        - isOpen
       properties:
         id:
           type: string
@@ -166,6 +173,8 @@ components:
           type: array
           items:
             type: string
+        isOpen:
+          type: boolean
     visitorDto:
       type: object
       required:
@@ -191,65 +200,7 @@ components:
       required:
         - id
         - locationType
-      properties:
-        id:
-          type: string
-          format: uuid
-        locationType:
-          type: string
-    RideDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        status:
-          type: string
-          enum: [OPEN, CLOSED, MAINTENANCE]
-        durationInSec:
-          type: number
-        locationType:
-          type: string
-        maxPersons:
-          type: number
-        minimumAge:
-          type: number
-        minimumLength:
-          type: number
-        endTime:
-          type: string
-        visitorsInLine:
-          type: number
-        visitorsInRide:
-          type: number
-        location:
-          $ref: '#/components/schemas/gridLocationDto'
-    StandDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        locationType:
-          type: string
-        meals:
-          type: array
-          items:
-            type: string
-        drinks:
-          type: array
-          items:
-            type: string
-        isOpen:
-          type: boolean
-        location:
-          $ref: '#/components/schemas/gridLocationDto'
-    WorkplaceDto:
-      type: object
+        - location
       properties:
         id:
           type: string
@@ -568,6 +519,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/visitorDto'
+
+#Employees
+  /api/v1/employees:
+    servers:
+      - url: http://park:49980
+    get:
+      operationId: getAllEmployees
+      tags:
+        - employee
+      responses:
+        '200':
+          description: A JSON array of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employeeDto'
+  /api/v1/employees/{id}:
+    servers:
+      - url: http://park:49980
+    get:
+      operationId: getEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - employee
+      responses:
+        '200':
+          description: The employee that is requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employeeDto'
+
 # Navigation
   /api/v1/navigate:
     servers:

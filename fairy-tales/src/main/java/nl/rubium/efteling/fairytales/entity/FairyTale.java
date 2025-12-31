@@ -1,16 +1,14 @@
 package nl.rubium.efteling.fairytales.entity;
 
 import lombok.Getter;
-import nl.rubium.efteling.common.location.entity.Location;
+import nl.rubium.efteling.common.dto.DtoConvertible;
 import nl.rubium.efteling.common.location.entity.Coordinates;
+import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import org.openapitools.client.model.FairyTaleDto;
-import org.openapitools.client.model.GridLocationDto;
-
-import java.math.BigDecimal;
 
 @Getter
-public class FairyTale extends Location {
+public class FairyTale extends Location implements DtoConvertible<FairyTaleDto> {
     public FairyTale(String name, Coordinates coordinate) {
         super(name, LocationType.FAIRYTALE, coordinate);
     }
@@ -19,12 +17,7 @@ public class FairyTale extends Location {
         return FairyTaleDto.builder()
                 .id(this.getId())
                 .locationType(this.getLocationType().name())
-                .location(
-                        GridLocationDto.builder()
-                                .x(BigDecimal.valueOf(getLocationCoordinates().x()))
-                                .y(BigDecimal.valueOf(getLocationCoordinates().y()))
-                                .build()
-                )
+                .location(getLocationAsDto())
                 .name(this.getName())
                 .build();
     }

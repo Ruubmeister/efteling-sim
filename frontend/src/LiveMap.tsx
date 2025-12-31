@@ -13,7 +13,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
 import VectorImageLayer from 'ol/layer/VectorImage';
-import { fairyTaleDto, rideDto, standDto, visitorDto } from './services/openapi';
+import { fairyTaleDto, rideDto, standDto, visitorDto, employeeDto } from './services/openapi';
 import { RootState } from './redux/store';
 import {calculateLat, calculateLon} from "./helpers";
 
@@ -60,12 +60,29 @@ var visitorIconStyle = new Style({
   })
 });
 
+var employeeFill = new Fill({
+  color: 'rgba(138, 255, 134, 0.6)'
+});
+var employeeStroke = new Stroke({
+  color: '#367b28',
+  width: 1.0
+});
+
+var employeeIconStyle = new Style({
+  image: new Circle({
+    fill: employeeFill,
+      stroke: employeeStroke,
+      radius: 3
+  })
+});
+
 const mapStateToProps = (state: RootState) => {
   const rides = state.rideReducer.entities;
   const fairyTales = state.fairyTaleReducer.entities;
   const stands = state.standReducer.entities;
   const visitors = state.visitorReducer.entities;
-  return { rides: rides, fairyTales: fairyTales, stands: stands, visitors: visitors };
+  const employees = state.employeeReducer.entities;
+  return { rides: rides, fairyTales: fairyTales, stands: stands, visitors: visitors, employees: employees };
 };
 
 const connector = connect(mapStateToProps)
@@ -77,6 +94,7 @@ type Props = PropsFromRedux & {
   rides: rideDto[]
   stands: standDto[]
   fairyTales: fairyTaleDto[]
+  employees: employeeDto[]
 }
 
 class LiveMap extends React.Component<Props> {
@@ -87,6 +105,7 @@ class LiveMap extends React.Component<Props> {
   ridesLayer = this.getEmptyLayer();
   fairyTalesLayer = this.getEmptyLayer();
   standsLayer = this.getEmptyLayer();
+  employeesLayer = this.getEmptyLayer();
   
   constructor(props: Props) {
     super(props);
@@ -110,11 +129,13 @@ class LiveMap extends React.Component<Props> {
     this.ridesLayer.setStyle(rideIconStyle);
     this.fairyTalesLayer.setStyle(fairyTaleIconStyle);
     this.standsLayer.setStyle(standIconStyle);
-    
+    this.employeesLayer.setStyle(employeeIconStyle);
+
     this.eftelingMap.addLayer(this.ridesLayer);
     this.eftelingMap.addLayer(this.fairyTalesLayer);
     this.eftelingMap.addLayer(this.standsLayer);
     this.eftelingMap.addLayer(this.visitorsLayer);
+    this.eftelingMap.addLayer(this.employeesLayer);
   }
 
   getEmptyLayer(){
@@ -152,6 +173,21 @@ class LiveMap extends React.Component<Props> {
     });
 
     this.visitorsLayer.setSource(vectorSource);
+  }
+
+  updateEmployees(){
+    var vectorSource = new VectorSource({
+      features: []
+    });
+
+    this.props.employees
+      .filter(employee => employee.isMoving)
+      .forEach(employee => {
+        var iconFeature = this.getFeature(employee.id, calculateLon(employee.location.x, employee.location.y), calculateLat(employee.location.x, employee.location.y));
+        vectorSource.addFeature(iconFeature);
+      });
+
+    this.employeesLayer.setSource(vectorSource);
   }
 
   updateRides(){
@@ -206,6 +242,7 @@ class LiveMap extends React.Component<Props> {
           this.updateFairyTales();
           this.updateRides();
           this.updateStands();
+          this.updateEmployees();
         }
 
       return <div ref={this.map} className="ol-map"></div>;

@@ -40,7 +40,7 @@ public class RideDeserializer extends StdDeserializer<Location> {
                         node.get("location").findPath("y").asInt());
 
         return new Ride(
-                RideStatus.OPEN,
+                RideStatus.CLOSED,
                 name,
                 minimumAge,
                 minimumLength,

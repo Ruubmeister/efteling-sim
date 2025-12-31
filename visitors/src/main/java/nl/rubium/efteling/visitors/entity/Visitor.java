@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.rubium.efteling.common.dto.DtoConvertible;
 import nl.rubium.efteling.common.location.entity.Coordinates;
 import nl.rubium.efteling.common.location.entity.LocationType;
 import nl.rubium.efteling.visitors.control.VisitorLocationStrategy;
@@ -20,7 +21,7 @@ import org.openapitools.client.model.VisitorDto;
 
 @AllArgsConstructor
 @Getter
-public class Visitor {
+public class Visitor implements DtoConvertible<VisitorDto> {
     private final UUID id;
     private Coordinates currentCoordinates;
     private Location targetLocation;
@@ -37,7 +38,7 @@ public class Visitor {
         this.currentCoordinates = new Coordinates(53, 378);
     }
 
-    public void setStepsToTarget(Queue<Coordinates> steps){
+    public void setStepsToTarget(Queue<Coordinates> steps) {
         this.stepsToTarget = steps;
     }
 
@@ -104,20 +105,21 @@ public class Visitor {
         return visitorLocationSelector.getLocation(previousLocationType);
     }
 
+    private GridLocationDto getCoordinatesAsDto(Coordinates coordinates) {
+        return GridLocationDto.builder()
+                .x(BigDecimal.valueOf(coordinates.x()))
+                .y(BigDecimal.valueOf(coordinates.y()))
+                .build();
+    }
+
     public org.openapitools.client.model.VisitorDto toDto() {
         return VisitorDto.builder()
                 .id(id)
                 .target(
                         getTargetLocation() != null
-                                ? new GridLocationDto(
-                                        BigDecimal.valueOf(getTargetLocation().coordinate().x()),
-                                        BigDecimal.valueOf(getTargetLocation().coordinate().y()))
+                                ? getCoordinatesAsDto(getTargetLocation().coordinate())
                                 : null)
-                .location(
-                        GridLocationDto.builder()
-                                .x(BigDecimal.valueOf(getCurrentCoordinates().x()))
-                                .y(BigDecimal.valueOf(getCurrentCoordinates().y()))
-                                .build())
+                .location(getCoordinatesAsDto(getCurrentCoordinates()))
                 .build();
     }
 }
