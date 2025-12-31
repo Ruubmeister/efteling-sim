@@ -306,7 +306,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - fairyTale
       responses:
@@ -364,7 +364,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - ride
       responses:
@@ -449,7 +449,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - stand
       responses:
@@ -470,7 +470,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       responses:
@@ -491,7 +491,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       responses:
@@ -512,7 +512,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       requestBody:
@@ -558,7 +558,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - visitor
       responses:
@@ -573,7 +573,7 @@ paths:
     servers:
       - url: http://navigation:49985
     post:
-      operationId: postNavigate    
+      operationId: postNavigate
       tags:
         - navigation
       requestBody:
