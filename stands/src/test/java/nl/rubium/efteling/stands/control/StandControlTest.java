@@ -58,7 +58,9 @@ class StandControlTest {
                                         WorkplaceSkill.COOK, 2,
                                         WorkplaceSkill.SELL, 1)));
 
-        standControl = new StandControl(kafkaProducer, new ObjectMapper(), employeeLoader);
+        standControl =
+                new StandControl(
+                        kafkaProducer, new ObjectMapper(), employeeLoader, standRepository);
     }
 
     @Test

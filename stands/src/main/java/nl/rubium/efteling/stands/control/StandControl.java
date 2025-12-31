@@ -51,6 +51,18 @@ public class StandControl {
         }
     }
 
+    // Test constructor to inject repository
+    public StandControl(
+            KafkaProducer kafkaProducer,
+            ObjectMapper objectMapper,
+            StandEmployeeLoader employeeLoader,
+            LocationRepository<Stand> standRepository) {
+        this.kafkaProducer = kafkaProducer;
+        this.employeeLoader = employeeLoader;
+        this.standRepository = standRepository;
+        initializeEmployeeRequirements();
+    }
+
     private void initializeEmployeeRequirements() {
         standRepository
                 .getLocations()
@@ -98,9 +110,13 @@ public class StandControl {
     public String placeOrder(UUID standId, List<String> products) {
         var stand = standRepository.getLocation(standId);
 
+        checkRequiredEmployees(stand);
+
         if (!stand.isOpen()) {
-            log.error("Cannot place order at closed stand {}", stand.getName());
-            throw new IllegalStateException("Stand is closed");
+            log.warn(
+                    "Stand {} is closed due to missing employees, but accepting order",
+                    stand.getName());
+            // Still allow order to be placed, employees have been requested
         }
 
         var dinner =
