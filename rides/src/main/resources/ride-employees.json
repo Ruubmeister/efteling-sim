@@ -1,0 +1,167 @@
+[
+  {
+    "rideName": "Baron 1898",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Carnaval Festival",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Droomvlucht",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Fabula",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Fata Morgana",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "Gondoletta",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Halve Maen",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Joris en de Draak",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Sirocco",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Pagode",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Piraña",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Python",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Symbolica",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 3
+    }
+  },
+  {
+    "rideName": "Villa Volta",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  },
+  {
+    "rideName": "De Vliegende Hollander",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Vogel Rok",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Monorail",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Raveleijn",
+    "requiredEmployees": {
+      "HOST": 4
+    }
+  },
+  {
+    "rideName": "Carrousel",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Vlindermolen",
+    "requiredEmployees": {
+      "CONTROL": 1
+    }
+  },
+  {
+    "rideName": "Kleine Zweefmolen",
+    "requiredEmployees": {
+      "CONTROL": 1
+    }
+  },
+  {
+    "rideName": "Kinderspoor",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 1
+    }
+  },
+  {
+    "rideName": "Max en Moritz",
+    "requiredEmployees": {
+      "CONTROL": 2,
+      "ENGINEER": 1
+    }
+  },
+  {
+    "rideName": "Danse Macabre",
+    "requiredEmployees": {
+      "CONTROL": 1,
+      "HOST": 2
+    }
+  }
+]

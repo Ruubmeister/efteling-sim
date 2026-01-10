@@ -10,5 +10,6 @@ export type standDto = {
     location: gridLocationDto;
     meals: Array<string>;
     drinks: Array<string>;
+    isOpen: boolean;
 };
 

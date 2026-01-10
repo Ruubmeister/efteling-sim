@@ -4,22 +4,20 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import nl.rubium.efteling.common.dto.DtoConvertible;
 import nl.rubium.efteling.common.location.entity.Coordinates;
-import nl.rubium.efteling.common.location.entity.Location;
 import nl.rubium.efteling.common.location.entity.LocationType;
-import nl.rubium.efteling.common.location.entity.WorkplaceSkill;
+import nl.rubium.efteling.common.location.entity.WorkplaceLocation;
 import org.openapitools.client.model.RideDto;
 import org.openapitools.client.model.VisitorDto;
 
 @Getter
-public class Ride extends Location {
+public class Ride extends WorkplaceLocation implements DtoConvertible<RideDto> {
 
     private RideStatus status;
     private final int minimumAge;
@@ -29,7 +27,6 @@ public class Ride extends Location {
     private Queue<VisitorDto> visitorsInLine = new LinkedList<>();
     private Queue<VisitorDto> visitorsInRide = new LinkedList<>();
     private LocalDateTime endTime = LocalDateTime.now();
-    private final HashMap<UUID, WorkplaceSkill> employeesToSkill = new HashMap<>();
 
     public Ride(
             RideStatus status,
@@ -54,15 +51,13 @@ public class Ride extends Location {
     }
 
     public void toOpen() {
-        status = RideStatus.OPEN;
+        if (hasRequiredEmployees()) {
+            status = RideStatus.OPEN;
+        }
     }
 
     public void toClosed() {
         status = RideStatus.CLOSED;
-    }
-
-    public void addEmployee(UUID id, WorkplaceSkill skill) {
-        this.employeesToSkill.put(id, skill);
     }
 
     public boolean hasVisitor(VisitorDto visitorDto) {
@@ -76,7 +71,7 @@ public class Ride extends Location {
     }
 
     public void start() {
-        if (status.equals(RideStatus.OPEN)) {
+        if (status.equals(RideStatus.OPEN) && hasRequiredEmployees()) {
             boardVisitors();
             endTime = LocalDateTime.now().plus(duration);
         }
@@ -95,7 +90,6 @@ public class Ride extends Location {
             if (visitorsInLine.isEmpty()) {
                 return;
             }
-
             visitorsInRide.add(visitorsInLine.poll());
         }
     }
@@ -114,16 +108,12 @@ public class Ride extends Location {
                 .visitorsInLine(BigDecimal.valueOf(this.visitorsInLine.size()))
                 .visitorsInRide(BigDecimal.valueOf(this.visitorsInRide.size()))
                 .employeesToSkill(
-                        this.employeesToSkill.entrySet().stream()
+                        this.workplace.getRequiredSkillCount().entrySet().stream()
                                 .collect(
                                         Collectors.toMap(
-                                                e -> e.getKey().toString(),
-                                                e -> e.getValue().toString())))
-                .location(
-                        org.openapitools.client.model.GridLocationDto.builder()
-                                .x(BigDecimal.valueOf(this.getLocationCoordinates().x()))
-                                .y(BigDecimal.valueOf(this.getLocationCoordinates().y()))
-                                .build())
+                                                entry -> entry.getKey().name(),
+                                                entry -> entry.getValue().toString())))
+                .location(getLocationAsDto())
                 .build();
     }
 }

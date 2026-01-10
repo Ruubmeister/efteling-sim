@@ -58,6 +58,7 @@ components:
         - firstName
         - lastName
         - skills
+        - location
       properties:
         id:
           type: string
@@ -70,6 +71,8 @@ components:
           type: array
           items:
             type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
     fairyTaleDto:
       type: object
       required:
@@ -148,6 +151,7 @@ components:
         - meals
         - drinks
         - location
+        - isOpen
       properties:
         id:
           type: string
@@ -166,6 +170,8 @@ components:
           type: array
           items:
             type: string
+        isOpen:
+          type: boolean
     visitorDto:
       type: object
       required:
@@ -191,12 +197,15 @@ components:
       required:
         - id
         - locationType
+        - location
       properties:
         id:
           type: string
           format: uuid
         locationType:
           type: string
+        location:
+          $ref: '#/components/schemas/gridLocationDto'
 paths:
 #Fairy tales
   /api/v1/fairy-tales:
@@ -245,7 +254,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - fairyTale
       responses:
@@ -303,7 +312,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - ride
       responses:
@@ -388,7 +397,7 @@ paths:
           name: exclude
           schema:
             type: string
-          required: false        
+          required: false
       tags:
         - stand
       responses:
@@ -409,7 +418,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       responses:
@@ -430,7 +439,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       responses:
@@ -451,7 +460,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - stand
       requestBody:
@@ -497,7 +506,7 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid        
+            format: uuid
       tags:
         - visitor
       responses:
@@ -507,12 +516,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/visitorDto'
+
+#Employees
+  /api/v1/employees:
+    servers:
+      - url: http://park:49980
+    get:
+      operationId: getAllEmployees
+      tags:
+        - employee
+      responses:
+        '200':
+          description: A JSON array of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/employeeDto'
+  /api/v1/employees/{id}:
+    servers:
+      - url: http://park:49980
+    get:
+      operationId: getEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - employee
+      responses:
+        '200':
+          description: The employee that is requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employeeDto'
+
 # Navigation
   /api/v1/navigate:
     servers:
       - url: http://navigation:49985
     post:
-      operationId: postNavigate    
+      operationId: postNavigate
       tags:
         - navigation
       requestBody:
