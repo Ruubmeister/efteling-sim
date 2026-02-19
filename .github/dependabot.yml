@@ -14,7 +14,7 @@ updates:
         update-types: [ "patch" ]
       minor-updates:
         update-types: [ "minor" ]
-  - package-ecosystem: "rust-toolchain"
+  - package-ecosystem: "cargo"
     directory: "/navigation"
     schedule:
       interval: "weekly"
