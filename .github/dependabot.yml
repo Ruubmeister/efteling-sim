@@ -14,6 +14,15 @@ updates:
         update-types: [ "patch" ]
       minor-updates:
         update-types: [ "minor" ]
+  - package-ecosystem: "rust-toolchain"
+    directory: "/navigation"
+    schedule:
+      interval: "weekly"
+    groups:
+      patch-updates:
+        update-types: [ "patch" ]
+      minor-updates:
+        update-types: [ "minor" ]
   - package-ecosystem: "maven"
     directory: "/common"
     schedule:

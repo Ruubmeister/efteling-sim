@@ -1,6 +1,9 @@
 name: Efteling simulator pipeline
 run-name: Testing and building pipeline after code changes by ${{ github.actor }}.
 on: [push]
+permissions:
+  contents: read
+  pull-requests: write
 jobs:
   Park:
     runs-on: ubuntu-latest
