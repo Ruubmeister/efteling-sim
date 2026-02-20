@@ -1,6 +1,5 @@
-import { OpenAPI, visitorDto } from 'src/services/openapi';
-import { VisitorService } from '../../services/openapi';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { visitorDto } from 'src/services/openapi';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store';
 
 type state = {
@@ -13,37 +12,22 @@ const initialState: state = {
   entities: []
 };
 
-export const fetchVisitors = createAsyncThunk('visitors/fetchAll', async () => {
-  OpenAPI.BASE = 'http://localhost:49984';
-  return await VisitorService.getAllVisitors();
-})
-
 const visitorsSlice = createSlice({
   name: 'visitors',
   initialState,
   reducers: {
-    // omit reducer cases
+    visitorsUpdated: (state, action: PayloadAction<visitorDto[]>) => {
+      state.entities = action.payload;
+      state.status = 'idle';
+    }
   },
-  extraReducers: builder => {
-    builder
-      .addCase(fetchVisitors.pending, (state, _) => {
-        state.status = 'loading'
-      })
-      .addCase(fetchVisitors.fulfilled, (state, action) => {
-        const newEntities: visitorDto[] = []
-        action.payload.forEach((visitor: visitorDto) => {
-          newEntities.push(visitor)
-        })
-        state.entities = newEntities
-        state.status = 'idle'
-      })
-  }
 })
 
 const getVisitors = (state: RootState) => state.visitorReducer.entities;
 
-const {reducer} = visitorsSlice;
+const { reducer, actions } = visitorsSlice;
+const { visitorsUpdated } = actions;
 
-export { getVisitors }
+export { getVisitors, visitorsUpdated };
 
 export default reducer;

@@ -9,6 +9,9 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import org.openapitools.client.model.VisitorDto;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.rubium.efteling.common.location.entity.Coordinates;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Component;
 public class VisitorControl {
     private final VisitorRepository visitorRepository;
     private final org.openapitools.client.api.StandApi standClient;
+    private final Sinks.Many<List<VisitorDto>> visitorSink = Sinks.many().replay().latest();
 
     private Random random = new Random();
 
@@ -97,7 +101,7 @@ public class VisitorControl {
                                 visitor.getTargetLocation().id());
                         visitor.getStrategy().startLocationActivity(visitor);
                     } else {
-                        if(visitor.getStepsToTarget().isEmpty()){
+                        if (visitor.getStepsToTarget().isEmpty()) {
                             getVisitorPath(visitor);
                         }
                         log.debug(
@@ -106,10 +110,13 @@ public class VisitorControl {
                                 visitor.getTargetLocation().id());
                         visitor.setNextStep();
                         var millis = random.nextLong(1000);
-                        this.setIdleVisitor(visitor, LocalDateTime.now()
-                                .plus(1000+millis, ChronoUnit.MILLIS));
+                        this.setIdleVisitor(
+                                visitor,
+                                LocalDateTime.now().plus(1000 + millis, ChronoUnit.MILLIS));
                     }
                 });
+
+        emitVisitorState();
     }
 
     private void getVisitorPath(Visitor visitor) {
@@ -185,7 +192,17 @@ public class VisitorControl {
         if (visitorRepository.all().size() <= 5000) {
             var newVisitors = random.nextInt(10) + 5;
             addVisitors(newVisitors);
+            emitVisitorState();
         }
+    }
+
+    public Flux<List<VisitorDto>> getVisitorStream() {
+        return visitorSink.asFlux();
+    }
+
+    private void emitVisitorState() {
+        visitorSink.tryEmitNext(
+                visitorRepository.all().stream().map(Visitor::toDto).toList());
     }
 
     private void setLocation(Visitor visitor) {

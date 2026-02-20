@@ -4,7 +4,7 @@ import Music from "./Music"
 import Statistics from "./Statistics";
 import React, { useEffect } from 'react';
 import { fetchRides } from './redux/reducers/rides';
-import { fetchVisitors } from './redux/reducers/visitors';
+import { visitorsUpdated } from './redux/reducers/visitors';
 import { fetchStands } from './redux/reducers/stands';
 import { fetchFairyTales } from './redux/reducers/fairy-tales';
 import { fetchEmployees } from './redux/reducers/employees';
@@ -24,10 +24,11 @@ function App (){
   }, [dispatch]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(fetchVisitors())
-    }, 300);
-    return () => clearInterval(interval);
+    const eventSource = new EventSource('http://localhost:49984/api/v1/visitors/stream');
+    eventSource.onmessage = (event) => {
+      dispatch(visitorsUpdated(JSON.parse(event.data)));
+    };
+    return () => eventSource.close();
   }, [dispatch]);
 
   useEffect(() => {

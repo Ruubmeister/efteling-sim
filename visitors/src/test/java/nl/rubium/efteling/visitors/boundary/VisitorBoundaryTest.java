@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -45,5 +47,21 @@ public class VisitorBoundaryTest {
                 .expectBody()
                 .jsonPath("$.id")
                 .isEqualTo(visitor.getId().toString());
+    }
+
+    @Test
+    void streamVisitors_expectEventStream() {
+        when(visitorControl.getVisitorStream())
+                .thenReturn(Flux.just(List.of(SFVisitor.getVisitor().toDto())));
+
+        testClient
+                .get()
+                .uri("api/v1/visitors/stream")
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectHeader()
+                .contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM);
     }
 }
