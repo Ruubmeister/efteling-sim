@@ -58,14 +58,32 @@ export function StatisticsCard(props: Props) {
         putStatus("Open");
     }
 
-    const putStatus = (status: string) => {
-        var ride = props.ride
-        //ride.status = status; Todo: Fix
-        axios({
-            method: 'put',
-            url: `http://localhost:3997/api/v1/rides/${props.ride.id}/status`,
-            data: ride
-        });
+    function toRideStatus(input: string): rideDto.status {
+        const key = input.trim().toUpperCase(); // "open" -> "OPEN"
+
+        if (Object.values(rideDto.status).includes(key as rideDto.status)) {
+            return key as rideDto.status;
+        }
+
+        throw new Error(`Invalid ride status: ${input}`);
+    }
+
+    const putStatus = (statusInput: string) => {
+        try {
+            const status = toRideStatus(statusInput)
+            const ride: rideDto = {...props.ride, status};
+            axios({
+                method: 'put',
+                url: `http://localhost:49981/api/v1/rides/${props.ride.id}/status`,
+                data: ride
+            });
+        } catch (err) {
+            console.error(`[StatisticsCard] Failed to update ride status`, {
+                rideId: props.ride.id,
+                statusInput,
+                err,
+            });
+        }
     }
 
     const toClosed = () => {
