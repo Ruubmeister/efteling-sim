@@ -58,12 +58,23 @@ export function StatisticsCard(props: Props) {
         putStatus("Open");
     }
 
-    const putStatus = (status: string) => {
-        var ride = props.ride
-        //ride.status = status; Todo: Fix
+    function toRideStatus(input: string): rideDto.status {
+        const key = input.trim().toUpperCase(); // "open" -> "OPEN"
+
+        if (Object.values(rideDto.status).includes(key as rideDto.status)) {
+            return key as rideDto.status;
+        }
+
+        throw new Error(`Invalid ride status: ${input}`);
+    }
+
+    const putStatus = (statusInput: string) => {
+        const status = toRideStatus(statusInput)
+        const ride: rideDto = {...props.ride, status};
+
         axios({
             method: 'put',
-            url: `http://localhost:3997/api/v1/rides/${props.ride.id}/status`,
+            url: `http://localhost:49981/api/v1/rides/${props.ride.id}/status`,
             data: ride
         });
     }
