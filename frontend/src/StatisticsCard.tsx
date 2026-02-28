@@ -69,14 +69,21 @@ export function StatisticsCard(props: Props) {
     }
 
     const putStatus = (statusInput: string) => {
-        const status = toRideStatus(statusInput)
-        const ride: rideDto = {...props.ride, status};
-
-        axios({
-            method: 'put',
-            url: `http://localhost:49981/api/v1/rides/${props.ride.id}/status`,
-            data: ride
-        });
+        try {
+            const status = toRideStatus(statusInput)
+            const ride: rideDto = {...props.ride, status};
+            axios({
+                method: 'put',
+                url: `http://localhost:49981/api/v1/rides/${props.ride.id}/status`,
+                data: ride
+            });
+        } catch (err) {
+            console.error(`[StatisticsCard] Failed to update ride status`, {
+                rideId: props.ride.id,
+                statusInput,
+                err,
+            });
+        }
     }
 
     const toClosed = () => {
