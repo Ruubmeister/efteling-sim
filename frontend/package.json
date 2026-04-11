@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@fontsource/roboto": "^5.2.9",
+    "@fontsource/roboto": "^5.2.10",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-brands-svg-icons": "^7.2.0",
     "@fortawesome/free-regular-svg-icons": "^7.2.0",
@@ -17,9 +17,9 @@
     "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
     "ol": "^10.8.0",
-    "react": "^19.2.4",
+    "react": "^19.2.5",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.2.4",
+    "react-dom": "^19.2.5",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
   },
